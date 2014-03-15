@@ -1,0 +1,107 @@
+//==================================================================================================
+//
+// File:    MathScalar.cpp
+// Author:  Jason Jackson
+// Date:    September 20, 2008
+//
+// Defines basic math operations dealing with scalars
+//
+//==================================================================================================
+
+#include "MathPch.h"
+
+// Support functions and conditional compilation directives for the
+// master AlmostEqual function.
+//#define INFINITYCHECK
+//#define NANCHECK
+//#define SIGNCHECK
+
+//=============================================================================
+static inline bool _IsInfinite(float32 A)
+{
+    const sint32 kInfAsInt = 0x7F800000;
+
+    // An infinity has an exponent of 255 (shift left 23 positions) and
+    // a zero mantissa. There are two infinities - positive and negative.
+    if ((*(int*)&A & 0x7FFFFFFF) == kInfAsInt)
+        return true;
+    return false;
+}
+
+//=============================================================================
+static inline bool _IsNan(float32 A)
+{
+    // A NAN has an exponent of 255 (shifted left 23 positions) and
+    // a non-zero mantissa.
+    int exp = *(sint32*)&A & 0x7F800000;
+    int mantissa = *(sint32*)&A & 0x007FFFFF;
+    if (exp == 0x7F800000 && mantissa != 0)
+        return true;
+    return false;
+}
+
+//=============================================================================
+static inline sint32 _Sign(float32 A)
+{
+    // The sign bit of a number is the high bit.
+    return (*(sint32*)&A) & 0x80000000;
+}
+
+//=============================================================================
+bool Equal( float32 a, float32 b, sint32 maxUlps )
+{
+    // There are several optional checks that you can do, depending
+    // on what behavior you want from your floating point comparisons.
+    // These checks should not be necessary and they are included
+    // mainly for completeness.
+
+#ifdef  INFINITYCHECK
+    // If A or B are infinity (positive or negative) then
+    // only return true if they are exactly equal to each other -
+    // that is, if they are both infinities of the same sign.
+    // This check is only needed if you will be generating
+    // infinities and you don't want them 'close' to numbers
+    // near FLT_MAX.
+    if (_IsInfinite(A) || _IsInfinite(B))
+        return A == B;
+#endif
+
+#ifdef  NANCHECK
+    // If A or B are a NAN, return false. NANs are equal to nothing,
+    // not even themselves.
+    // This check is only needed if you will be generating NANs
+    // and you use a maxUlps greater than 4 million or you want to
+    // ensure that a NAN does not equal itself.
+    if (_IsNan(A) || _IsNan(B))
+        return false;
+#endif
+
+#ifdef  SIGNCHECK
+    // After adjusting floats so their representations are lexicographically
+    // ordered as twos-complement integers a very small positive number
+    // will compare as 'close' to a very small negative number. If this is
+    // not desireable, and if you are on a platform that supports
+    // subnormals (which is the only place the problem can show up) then
+    // you need this check.
+    // The check for A == B is because zero and negative zero have different
+    // signs but are equal to each other.
+    if (_Sign(A) != _Sign(B))
+        return A == B;
+#endif
+
+    sint32 aInt = *(sint32*)&a;
+    // Make aInt lexicographically ordered as a twos-complement int
+    if (aInt < 0)
+        aInt = 0x80000000 - aInt;
+    // Make bInt lexicographically ordered as a twos-complement int
+    sint32 bInt = *(sint32*)&b;
+    if (bInt < 0)
+        bInt = 0x80000000 - bInt;
+
+    // Now we can compare aInt and bInt to find out how far apart A and B
+    // are.
+    sint32 intDiff = abs(aInt - bInt);
+    if( intDiff <= maxUlps )
+        return true;
+    return false;
+}
