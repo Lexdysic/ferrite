@@ -17,6 +17,16 @@ const String::CodePoint UTF16_RANGE_MAX = 0x10ffff;
 const uint32 UTF16_LEAD_OFFSET      = UTF16_LEAD_MIN - (0x10000 >> 10);
 const uint32 UTF16_SURROGATE_OFFSET = 0x10000 - (UTF16_LEAD_MIN << 10) - UTF16_TAIL_MIN;
 
+const byte B10000000 = 0x80;
+const byte B11000000 = 0xc0;
+const byte B11100000 = 0xe0;
+const byte B11110000 = 0xf0;
+const byte B11111000 = 0xf8;
+const byte B11111100 = 0xfc;
+const byte B11111110 = 0xfe;
+
+const String::CodePoint CODE_POINT_MAX = 0x10ffff;
+
 
 //=============================================================================
 //
@@ -37,9 +47,9 @@ static bool IsUtf16TailSurrogate (uint16 codeunit)
 }
 
 //=============================================================================
-static bool IsUtf16 (String::CodePoint codepoint)
+static bool IsValidCodePoint (String::CodePoint codepoint)
 {
-    return Math::IsInRange(codepoint, UTF16_RANGE_MIN, UTF16_RANGE_MAX);
+    return Math::IsInRange(codepoint, (String::CodePoint)0, CODE_POINT_MAX);
 }
 
 
@@ -99,16 +109,16 @@ namespace String
 
 //=============================================================================
 template <>
+CodePoint Decode<String::EEncoding::Ascii> (const char * data[])
+{
+    ASSERT(((**data) & 0x80) == 0);
+    return *(*data)++;
+}
+
+//=============================================================================
+template <>
 CodePoint Decode<String::EEncoding::Utf8> (const byte * data[])
 {
-    const byte B10000000 = 0x80;
-    const byte B11000000 = 0xc0;
-    const byte B11100000 = 0xe0;
-    const byte B11110000 = 0xf0;
-    const byte B11111000 = 0xf8;
-    const byte B11111100 = 0xfc;
-    const byte B11111110 = 0xfe;
-
     CodePoint code;
     
     uint len = 0;
@@ -179,11 +189,45 @@ CodePoint Decode<String::EEncoding::Utf16> (const uint16 * data[])
     return CodePoint(w << 16 | x);
 }
 
+//=============================================================================
+template <>
+void Encode<EEncoding::Utf8> (CodePoint code, TArray<byte> * data)
+{
+    ASSERT(IsValidCodePoint(code));
 
+    if (code < 0x80)
+    {
+        data->Add((byte)code);
+    }
+    else if (code < 0x800)
+    {
+        data->Add((code >> 6) | B11000000);
+        data->Add((code & ~B11000000) | B10000000);
+    }
+    else if (code < 0x10000)
+    {
+        data->Add((code >> 12) | B11100000);
+        data->Add(((code >> 6) & ~B11000000) | B10000000);
+        data->Add((code & ~B11000000) | B10000000);
+    }
+    else if (code <= 0x10ffff)
+    {
+        data->Add((code >> 18) | 0xf0);
+        data->Add(((code >> 12) & 0x3f) | 0x80);
+        data->Add(((code >> 6) & 0x3f) | 0x80);
+        data->Add((code & 0x3f) | 0x80);
+    }
+    else
+    {
+        ASSERT(false); // ERROR: out of range
+    }
+}
+
+//=============================================================================
 template <>
 void Encode<EEncoding::Utf16> (CodePoint code, TArray<uint16> * data)
 {
-    ASSERT(IsUtf16(code));
+    ASSERT(IsValidCodePoint(code));
 
     const uint32 u = ((code >> 16) & ((1 << 5) - 1)) - 1;
     const uint16 lead = UTF16_LEAD_MIN | (u << 6) | code >> 10;
@@ -198,15 +242,3 @@ void Encode<EEncoding::Utf16> (CodePoint code, TArray<uint16> * data)
 }
 
 } // namespace String
-
-
-
-//=============================================================================
-//
-// CString
-//
-//=============================================================================
-
-//=============================================================================
-CString CString::Null;
-CString CString::Empty(L"");

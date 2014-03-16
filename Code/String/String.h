@@ -5,8 +5,6 @@
 //
 //=============================================================================
 
-class CString;
-
 
 namespace String {
     enum class EEncoding;
@@ -80,7 +78,7 @@ void Encode (CodePoint code, TArray<typename CodeUnit<E>::Type> * data);
 
 //=============================================================================
 //
-// Internal
+// CodeUnit
 //
 //=============================================================================
 
@@ -97,6 +95,23 @@ template <>             struct CodeUnit<EEncoding::Ucs4>  { typedef sint32 Type;
 } // namespace String
 
 
+//=============================================================================
+//
+// EncodingType
+//
+//=============================================================================
+
+namespace String {
+
+template <typename T> struct EncodingType         { static const EEncoding value = EEncoding::Unknown; };
+template <>           struct EncodingType<char>   { static const EEncoding value = EEncoding::Ascii; };
+template <>           struct EncodingType<byte>   { static const EEncoding value = EEncoding::Utf8; };
+template <>           struct EncodingType<uint16> { static const EEncoding value = EEncoding::Utf16; };
+template <>           struct EncodingType<uint32> { static const EEncoding value = EEncoding::Utf32; };
+template <>           struct EncodingType<wchar>  { static const EEncoding value = EEncoding::Ucs2; };
+
+} // namespace String
+
 
 //=============================================================================
 //
@@ -110,11 +125,11 @@ inline bool CharIsLower (String::CodePoint code);
 inline wchar CharToUpper (String::CodePoint code);
 inline wchar CharToLower (String::CodePoint code);
 
-inline bool CharIsAlpha (wchar ch);
-inline bool CharIsNumeric (wchar ch);
-inline bool CharIsControl (wchar ch);
+inline bool CharIsAlpha (String::CodePoint ch);
+inline bool CharIsNumeric (String::CodePoint ch);
+inline bool CharIsControl (String::CodePoint ch);
 
-inline bool CharIsWhitespace (wchar ch);
+inline bool CharIsWhitespace (String::CodePoint ch);
 
 inline uint StrLen (const wchar text[]);
 inline uint StrLen (const char text[]);
@@ -152,47 +167,77 @@ public:
 
     static const String::EEncoding ENCODING = E;
     typedef typename String::CodeUnit<E>::Type Type;
+    class Iterator;
 
 public:
+    // Construction
     inline TString ();
     inline TString (const TString<E> & rhs);
     inline TString (TString<E> && rhs);
-    template <typename C>
-    inline TString (const C str[], String::EEncoding encoding);
-    template <String::EEncoding F>
-    inline TString (const TString<F> & rhs);
+    inline TString (const char ascii[]);
     inline ~TString ();
 
+    template <String::EEncoding F>
+    inline TString (const TString<F> & rhs); // Transcode
+
+    template <String::EEncoding F>
+    inline TString (const typename TString<F>::Iterator & begin, const typename TString<F>::Iterator & end); // Transcode range
+
+    // Assignment
     inline TString<E> & operator= (const TString<E> & rhs);
     inline TString<E> & operator= (TString<E> && rhs);
 
-    inline const Type * Ptr () const;
+    template <String::EEncoding F>
+    inline TString<E> & operator= (const TString<F> & rhs); // Transcode
 
+    // Data
+    inline const Type * Ptr () const;
+    inline const Iterator begin () const;
+    inline const Iterator end () const;
+
+    // Queries
     uint Length () const;
     inline uint Bytes () const;
-
-    inline void Clear ();
-    inline void Reserve (uint count);
-    inline void ReserveAdditional (uint additionalCount);
 
 public:
 
     class Iterator
     {
+        friend class TString<E>;
+        typedef typename TString<E>::Type Type;
     public:
-        Iterator (Type * ptr);
+        Iterator () = default;
+        Iterator (const Iterator &) = default;
+        const Iterator & operator= (const Iterator & rhs) const;
 
-        String::CodePoint operator* () const;
-        const Iterator & operator++ ();
+        const String::CodePoint operator* () const;
+        const Iterator & operator++ () const;
+        const Iterator operator++ (int) const;
+
+        const Type * Ptr() const;
 
     private:
-        Type * m_curr;
+        Iterator (const Type * ptr);
+
+        mutable const Type * m_curr;
     };
 
 public:
 
     static const TString<E> Null;
     static const TString<E> Empty;
+    static TString<E> FromData(const Type data[]);
+    static TString<E> FromData(const TArray<Type> & data);
+    static TString<E> FromData(const TArray<String::CodePoint> & data);
+
+public:
+
+    template <String::EEncoding F>
+    friend bool operator== (const TString<F> & lhs, const TString<F> & rhs);
+    template <String::EEncoding F>
+    friend bool operator== (const TString<F> & lhs, const char rhs[]);
+    template <String::EEncoding F>
+    friend bool operator< (const TString<F> & lhs, const TString<F> & rhs);
 
 private:
 
@@ -200,65 +245,12 @@ private:
 };
 
 
-
-//typedef TString<String::EEncoding::Ascii>   CStringAscii;
+typedef TString<String::EEncoding::Ascii>   CStringAscii;
 typedef TString<String::EEncoding::Utf8>    CStringUtf8;
 typedef TString<String::EEncoding::Utf16>   CStringUtf16;
-//typedef TString<String::EEncoding::Utf32>   CStringUtf32;
-//typedef TString<String::EEncoding::Ucs2>    CStringUcs2;
+typedef TString<String::EEncoding::Utf32>   CStringUtf32;
+typedef TString<String::EEncoding::Ucs2>    CStringUcs2;
 //typedef TString<String::EEncoding::Ucs4>    CStringUsc4;
-//typedef CStringUtf8 CString;
-
-
-//=============================================================================
-//
-// CString
-//
-//=============================================================================
-
-class CString
-{
-public:
-    inline CString ();
-    inline CString (const CString & rhs);
-    inline CString (CString && rhs);
-    inline CString (const wchar str[]);
-    inline ~CString ();
-
-    inline CString & operator= (const CString & rhs);
-    inline CString & operator= (CString && rhs);
-
-    inline wchar & operator[] (uint index);
-    inline wchar operator[] (uint index) const;
-    
-    inline const wchar * Ptr () const;
-
-    inline uint Length () const;
-    inline uint Bytes () const;
-
-    inline void Clear ();
-    inline void Reserve (uint count);
-    inline void ReserveAdditional (uint additionalCount);
-
-    inline void operator+= (const CString & rhs);
-    inline void operator+= (wchar ch);
-
-public:
-
-    static CString Null;
-    static CString Empty;
-
-public:
-
-    friend bool operator== (const CString & lhs, const CString & rhs);
-    friend bool operator< (const CString & lhs, const CString & rhs);
-
-private:
-
-    std::wstring m_data;
-};
-
-inline bool operator== (const CString & lhs, const CString & rhs);
-inline bool operator< (const CString & lhs, const CString & rhs);
+typedef CStringUtf8 CString;
 
 #include "String.inl"

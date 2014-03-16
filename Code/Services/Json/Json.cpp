@@ -51,7 +51,7 @@ CValue::CValue (NumberType rhs) :
 }
 
 //=============================================================================
-CValue::CValue (const wchar rhs[]) :
+CValue::CValue (const char rhs[]) :
     m_type(EType::String)
 {
     new(m_data) StringType(rhs);
@@ -147,7 +147,7 @@ CValue & CValue::operator= (NumberType rhs)
 }
 
 //=============================================================================
-CValue & CValue::operator= (const wchar rhs[])
+CValue & CValue::operator= (const char rhs[])
 {
     Destroy();
     m_type = EType::String;
@@ -321,6 +321,16 @@ bool operator== (const CValue & lhs, const CValue & rhs)
 {
     if (lhs.m_type != rhs.m_type)
         return false;
+
+    switch (lhs.m_type)
+    {
+        case EType::Bool:   return *lhs.As<BoolType>()   == *rhs.As<BoolType>();
+        case EType::Number: return *lhs.As<NumberType>() == *rhs.As<NumberType>();
+        case EType::String: return *lhs.As<StringType>() == *rhs.As<StringType>();
+        case EType::Array:  return *lhs.As<ArrayType>()  == *rhs.As<ArrayType>();
+        case EType::Object: return *lhs.As<ObjectType>() == *rhs.As<ObjectType>();
+    }
+
     return true;
 }
 

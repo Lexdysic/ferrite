@@ -58,7 +58,7 @@ public:
     CValue (nullptr_t);
     CValue (BoolType rhs);
     CValue (NumberType rhs);
-    CValue (const wchar rhs[]);
+    CValue (const char rhs[]);
     CValue (const StringType & rhs);
     CValue (const ArrayType & rhs);
     CValue (const ObjectType & rhs);
@@ -72,7 +72,7 @@ public:
     CValue & operator= (nullptr_t);
     CValue & operator= (BoolType rhs);
     CValue & operator= (NumberType rhs);
-    CValue & operator= (const wchar rhs[]);
+    CValue & operator= (const char rhs[]);
     CValue & operator= (const StringType & rhs);
     CValue & operator= (const ArrayType & rhs);
     CValue & operator= (const ObjectType & rhs);

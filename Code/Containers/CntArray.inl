@@ -57,6 +57,13 @@ void TArray<T>::Add (const TArray<T> & arr)
 
 //=============================================================================
 template <typename T>
+void TArray<T>::Add (const T values[], uint count)
+{
+    m_array.insert(m_array.end(), values, values + count);
+}
+
+//=============================================================================
+template <typename T>
 T * TArray<T>::New ()
 {
     m_array.push_back(T());
@@ -203,4 +210,19 @@ template <typename T>
 T & TArray<T>::operator[] (uint index)
 {
     return m_array[index];
+}
+
+
+//=============================================================================
+template <typename Y>
+bool operator== (const TArray<Y> & lhs, const TArray<Y> & rhs)
+{
+    return lhs.m_array == rhs.m_array;
+}
+
+//=============================================================================
+template <typename Y>
+bool operator< (const TArray<Y> & lhs, const TArray<Y> & rhs)
+{
+    return lhs.m_array < rhs.m_array;
 }

@@ -34,6 +34,9 @@ Internal::CFile::CFile (const CString & filepath, EType type, EMode mode) :
         case INDEX(EType::Text, EMode::Write):      options = "w"; break;
     }
 #undef INDEX
+
+
+    // TODO: replace this with newer string conversion stuff
     
     // Convert the string to one comptible with the C api
     std::string fp(filepath.Ptr(), filepath.Ptr() + filepath.Length());
@@ -137,13 +140,7 @@ CString CTextReader::ReadAll ()
     data.Resize(bytes);
     fread(data.Ptr(), sizeof(byte), bytes, (FILE *)m_file);
 
-    CString out;
-    out.Reserve(bytes);
-
-    for (byte b : data)
-        out += (wchar)b;
-
-    return out;
+    return CString::FromData(data);
 }
 
 CString CTextReader::ReadLine ()

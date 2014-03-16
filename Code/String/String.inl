@@ -26,25 +26,25 @@ wchar CharToLower (String::CodePoint code)
 }
 
 //=============================================================================
-bool CharIsAlpha (wchar ch)
+bool CharIsAlpha (String::CodePoint ch)
 {
     return CharIsUpper(ch) || CharIsLower(ch);
 }
 
 //=============================================================================
-bool CharIsNumeric (wchar ch)
+bool CharIsNumeric (String::CodePoint ch)
 {
     return L'0' <= ch && ch <= L'9';
 }
 
 //=============================================================================
-bool CharIsControl (wchar ch)
+bool CharIsControl (String::CodePoint ch)
 {
     return ch < 32;
 }
 
 //=============================================================================
-bool CharIsWhitespace (wchar ch)
+bool CharIsWhitespace (String::CodePoint ch)
 {
     // control
     if (0x09 <= ch && ch <= 0x0d)
@@ -178,11 +178,11 @@ int StrPrintfV (char buffer[], uint bufferCount, const char format[], va_list ar
 
 //=============================================================================
 template <String::EEncoding E>
-const TString<E> TString<E>::Null("", E);
+const TString<E> TString<E>::Null("");
 
 //=============================================================================
 template <String::EEncoding E>
-const TString<E> TString<E>::Empty(null, E);
+const TString<E> TString<E>::Empty(null);
 
 
 //=============================================================================
@@ -201,26 +201,24 @@ TString<E>::TString (const TString<E> & rhs) :
 //=============================================================================
 template <String::EEncoding E>
 TString<E>::TString (TString<E> && rhs) :
-    m_data(std::forward(rhs.m_data))
+    m_data(std::forward<TArray<TString<E>::Type>>(rhs.m_data))
 {
 }
 
 //=============================================================================
 template <String::EEncoding E>
-template <typename C>
-TString<E>::TString (const C str[], String::EEncoding encoding)
+TString<E>::TString (const char ascii[])
 {
-    m_data.Clear();
+    //CStringAscii s = CStringAscii::FromData(ascii);
+    //*this = s;
 
-    if (str)
+    const uint len = StrLen(ascii);
+    m_data.Reserve(len + 1);
+    while (String::CodePoint codepoint = String::Decode<String::EEncoding::Ascii>(&ascii))
     {
-        while (CodePoint codepoint = Decode<encoding>(str))
-        {
-            Encode<E>(codepoint);
-            m_data.Add(codepoint);
-        }
-        m_data.Add(0);
+        String::Encode<E>(codepoint, &m_data);
     }
+    m_data.Add(0);
 }
 
 //=============================================================================
@@ -230,6 +228,18 @@ TString<E>::TString (const TString<F> & rhs)
 {
     m_data.Clear();
     ASSERT(false); // TODO: transcode
+}
+
+//=============================================================================
+template <String::EEncoding E>
+template <String::EEncoding F>
+TString<E>::TString (const typename TString<F>::Iterator & begin, const typename TString<F>::Iterator & end)
+{
+    // TODO: validate input
+
+    while (begin < end)
+        String::Encode<E>(*begin, &m_data);
+    m_data.Add(0);
 }
 
 //=============================================================================
@@ -250,7 +260,23 @@ TString<E> & TString<E>::operator= (const TString<E> & rhs)
 template <String::EEncoding E>
 TString<E> & TString<E>::operator= (TString<E> && rhs)
 {
-    m_data = std::forward(rhs.m_data);
+    m_data = std::forward<TArray<TString<E>::Type>>(rhs.m_data);
+    return *this;
+}
+
+
+//=============================================================================
+template <String::EEncoding E>
+template <String::EEncoding F>
+TString<E> & TString<E>::operator= (const TString<F> & rhs)
+{
+    m_data.Clear();
+
+    const TString<F>::Iterator read = rhs.begin();
+    while (String::CodePoint codepoint = *read++)
+        String::Encode<E>(codepoint, &m_data);
+
+    m_data.Add(0);
 }
 
 //=============================================================================
@@ -260,10 +286,32 @@ const typename TString<E>::Type * TString<E>::Ptr () const
     return m_data.Ptr();
 }
 
+
+//=============================================================================
+template <String::EEncoding E>
+const typename TString<E>::Iterator TString<E>::begin () const
+{
+    return TString<E>::Iterator(Ptr());
+}
+
+//=============================================================================
+template <String::EEncoding E>
+const typename TString<E>::Iterator TString<E>::end () const
+{
+    return TString<E>::Iterator(null);
+}
+
 //=============================================================================
 template <String::EEncoding E>
 uint TString<E>::Length () const
 {
+    uint len = 0;
+
+    const Type * ptr = Ptr();
+    while (String::Decode<E>(&ptr) != 0)
+        len++;
+
+    return len;
 }
 
 //=============================================================================
@@ -275,9 +323,61 @@ uint TString<E>::Bytes () const
 
 //=============================================================================
 template <String::EEncoding E>
-void TString<E>::Clear ()
+TString<E> TString<E>::FromData(const Type data[])
 {
-    m_data.Clear();
+    // TODO: check that the data is valid
+    const Type * dataEnd = data;
+    while (*dataEnd++ != 0);
+    
+    const uint len = dataEnd - data;
+
+    CString out;
+    out.m_data.Add(data, len);
+    return out;
+}
+
+//=============================================================================
+template <String::EEncoding E>
+TString<E> TString<E>::FromData(const TArray<Type> & data)
+{
+    // TODO: check that the data is valid
+    TString<E> out;
+    out.m_data = data;
+    return out;
+}
+
+//=============================================================================
+template <String::EEncoding E>
+TString<E> TString<E>::FromData(const TArray<String::CodePoint> & data)
+{
+    TString<E> out;
+    out.m_data.Reserve(data.Count()); // TODO: better way to estimate needed space by encoding
+
+    for (auto codepoint : data)
+        String::Encode<E>(codepoint, &out.m_data);
+
+    return out;
+}
+
+//=============================================================================
+template <String::EEncoding E>
+bool operator== (const TString<E> & lhs, const TString<E> & rhs)
+{
+    return lhs.m_data == rhs.m_data;
+}
+
+//=============================================================================
+template <String::EEncoding E>
+bool operator== (const TString<E> & lhs, const char rhs[])
+{
+    return lhs == TString<E>(rhs);
+}
+
+//=============================================================================
+template <String::EEncoding E>
+bool operator< (const TString<E> & lhs, const TString<E> & rhs)
+{
+    return lhs.m_data < rhs.m_data;
 }
 
 
@@ -288,156 +388,49 @@ void TString<E>::Clear ()
 //
 //=============================================================================
 
+//=============================================================================
 template <String::EEncoding E>
-TString<E>::Iterator::Iterator (Type * ptr) :
+TString<E>::Iterator::Iterator (const Type * ptr) :
     m_curr(ptr)
 {
 }
 
+//=============================================================================
 template <String::EEncoding E>
-String::CodePoint TString<E>::Iterator::operator* () const
+const typename TString<E>::Iterator & TString<E>::Iterator::operator= (const Iterator & rhs) const
 {
-    T * curr = m_curr;
-    return String::Decode<T, E>(&curr);
+    m_curr = rhs.m_curr;
+    return *this;
 }
 
+//=============================================================================
 template <String::EEncoding E>
-const typename TString<E>::Iterator & TString<E>::Iterator::operator++ ()
+const String::CodePoint TString<E>::Iterator::operator* () const
 {
-    String::Decode(&m_curr);
-    return *this;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//=============================================================================
-//
-// CString
-//
-//=============================================================================
-
-//=============================================================================
-CString::CString () :
-    m_data()
-{
+    const TString<E>::Type * curr = m_curr;
+    return String::Decode<E>(&curr);
 }
 
 //=============================================================================
-CString::CString (const CString & rhs) :
-    m_data(rhs.m_data)
+template <String::EEncoding E>
+const typename TString<E>::Iterator & TString<E>::Iterator::operator++ () const
 {
-}
-
-//=============================================================================
-CString::CString (CString && rhs) :
-    m_data(rhs.m_data)
-{
-}
-
-//=============================================================================
-CString::CString (const wchar str[]) :
-    m_data(str)
-{
-}
-
-//=============================================================================
-CString::~CString ()
-{
-}
-
-//=============================================================================
-CString & CString::operator= (const CString & rhs)
-{
-    m_data = rhs.m_data;
+    String::Decode<E>(&m_curr);
     return *this;
 }
 
 //=============================================================================
-CString & CString::operator= (CString && rhs)
+template <String::EEncoding E>
+const typename TString<E>::Iterator TString<E>::Iterator::operator++ (int) const
 {
-    m_data = rhs.m_data;
-    return *this;
+    TString<E>::Iterator it = *this;
+    String::Decode<E>(&m_curr);
+    return it;
 }
 
 //=============================================================================
-wchar & CString::operator[] (uint index)
+template <String::EEncoding E>
+const typename TString<E>::Type * TString<E>::Iterator::Ptr() const
 {
-    return m_data[index];
-}
-
-//=============================================================================
-wchar CString::operator[] (uint index) const
-{
-    return m_data[index];
-}
-
-//=============================================================================
-const wchar * CString::Ptr () const
-{
-    return m_data.c_str();
-}
-
-//=============================================================================
-uint CString::Length () const
-{
-    return m_data.length();
-}
-
-//=============================================================================
-uint CString::Bytes () const
-{
-    return sizeof(wchar) * (Length() + 1);
-}
-
-//=============================================================================
-void CString::Clear ()
-{
-    m_data.clear();
-}
-
-//=============================================================================
-void CString::Reserve (uint count)
-{
-    m_data.reserve(count);
-}
-
-//=============================================================================
-void CString::ReserveAdditional (uint additionalCount)
-{
-    m_data.reserve(Length() + additionalCount);
-}
-
-//=============================================================================
-void CString::operator+= (const CString & rhs)
-{
-    m_data += rhs.m_data;
-}
-
-//=============================================================================
-void CString::operator+= (wchar ch)
-{
-    m_data += ch;
-}
-
-//=============================================================================
-bool operator== (const CString & lhs, const CString & rhs)
-{
-    return lhs.m_data == rhs.m_data;
-}
-
-//=============================================================================
-bool operator< (const CString & lhs, const CString & rhs)
-{
-    return lhs.m_data < rhs.m_data;
+    return m_curr;
 }

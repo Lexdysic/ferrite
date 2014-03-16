@@ -14,6 +14,7 @@ public:
     inline void Add (const T & value);
     inline void Add (T && value);
     inline void Add (const TArray<T> & arr);
+    inline void Add (const T values[], uint count);
     inline T *  New ();
     inline void RemoveUnordered (uint index);
     inline void RemoveOrdered (uint index);
@@ -22,13 +23,11 @@ public:
     inline void ReserveAdditional (uint count);
     inline void Resize (uint count);
 
-
     inline uint Find (const T & value) const;
     template <typename U>
     inline uint Find (const U & value) const;
     inline bool Contains (const T & value) const;
     inline uint Index (const T * ptr) const;
-
 
     inline T * Ptr ();
     inline const T * Ptr () const;
@@ -39,6 +38,14 @@ public:
     inline uint Count () const;
     inline const T & operator[] (uint index) const;
     inline T &       operator[] (uint index);
+
+public:
+
+    template <typename Y>
+    friend bool operator== (const TArray<Y> & lhs, const TArray<Y> & rhs);
+
+    template <typename Y>
+    friend bool operator<  (const TArray<Y> & lhs, const TArray<Y> & rhs);
 
 private:
     std::vector<T> m_array;

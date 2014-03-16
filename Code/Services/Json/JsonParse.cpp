@@ -4,26 +4,31 @@ namespace Json
 {
     
 //=============================================================================
-bool IsInSet (wchar ch, const wchar set[])
+bool IsInSet (String::CodePoint code, const char set[])
 {
-    return StrFind(set, ch) != null;
+    while (char ch = *set++)
+    {
+        if (ch == code)
+            return true;
+    }
+    return false;
 }
 
 //=============================================================================
-bool IsInSet (wchar ch, wchar set)
+bool IsInSet (String::CodePoint ch, char set)
 {
     return ch == set;
 }
 
 //=============================================================================
 template <typename... Ts>
-bool IsInSet (wchar ch, Ts... setRest)
+bool IsInSet (String::CodePoint ch, Ts... setRest)
 {
     return IsInSet(ch, set0) || IsInSet(ch, setRest...);
 }
 
 //=============================================================================
-bool Error (const wchar ** read, const wchar * readStart)
+bool Error (const CString::Iterator * read, const CString::Iterator readStart)
 {
     *read = readStart;
     return false;
@@ -37,16 +42,16 @@ bool Error (const wchar ** read, const wchar * readStart)
 //=============================================================================
 
 //=============================================================================
-bool ParseLiteral (const wchar ** read, const wchar literal[], EOption option)
+bool ParseLiteral (const CString::Iterator * read, const char literal[], EOption option)
 {
-    const wchar * readStart = *read;
+    const CString::Iterator readStart = *read;
 
     if (option == EOption::ConsumeWhitespace)
         ParseWhitespace(read);
 
     while (*literal != '\0')
     {
-        if (**read != *literal)
+        if (**read != (String::CodePoint)*literal)
         {
             *read = readStart;
             return false;
@@ -63,16 +68,16 @@ bool ParseLiteral (const wchar ** read, const wchar literal[], EOption option)
 }
 
 //=============================================================================
-void ParseWhitespace (const wchar ** read)
+void ParseWhitespace (const CString::Iterator * read)
 {
     while (**read != L'\0' && CharIsWhitespace(**read))
         (*read)++;
 }
 
 //=============================================================================
-bool ParseNumber (const wchar ** read, NumberType * out)
+bool ParseNumber (const CString::Iterator * read, NumberType * out)
 {
-    const wchar * readStart = *read;
+    const CString::Iterator readStart = *read;
 
     enum class EState
     {
@@ -88,14 +93,14 @@ bool ParseNumber (const wchar ** read, NumberType * out)
         End
     };
 
-    static const wchar DIGITS[] = L"0123456789";
-    static const wchar SIGNS[] = L"-+";
-    static const wchar EXP_START[] = L"eE";
+    static const char DIGITS[] = "0123456789";
+    static const char SIGNS[] = "-+";
+    static const char EXP_START[] = "eE";
 
     EState state = EState::None;
     while (true)
     {
-        const wchar ch = **read;
+        const String::CodePoint ch = **read;
         switch (state)
         {
             case EState::None:
@@ -117,7 +122,7 @@ bool ParseNumber (const wchar ** read, NumberType * out)
             
             case EState::Integer:
             {
-                if (IsInSet(ch, L'.'))
+                if (IsInSet(ch, '.'))
                     state = EState::Radix;
                 else if (IsInSet(ch, EXP_START))
                     state = EState::ExpStart;
@@ -166,7 +171,8 @@ bool ParseNumber (const wchar ** read, NumberType * out)
     if (state == EState::Error)
         return Error(read, readStart);
 
-    const int ret = swscanf(readStart, L"%lf", out);
+    // Note: it is safe to assime the utf8 we just scanned is ascii
+    const int ret = sscanf((const char *)readStart.Ptr(), "%lf", out);
     if (ret != 1)
         return Error(read, readStart);
 
@@ -174,60 +180,61 @@ bool ParseNumber (const wchar ** read, NumberType * out)
 }
 
 //=============================================================================
-bool ParseString (const wchar ** read, StringType * out)
+bool ParseString (const CString::Iterator * read, StringType * out)
 {
-    const wchar * readStart = *read;
+    const CString::Iterator readStart = *read;
 
     ParseWhitespace(read);
 
-    if (!ParseLiteral(read, L"\"", EOption::None))
+    if (!ParseLiteral(read, "\"", EOption::None))
         return Error(read, readStart);
 
-    CString & str = *out;
-    str.Clear();
+    TArray<String::CodePoint> str;
+    str.Reserve(16);
 
-    while (true)
+    for (bool keepgoing = true; keepgoing; )
     {
-        const wchar ch = *(*read)++;
+        const String::CodePoint ch = *(*read)++;
         switch (ch)
         {
-            case L'\0':
+            case '\0':
                 return Error(read, readStart);
 
-            case L'"':
-                return true;
+            case '"':
+                keepgoing = false;
+                break;
 
-            case L'\\':
+            case '\\':
             {
-                wchar chOut;
+                String::CodePoint chOut;
 
-                const wchar ch = *(*read)++;
+                const String::CodePoint ch = *(*read)++;
                 switch (ch)
                 {
-                    case L'\0':
+                    case '\0':
                         return Error(read, readStart);
 
-                    case L'b':
-                        chOut = L'\b';
+                    case 'b':
+                        chOut = '\b';
                     break;
 
-                    case L'f':
-                        chOut = L'\f';
+                    case 'f':
+                        chOut = '\f';
                     break;
 
-                    case L'n':
-                        chOut = L'\n';
+                    case 'n':
+                        chOut = '\n';
                     break;
 
-                    case L'r':
-                        chOut = L'\r';
+                    case 'r':
+                        chOut = '\r';
                     break;
 
-                    case L't':
-                        chOut = L'\t';
+                    case 't':
+                        chOut = '\t';
                     break;
 
-                    case L'u':
+                    case 'u':
                         ASSERT(false);
                         // TODO: parse unicode character
                         return false;
@@ -237,28 +244,31 @@ bool ParseString (const wchar ** read, StringType * out)
                     break;
                 }
 
-                str += chOut;    
+                str.Add(chOut);
             }
             break;
 
             default:
-                str += ch;
+                str.Add(ch);
             break;
         }
     }
+
+    str.Add(0);
+    *out = CString::FromData(str);
 
     return true;
 }
 
 //=============================================================================
-bool ParseArray (const wchar ** read, ArrayType * out)
+bool ParseArray (const CString::Iterator * read, ArrayType * out)
 {
-    const wchar * readStart = *read;
+    const CString::Iterator readStart = *read;
 
-    if (!ParseLiteral(read, L"["))
+    if (!ParseLiteral(read, "["))
         return Error(read, readStart);
 
-    if (ParseLiteral(read, L"]"))
+    if (ParseLiteral(read, "]"))
         return true;
 
     while (true)
@@ -269,25 +279,25 @@ bool ParseArray (const wchar ** read, ArrayType * out)
         
         out->Add(std::move(value));
 
-        if (!ParseLiteral(read, L","))
+        if (!ParseLiteral(read, ","))
             break;
     }
 
-    if (!ParseLiteral(read, L"]"))
+    if (!ParseLiteral(read, "]"))
         return Error(read, readStart);
 
     return true;
 }
 
 //=============================================================================
-bool ParseObject (const wchar ** read, ObjectType * out)
+bool ParseObject (const CString::Iterator * read, ObjectType * out)
 {
-    const wchar * readStart = *read;
+    const CString::Iterator readStart = *read;
 
-    if (!ParseLiteral(read, L"{"))
+    if (!ParseLiteral(read, "{"))
         return Error(read, readStart);
 
-    if (ParseLiteral(read, L"}"))
+    if (ParseLiteral(read, "}"))
         return true;
 
     while (true)
@@ -296,7 +306,7 @@ bool ParseObject (const wchar ** read, ObjectType * out)
         if (!ParseString(read, &name))
             return Error(read, readStart);
         
-        if (!ParseLiteral(read, L":"))
+        if (!ParseLiteral(read, ":"))
             return Error(read, readStart);
 
 
@@ -306,39 +316,39 @@ bool ParseObject (const wchar ** read, ObjectType * out)
 
         out->Set(std::move(name), std::move(value));
 
-        if (!ParseLiteral(read, L","))
+        if (!ParseLiteral(read, ","))
             break;
         
-        if (ParseLiteral(read, L"}"))
+        if (ParseLiteral(read, "}"))
             return true;
     }
 
-    if (!ParseLiteral(read, L"}"))
+    if (!ParseLiteral(read, "}"))
         return Error(read, readStart);
 
     return true;
 }
 
 //=============================================================================
-bool ParseValue (const wchar ** read, CValue * out)
+bool ParseValue (const CString::Iterator * read, CValue * out)
 {
-    const wchar * readStart = *read;
+    const CString::Iterator readStart = *read;
 
     // Null
-    if (ParseLiteral(read, L"null"))
+    if (ParseLiteral(read, "null"))
     {
         *out = null;
         return true;
     }
 
     // Bool
-    if (ParseLiteral(read, L"false"))
+    if (ParseLiteral(read, "false"))
     {
         *out = false;
         return true;
     }
 
-    if (ParseLiteral(read, L"true"))
+    if (ParseLiteral(read, "true"))
     {
         *out = true;
         return true;
@@ -382,7 +392,7 @@ bool ParseValue (const wchar ** read, CValue * out)
 //=============================================================================
 CValue Parse (const CString & string)
 {
-    const wchar * read = string.Ptr();
+    CString::Iterator read = string.begin();
 
     ObjectType object;
     if (ParseObject(&read, &object))
