@@ -14,5 +14,8 @@ void Initialize ();
 void Register (EType type, const CString & name);
 const CString & GetString (const CString & name);
 
+uint GetPositionalCount ();
+const CString & GetPositional (uint index);
+
 
 }

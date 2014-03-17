@@ -331,7 +331,7 @@ TString<E> TString<E>::FromData(const Type data[])
     
     const uint len = dataEnd - data;
 
-    CString out;
+    TString<E> out;
     out.m_data.Add(data, len);
     return out;
 }

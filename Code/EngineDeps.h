@@ -44,7 +44,6 @@
 #endif
 
 #ifdef USES_ENGINE_SYSTEM
-//#   define USES_ENGINE_THREAD
 #   define USES_ENGINE_UTILITY_NOTIFIER
 #   define USES_ENGINE_INPUT
 #endif
@@ -88,15 +87,15 @@
 #ifdef USES_ENGINE_CORE
 #   include "Core\Core.h"
 #   include "Core\Memory\Memory.h"
-#   include "Debug\Debug.h"
+#   include "Core\Debug\Debug.h"
 #endif
 
 #ifdef USES_ENGINE_MATH
-#   include "Math\Math.h"
+#   include "Core\Math\Math.h"
 #endif
 
 #ifdef USES_ENGINE_CONTAINERS
-#   include "Containers\Containers.h"
+#   include "Core\Containers\Containers.h"
 #endif
 
 #ifdef USES_ENGINE_CORE
@@ -104,24 +103,12 @@
 #endif
 
 #ifdef USES_ENGINE_STRING
-#   include "String\String.h"
+#   include "Core\String\String.h"
 #endif
 
 #ifdef USES_ENGINE_TOKEN
-#   include "Token\Token.h"
+#   include "Core\Token\Token.h"
 #endif
-
-
-// SERVICES
-
-#ifdef USES_ENGINE_SERVICES_JSON
-#   include "Services\Json\Json.h"
-#endif
-
-#ifdef USES_ENGINE_SERVICES_COMMAND_LINE
-#   include "Services\CommandLine\CommandLine.h"
-#endif
-
 
 
 
@@ -139,66 +126,80 @@
 #   include "Utilities\Allocator\Allocator.h"
 #endif
 
+#ifdef USES_ENGINE_SERVICES_JSON
+#   include "Utilities\Json\Json.h"
+#endif
 
 
-// ...
+
+// BASICS
 
 #ifdef USES_ENGINE_GEOMETRY
-#   include "Geometry\Geometry.h"
+#   include "Basics\Geometry\Geometry.h"
 #endif
 
 #ifdef USES_ENGINE_THREAD
-#   include "Thread\Thread.h"
+#   include "Basics\Thread\Thread.h"
 #endif
 
 #ifdef USES_ENGINE_SYSTEM
-#   include "System\System.h"
+#   include "Basics\System\System.h"
 #endif
 
 #ifdef USES_ENGINE_TIME
-#   include "Time\Time.h"
+#   include "Basics\Time\Time.h"
 #endif
 
 #ifdef USES_ENGINE_COLOR
-#   include "Color\Color.h"
+#   include "Basics\Color\Color.h"
 #endif
 
 #ifdef USES_ENGINE_META
-#   include "Meta\Meta.h"
+#   include "Basics\Meta\Meta.h"
 #endif
 
 #ifdef USES_ENGINE_FILE
-#   include "File\File.h"
+#   include "Basics\File\File.h"
 #endif
+
+
+
+// SERVICES
+
+#ifdef USES_ENGINE_SERVICES_COMMAND_LINE
+#   include "Services\CommandLine\CommandLine.h"
+#endif
+
+
 
 // SYSTEMS
 
 #ifdef USES_ENGINE_ENTITY
-#   include "Entity\Entity.h"
+#   include "Systems\Entity\Entity.h"
 #endif
 
 #ifdef USES_ENGINE_PHYSICS
-#   include "Physics\Physics.h"
+#   include "Systems\Physics\Physics.h"
 #endif
 
 #ifdef USES_ENGINE_GRAPHICS
-#   include "Graphics\Graphics.h"
+#   include "Systems\Graphics\Graphics.h"
 #endif
 
 #ifdef USES_ENGINE_INPUT
-#   include "Input\Input.h"
+#   include "Systems\Input\Input.h"
 #endif
 
 #ifdef USES_ENGINE_USER_INTERFACE
-#   include "UserInterface\UserInterface.h"
+#   include "Systems\UserInterface\UserInterface.h"
 #endif
 
 #ifdef USES_ENGINE_PATHING
-#   include "Pathing\Pathing.h"
+#   include "Systems\Pathing\Pathing.h"
 #endif
 
 #ifdef USES_ENGINE_NET
-#   include "Net\Net.h"
+#   include "Systems\Net\Net.h"
 #endif
 
 

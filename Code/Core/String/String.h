@@ -87,7 +87,7 @@ namespace String {
 template <EEncoding E>  struct CodeUnit                   { typedef void   Type; };
 template <>             struct CodeUnit<EEncoding::Ascii> { typedef char   Type; };
 template <>             struct CodeUnit<EEncoding::Utf8>  { typedef uint8  Type; };
-template <>             struct CodeUnit<EEncoding::Utf16> { typedef uint16 Type; };
+template <>             struct CodeUnit<EEncoding::Utf16> { typedef wchar  Type; };
 template <>             struct CodeUnit<EEncoding::Utf32> { typedef uint32 Type; };
 template <>             struct CodeUnit<EEncoding::Ucs2>  { typedef wchar  Type; };
 template <>             struct CodeUnit<EEncoding::Ucs4>  { typedef sint32 Type; };
@@ -106,9 +106,9 @@ namespace String {
 template <typename T> struct EncodingType         { static const EEncoding value = EEncoding::Unknown; };
 template <>           struct EncodingType<char>   { static const EEncoding value = EEncoding::Ascii; };
 template <>           struct EncodingType<byte>   { static const EEncoding value = EEncoding::Utf8; };
-template <>           struct EncodingType<uint16> { static const EEncoding value = EEncoding::Utf16; };
+template <>           struct EncodingType<wchar>  { static const EEncoding value = EEncoding::Utf16; };
 template <>           struct EncodingType<uint32> { static const EEncoding value = EEncoding::Utf32; };
-template <>           struct EncodingType<wchar>  { static const EEncoding value = EEncoding::Ucs2; };
+template <>           struct EncodingType<uint16> { static const EEncoding value = EEncoding::Ucs2; };
 
 } // namespace String
 

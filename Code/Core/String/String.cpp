@@ -171,7 +171,7 @@ CodePoint Decode<String::EEncoding::Utf8> (const byte * data[])
 
 //=============================================================================
 template <>
-CodePoint Decode<String::EEncoding::Utf16> (const uint16 * data[])
+CodePoint Decode<String::EEncoding::Utf16> (const wchar * data[])
 {
     const uint16 lead = *(*data)++;
 
@@ -225,7 +225,7 @@ void Encode<EEncoding::Utf8> (CodePoint code, TArray<byte> * data)
 
 //=============================================================================
 template <>
-void Encode<EEncoding::Utf16> (CodePoint code, TArray<uint16> * data)
+void Encode<EEncoding::Utf16> (CodePoint code, TArray<wchar> * data)
 {
     ASSERT(IsValidCodePoint(code));
 

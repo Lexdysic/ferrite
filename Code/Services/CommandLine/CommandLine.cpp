@@ -26,9 +26,10 @@ CManager s_manager;
 
 void Initialize ()
 {
-    const wchar * commandline = ::GetCommandLineW();
-    //const CString & cmd = StringUtf16ToUtf8(commandline);
+    const wchar * commandLine = ::GetCommandLineW();
+    const CStringUtf16 utf16 = CStringUtf16::FromData(commandLine);
 
+    const CString utf8 = utf16;
 }
 
 void Register (EType type, const CString & name)
