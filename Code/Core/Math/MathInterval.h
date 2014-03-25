@@ -26,6 +26,8 @@ public:
 
     inline Interval & operator+= (const Interval & rhs);
 
+    inline bool IsValid () const;
+
     static const Interval Null;
     static const Interval Infinite;
 

@@ -27,5 +27,4 @@ float32 Aabb3::ProjectedRadiusAlongVector( const Vector3 & v ) const
     return  extent.x * Abs(v.x) +
             extent.y * Abs(v.y) +
             extent.z * Abs(v.z);
-
 }

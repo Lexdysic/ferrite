@@ -206,7 +206,7 @@ Gdiplus::NotificationUnhookProc CWindow::msGdiUnhookProc = NULL;
 
 
 //=============================================================================
-CWindow::CWindow (const wchar title[], uint width, uint height) :
+CWindow::CWindow (const CString & title, uint width, uint height) :
     mWidth(width),
     mHeight(height),
     mWindowHandle(NULL),
@@ -215,7 +215,8 @@ CWindow::CWindow (const wchar title[], uint width, uint height) :
 {
     HINSTANCE instance = GetModuleHandle(0);
 
-    const wchar * className = title;
+    const CStringUtf16 utf16 = title;
+    const wchar * className = utf16.Ptr();
 
     // Cursors
     {
@@ -259,7 +260,7 @@ CWindow::CWindow (const wchar title[], uint width, uint height) :
 
         mWindowHandle = CreateWindowW(
             className,
-            title, 
+            utf16.Ptr(), 
             style, 
             CW_USEDEFAULT, 
             CW_USEDEFAULT, 
@@ -275,7 +276,7 @@ CWindow::CWindow (const wchar title[], uint width, uint height) :
     }
 
     SetWindowLongPtrW(mWindowHandle, GWLP_USERDATA, (LONG_PTR)this);
-    SetWindowTextW(mWindowHandle, title);
+    SetWindowTextW(mWindowHandle, utf16.Ptr());
 }
 
 //=============================================================================
@@ -330,9 +331,10 @@ void CWindow::Invalidate() const
 }
 
 //=============================================================================
-void CWindow::SetTitle (const wchar title[])
+void CWindow::SetTitle (const CString & title)
 {
-    SetWindowTextW(mWindowHandle, title);
+    CStringUtf16 utf16 = title;
+    SetWindowTextW(mWindowHandle, utf16.Ptr());
 }
 
 //=============================================================================
@@ -611,7 +613,7 @@ void CWindow::OnSizing ()
 //=============================================================================
 
 //=============================================================================
-IWindow * WindowCreate (const wchar title[], uint width, uint height)
+IWindow * WindowCreate (const CString & title, uint width, uint height)
 {
     CWindow * window = new CWindow(title, width, height);
 

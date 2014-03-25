@@ -17,7 +17,7 @@ class CWindow :
 {
 public:
 
-    CWindow (const wchar title[], uint width, uint height);
+    CWindow (const CString & title, uint width, uint height);
     virtual ~CWindow ();
 
 public: // Static
@@ -31,7 +31,7 @@ public: // IWindow
     bool Update () override;
     bool UpdateBlocking () override;
     void Invalidate () const override;
-    void SetTitle (const wchar title[]) override;
+    void SetTitle (const CString & title) override;
 
     // Query
     Vector2u GetClientSize () const override;

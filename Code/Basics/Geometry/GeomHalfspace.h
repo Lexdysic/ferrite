@@ -15,15 +15,32 @@
 
 //=============================================================================
 //
-// A 3-space halfspace
+// Halfspace2
+//
+//=============================================================================
+class Halfspace2
+{
+public:
+    Halfspace2 () = default;
+    Halfspace2 (const Point2 & point, const Vector2 & outwardNormal);
+    
+    Point2 point;
+    Vector2 normal;
+};
+
+
+
+//=============================================================================
+//
+// Halfspace3
 //
 //=============================================================================
 class Halfspace3
 {
 public:
-    Halfspace3();
-    Halfspace3( const p3 & point, const v3 & outwardNormal );
+    Halfspace3 () = default;
+    Halfspace3 (const Point3 & point, const Vector3 & outwardNormal);
     
-    p3 point;
-    v3 normal;
+    Point3 point;
+    Vector3 normal;
 };

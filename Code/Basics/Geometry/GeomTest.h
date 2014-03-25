@@ -13,7 +13,12 @@
 #endif
 #define GEOMTEST_H
 
-enum GeomTestResult
+
+
+namespace Geometry
+{
+
+enum class TestResult
 {
     Inside,
     Outside,
@@ -21,6 +26,11 @@ enum GeomTestResult
     On = Straddle
 };
 
-inline GeomTestResult Test (const Sphere3 & sphere, const Plane3 & plane);
-inline GeomTestResult Test (const Obb3 & box, const Plane3 & plane);
-inline GeomTestResult Test (const Aabb3 & box, const Plane3 & plane);
+
+inline TestResult Test (const Point2 & point, const Plane2 & plane);
+
+inline TestResult Test (const Sphere3 & sphere, const Plane3 & plane);
+inline TestResult Test (const Obb3 & box, const Plane3 & plane);
+inline TestResult Test (const Aabb3 & box, const Plane3 & plane);
+
+} // namespace Geometry

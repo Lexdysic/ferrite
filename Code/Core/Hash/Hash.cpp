@@ -6,15 +6,17 @@
 //
 // Hashing functions that convert arrays of data into a single integer
 //==================================================================================================
+
+#include "EngineDeps.h"
 #include "Hash.h"
 
 // When defined, additional checks will be put in place that will confirm that when a string matches, the hash matches
 #define DBG_HASH_CHECK_COLLISIONS 
 
 
-static uint32 _sHash32( const u8*  pData, uint32 sizeInBytes );
-static uint32 _sHash32( const u16* pData, uint32 sizeInBytes );
-static uint32 _sHash32( const uint32* pData, uint32 sizeInBytes );
+static uint32 _sHash32( const uint8 *  pData, uint32 sizeInBytes );
+static uint32 _sHash32( const uint16 * pData, uint32 sizeInBytes );
+static uint32 _sHash32( const uint32 * pData, uint32 sizeInBytes );
 
 static const uint32 _sHashTab[256] = {
     0x46d1e192, 0x66edf9aa, 0x927fc9e5, 0xa53baacc, 0x29b47658, 0x5a411a01, 0x0e66d5bd, 0x0dd5b1db,
@@ -67,7 +69,7 @@ static const uint32 _sHashTab[256] = {
 //    [uint32 size] - number of u8s in the array to hash
 //    
 //==================================================================================================
-Hash32::Hash32( const u8* pData, uint32 size )
+Hash32::Hash32( const uint8 * pData, uint32 size )
 {
     mValue = _sHash32( pData, size );
 }
@@ -85,7 +87,7 @@ Hash32::Hash32( const u8* pData, uint32 size )
 //    [const u8* pEnd] - One past the end of the data to hash
 //    
 //==================================================================================================
-Hash32::Hash32( const u8* pStart, const u8* pEnd )
+Hash32::Hash32( const uint8* pStart, const uint8* pEnd )
 {
     mValue = _sHash32( pStart, pEnd - pStart - 1);
 }
@@ -256,7 +258,7 @@ StringHash32::operator bool() const                                 { return mHa
     c -= a; c -= b; c ^= (b >> 15); \
 }
 
-static uint32 _sHash32( const u8* pData, uint32 length )
+static uint32 _sHash32( const uint8* pData, uint32 length )
 {
     // Set up the internal state
     register uint32 len    = length;
@@ -299,7 +301,7 @@ static uint32 _sHash32( const u8* pData, uint32 length )
     return c;
 }
 
-static uint32 _sHash32( const u16* pData, uint32 length )
+static uint32 _sHash32( const uint16* pData, uint32 length )
 {
     // Set up the internal state
     register uint32 len    = length;

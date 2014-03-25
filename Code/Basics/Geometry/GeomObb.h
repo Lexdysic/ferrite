@@ -15,20 +15,42 @@
 
 //=============================================================================
 //
-// Oriented bounding box, defined by a center and three mutually orthoganal 
-// extent vectors (half-length
+// Obb2
+//
+//=============================================================================
+class Obb2
+{
+public:
+    Obb2 ();
+    Obb2 (const Point2 & center, const Vector2 & x, const Vector2 & y);
+    Obb2 (const Point2 & center, const Vector2 & unitX, const Vector2 & unitY, const Vector2 & extent);
+
+    inline float32 ProjectedRadiusAlongVector (const Vector2 & v) const;
+    inline Matrix23 GetMatrix () const;
+    TArray<Point2> GetPoints () const;
+
+    Point2 center;      //!< Center of the box
+    Vector2 extent;     //!< Positive halfwidth extents of Obb3 along each local axis
+    Vector2 u[2];       //!< Local x-, y-, z-axes
+};
+
+
+
+//=============================================================================
+//
+// Obb3
 //
 //=============================================================================
 class Obb3
 {
 public:
     Obb3();
-    Obb3( const p3 & center, const v3 & x, const v3 & y, const v3 & z );
-    Obb3( const p3 & center, const v3 & unitX, const v3 & unitY, const v3 & unitZ, const v3 & extent );
+    Obb3( const Point3 & center, const Vector3 & x, const Vector3 & y, const Vector3 & z );
+    Obb3( const Point3 & center, const Vector3 & unitX, const Vector3 & unitY, const Vector3 & unitZ, const Vector3 & extent );
 
-    inline float32 ProjectedRadiusAlongVector( const v3 & v ) const;
+    inline float32 ProjectedRadiusAlongVector( const Vector3 & v ) const;
 
-    p3 center;      //!< Center of the box
-    v3 extent;      //!< Positive halfwidth extents of Obb3 along each local axis
-    v3 u[3];        //!< Local x-, y-, z-axes
+    Point3 center;      //!< Center of the box
+    Vector3 extent;      //!< Positive halfwidth extents of Obb3 along each local axis
+    Vector3 u[3];        //!< Local x-, y-, z-axes
 };

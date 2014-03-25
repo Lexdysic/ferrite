@@ -15,18 +15,42 @@
 
 //=============================================================================
 //
-// A triangle defined by the three corner points
+// Triangle2
+//
+//=============================================================================
+class Triangle2
+{
+public:
+    Triangle2 () = default;
+    Triangle2 (const Point2 & a, const Point2 & b, const Point2 & c);
+
+    Geometry::EWinding ComputeWiding () const;
+    float32 ComputeArea () const;
+    Point2 ComputeCentroid () const;
+
+    union 
+    {
+        struct { Point2 p[3]; };
+        struct { Point2 a, b, c; };
+    };
+};
+
+
+
+//=============================================================================
+//
+// Triangle3
 //
 //=============================================================================
 class Triangle3
 {
 public:
-    Triangle3();
-    Triangle3( const p3 & a, const p3 & b, const p3 & c );
+    Triangle3 () = default;
+    Triangle3 (const Point3 & a, const Point3 & b, const Point3 & c);
 
     union 
     {
-        struct { p3 p[3]; };
-        struct { p3 a, b, c; };
+        struct { Point3 p[3]; };
+        struct { Point3 a, b, c; };
     };
 };

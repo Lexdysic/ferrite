@@ -131,19 +131,19 @@ Vector4  operator/( const Vector4 & lhs,  const float32 & rhs ) { return lhs * (
 
 //----------------------------------------------------------------------------------------------------//
 
-Vector2  operator-( const Vector2 & v ) { return Vector2( -v.x, -v.y ); }
-Vector3  operator-( const Vector3 & v ) { return Vector3( -v.x, -v.y, -v.z ); }
-Vector4  operator-( const Vector4 & v ) { return Vector4( -v.x, -v.y, -v.z, -v.w ); }
+Vector2  operator- (const Vector2 & v) { return Vector2(-v.x, -v.y); }
+Vector3  operator- (const Vector3 & v) { return Vector3(-v.x, -v.y, -v.z); }
+Vector4  operator- (const Vector4 & v) { return Vector4(-v.x, -v.y, -v.z, -v.w); }
 
 //=============================================================================
-bool operator==( const Vector2 & lhs, const Vector2 & rhs ) 
+bool operator== (const Vector2 & lhs, const Vector2 & rhs)
 { 
     return lhs.x == rhs.x && 
            lhs.y == rhs.y; 
 }
 
 //=============================================================================
-bool operator==( const Vector3 & lhs, const Vector3 & rhs ) 
+bool operator== (const Vector3 & lhs, const Vector3 & rhs)
 { 
     return lhs.x == rhs.x && 
            lhs.y == rhs.y && 
@@ -151,7 +151,7 @@ bool operator==( const Vector3 & lhs, const Vector3 & rhs )
 }
 
 //=============================================================================
-bool operator==( const Vector4 & lhs, const Vector4 & rhs ) 
+bool operator== (const Vector4 & lhs, const Vector4 & rhs)
 { 
     return lhs.x == rhs.x && 
            lhs.y == rhs.y && 
@@ -160,32 +160,32 @@ bool operator==( const Vector4 & lhs, const Vector4 & rhs )
 }
 
 //=============================================================================
-bool operator!=( const Vector2 & lhs, const Vector2 & rhs ) 
+bool operator!= (const Vector2 & lhs, const Vector2 & rhs)
 { 
     return !(lhs == rhs); 
 }
 
 //=============================================================================
-bool operator!=( const Vector3 & lhs, const Vector3 & rhs ) 
+bool operator!= (const Vector3 & lhs, const Vector3 & rhs)
 { 
     return !(lhs == rhs); 
 }
 
 //=============================================================================
-bool operator!=( const Vector4 & lhs, const Vector4 & rhs ) 
+bool operator!= (const Vector4 & lhs, const Vector4 & rhs)
 { 
     return !(lhs == rhs); 
 }
 
 //=============================================================================
-float32 Dot( const Vector2 & lhs, const Vector2 & rhs ) 
+float32 Dot (const Vector2 & lhs, const Vector2 & rhs)
 { 
     return lhs.x * rhs.x + 
            lhs.y * rhs.y; 
 }
 
 //=============================================================================
-float32 Dot( const Vector3 & lhs, const Vector3 & rhs ) 
+float32 Dot (const Vector3 & lhs, const Vector3 & rhs)
 { 
     return lhs.x * rhs.x + 
            lhs.y * rhs.y + 
@@ -193,7 +193,7 @@ float32 Dot( const Vector3 & lhs, const Vector3 & rhs )
 }
 
 //=============================================================================
-float32 Dot( const Vector4 & lhs, const Vector4 & rhs ) 
+float32 Dot (const Vector4 & lhs, const Vector4 & rhs)
 { 
     return lhs.x * rhs.x + 
            lhs.y * rhs.y + 
@@ -208,12 +208,18 @@ float32 Cross (const Vector2 & lhs, const Vector2 & rhs)
 }
 
 //=============================================================================
-Vector3 Cross( const Vector3 & lhs, const Vector3 & rhs )
+Vector3 Cross (const Vector3 & lhs, const Vector3 & rhs)
 { 
     return Vector3( 
         lhs.y * rhs.z - lhs.z * rhs.y, 
         lhs.z * rhs.x - lhs.x * rhs.z, 
         lhs.x * rhs.y - lhs.y * rhs.x ); 
+}
+
+//=============================================================================
+Vector2 Perpendicular (const Vector2 & v)
+{
+    return Vector2(v.y, -v.x);
 }
 
 //=============================================================================
@@ -226,13 +232,25 @@ Matrix22 Tensor (const Vector2 & u, const Vector2 & v)
 }
 
 //=============================================================================
-Matrix33 Tensor( const Vector3 & u, const Vector3 & v )
+Matrix33 Tensor (const Vector3 & u, const Vector3 & v)
 {
     return Matrix33(
         u.x * v.x, u.x * v.y, u.x * v.z,
         u.y * v.x, u.y * v.y, u.y * v.z,
         u.z * v.x, u.z * v.y, u.z * v.z
     );
+}
+
+//=============================================================================
+Vector2 Sq (const Vector2 & v)
+{
+    return Abs(v) * v;
+}
+
+//=============================================================================
+Vector3 Sq (const Vector3 & v)
+{
+    return Abs(v) * v;
 }
 
 //=============================================================================
@@ -338,33 +356,33 @@ Vector4 Normalize (const Vector4 & v, float32 * outLength)
 
 //----------------------------------------------------------------------------------------------------//
 
-float32 Normalize2( Vector2 & v ) { float32 length = Length( v ); v /= length; return length; }
-float32 Normalize2( Vector3 & v ) { float32 length = Length( v ); v /= length; return length; }
-float32 Normalize2( Vector4 & v ) { float32 length = Length( v ); v /= length; return length; }
+float32 Normalize2 (Vector2 & v) { float32 length = Length(v); v /= length; return length; }
+float32 Normalize2 (Vector3 & v) { float32 length = Length(v); v /= length; return length; }
+float32 Normalize2 (Vector4 & v) { float32 length = Length(v); v /= length; return length; }
 
 //----------------------------------------------------------------------------------------------------//
 
-float32 Length( const Vector2 & v ) { return Sqrt( LengthSq( v ) ); }
-float32 Length( const Vector3 & v ) { return Sqrt( LengthSq( v ) ); }
-float32 Length( const Vector4 & v ) { return Sqrt( LengthSq( v ) ); }
+float32 Length (const Vector2 & v) { return Sqrt(LengthSq(v)); }
+float32 Length (const Vector3 & v) { return Sqrt(LengthSq(v)); }
+float32 Length (const Vector4 & v) { return Sqrt(LengthSq(v)); }
 
 //----------------------------------------------------------------------------------------------------//
 
-float32 LengthSq( const Vector2 & v ) { return Dot( v, v ); }
-float32 LengthSq( const Vector3 & v ) { return Dot( v, v ); }
-float32 LengthSq( const Vector4 & v ) { return Dot( v, v ); }
+float32 LengthSq (const Vector2 & v) { return Dot(v, v); }
+float32 LengthSq (const Vector3 & v) { return Dot(v, v); }
+float32 LengthSq (const Vector4 & v) { return Dot(v, v); }
 
 //----------------------------------------------------------------------------------------------------//
 
-bool Parallel( const Vector2 & a, const Vector2 & b ) { return Sq(Dot(a, b)) > LengthSq(a) * LengthSq(b) * Sq(1.0f-Math::Epsilon); }
-bool Parallel( const Vector3 & a, const Vector3 & b ) { return Sq(Dot(a, b)) > LengthSq(a) * LengthSq(b) * Sq(1.0f-Math::Epsilon); }
-bool Parallel( const Vector4 & a, const Vector4 & b ) { return Sq(Dot(a, b)) > LengthSq(a) * LengthSq(b) * Sq(1.0f-Math::Epsilon); }
+bool IsParallel (const Vector2 & a, const Vector2 & b) { return Sq(Dot(a, b)) > LengthSq(a) * LengthSq(b) * Sq(1.0f-Math::Epsilon); }
+bool IsParallel (const Vector3 & a, const Vector3 & b) { return Sq(Dot(a, b)) > LengthSq(a) * LengthSq(b) * Sq(1.0f-Math::Epsilon); }
+bool IsParallel (const Vector4 & a, const Vector4 & b) { return Sq(Dot(a, b)) > LengthSq(a) * LengthSq(b) * Sq(1.0f-Math::Epsilon); }
 
 //----------------------------------------------------------------------------------------------------//
 
-bool Perpendicular( const Vector2 & a, const Vector2 & b ) { return Equal( Dot(a, b), 0.0f ); }
-bool Perpendicular( const Vector3 & a, const Vector3 & b ) { return Equal( Dot(a, b), 0.0f ); }
-bool Perpendicular( const Vector4 & a, const Vector4 & b ) { return Equal( Dot(a, b), 0.0f ); }
+bool IsPerpendicular (const Vector2 & a, const Vector2 & b) { return Equal( Dot(a, b), 0.0f ); }
+bool IsPerpendicular (const Vector3 & a, const Vector3 & b) { return Equal( Dot(a, b), 0.0f ); }
+bool IsPerpendicular (const Vector4 & a, const Vector4 & b) { return Equal( Dot(a, b), 0.0f ); }
 
 //=============================================================================
 Vector2 Mirror( const Vector2 & v, const Vector2 & n ) 

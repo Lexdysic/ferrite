@@ -38,6 +38,20 @@ Aabb2::Aabb2 (const Point2 & center, const Vector2 & halfExtent) :
 }
 
 //=============================================================================
+TArray<Point2> Aabb2::GetPoints() const
+{
+    TArray<Point2> out;
+    out.Reserve(4);
+
+    out.Add(min);
+    out.Add(Point2(min.x, max.y));
+    out.Add(max);
+    out.Add(Point2(max.x, min.y));
+
+    return out;
+}
+
+//=============================================================================
 void MostSeparatedPointsOnAabb (uint & min, uint & max, const TArray<Point2> & points)
 {
 

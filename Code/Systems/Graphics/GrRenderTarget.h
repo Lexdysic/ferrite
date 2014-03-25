@@ -38,6 +38,8 @@ private: // IRenderTarget
 private: // IRenderCommands
 
     void Line (const Point2 & a, const Point2 & b, const Color & color, float32 width = 1.0f) override;
+    void Line (const TArray<Point2> & points, const Color & color, float32 width, ELoop loop) override;
+
     void Rectangle(const Point2 & a, const Point2 & b, const Color & color, EDrawStyle style) override;
     void Arrow (const Point2 & a, const Point2 & b, const Color & color, float32 width = 1.0f) override;
     void Circle(const Point2 & p, float32 r, const Color & color, EDrawStyle style) override;

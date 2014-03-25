@@ -30,6 +30,7 @@
 #include "GeomSphere.h"
 #include "GeomTriangle.h"
 #include "GeomCurve.h"
+#include "GeomPolygon.h"
 
 #include "GeomOverlap.h"
 #include "GeomClosest.h"

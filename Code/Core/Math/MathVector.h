@@ -203,8 +203,13 @@ inline float32  Dot( const Vector4 & lhs, const Vector4 & rhs );
 inline float32 Cross (const Vector2 & lhs, const Vector2 & rhs);
 inline Vector3 Cross (const Vector3 & lhs, const Vector3 & rhs);
 
+inline Vector2 Perpendicular (const Vector2 & v);
+
 inline Matrix22  Tensor (const Vector2 & lhs, const Vector2 & rhs);
 inline Matrix33  Tensor (const Vector3 & lhs, const Vector3 & rhs);
+
+inline Vector2 Sq (const Vector2 & v);
+inline Vector3 Sq (const Vector3 & v);
 
 inline Vector2   Normalize (const Vector2 & v);
 inline Vector3   Normalize (const Vector3 & v);
@@ -223,20 +228,20 @@ inline float32  Length( const Vector2 & v );
 inline float32  Length( const Vector3 & v );
 inline float32  Length( const Vector4 & v );
 
-inline float32  LengthSq( const Vector2 & v );
-inline float32  LengthSq( const Vector3 & v );
-inline float32  LengthSq( const Vector4 & v );
+inline float32  LengthSq (const Vector2 & v);
+inline float32  LengthSq (const Vector3 & v);
+inline float32  LengthSq (const Vector4 & v);
 
-inline bool Parallel( const Vector2 & a, const Vector2 & b );
-inline bool Parallel( const Vector3 & a, const Vector3 & b );
-inline bool Parallel( const Vector4 & a, const Vector4 & b );
+inline bool IsParallel (const Vector2 & a, const Vector2 & b);
+inline bool IsParallel (const Vector3 & a, const Vector3 & b);
+inline bool IsParallel (const Vector4 & a, const Vector4 & b);
 
-inline bool Perpendicular( const Vector2 & a, const Vector2 & b );
-inline bool Perpendicular( const Vector3 & a, const Vector3 & b );
-inline bool Perpendicular( const Vector4 & a, const Vector4 & b );
+inline bool IsPerpendicular (const Vector2 & a, const Vector2 & b);
+inline bool IsPerpendicular (const Vector3 & a, const Vector3 & b);
+inline bool IsPerpendicular (const Vector4 & a, const Vector4 & b);
 
-inline Vector2   Mirror( const Vector2 & a, const Vector2 & n );
-inline Vector3   Mirror( const Vector3 & a, const Vector3 & n );
+inline Vector2 Mirror (const Vector2 & a, const Vector2 & n);
+inline Vector3 Mirror (const Vector3 & a, const Vector3 & n);
 
 inline float32 Min (const Vector2 & v);
 inline float32 Min (const Vector3 & v);
@@ -258,17 +263,17 @@ inline Vector2 Abs (const Vector2 & v);
 inline Vector3 Abs (const Vector3 & v);
 inline Vector4 Abs (const Vector4 & v);
 
-inline Vector2 Sign(const Vector2 & v);
-inline Vector3 Sign(const Vector3 & v);
-inline Vector4 Sign(const Vector4 & v);
+inline Vector2 Sign (const Vector2 & v);
+inline Vector3 Sign (const Vector3 & v);
+inline Vector4 Sign (const Vector4 & v);
 
-inline bool Equal( const Vector2 & a, const Vector2 & b, sint32 maxUlps = Math::MaxUlps );
-inline bool Equal( const Vector3 & a, const Vector3 & b, sint32 maxUlps = Math::MaxUlps );
-inline bool Equal( const Vector4 & a, const Vector4 & b, sint32 maxUlps = Math::MaxUlps );
+inline bool Equal (const Vector2 & a, const Vector2 & b, sint32 maxUlps = Math::MaxUlps);
+inline bool Equal (const Vector3 & a, const Vector3 & b, sint32 maxUlps = Math::MaxUlps);
+inline bool Equal (const Vector4 & a, const Vector4 & b, sint32 maxUlps = Math::MaxUlps);
 
-inline bool Normalized( const Vector2 & v, sint32 maxUlps = Math::MaxUlps );
-inline bool Normalized( const Vector3 & v, sint32 maxUlps = Math::MaxUlps );
-inline bool Normalized( const Vector4 & v, sint32 maxUlps = Math::MaxUlps );
+inline bool Normalized (const Vector2 & v, sint32 maxUlps = Math::MaxUlps);
+inline bool Normalized (const Vector3 & v, sint32 maxUlps = Math::MaxUlps);
+inline bool Normalized (const Vector4 & v, sint32 maxUlps = Math::MaxUlps);
 
 void BuildBasis (const Vector3 & x, Vector3 & u, Vector3 & v, Vector3 & w);
 

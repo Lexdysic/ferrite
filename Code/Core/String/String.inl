@@ -226,8 +226,7 @@ template <String::EEncoding E>
 template <String::EEncoding F>
 TString<E>::TString (const TString<F> & rhs)
 {
-    m_data.Clear();
-    ASSERT(false); // TODO: transcode
+    *this = rhs;
 }
 
 //=============================================================================
@@ -277,6 +276,8 @@ TString<E> & TString<E>::operator= (const TString<F> & rhs)
         String::Encode<E>(codepoint, &m_data);
 
     m_data.Add(0);
+
+    return *this;
 }
 
 //=============================================================================

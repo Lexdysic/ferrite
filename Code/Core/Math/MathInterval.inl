@@ -28,6 +28,12 @@ Interval & Interval::operator+=( const Interval & rhs )
 }
 
 //=============================================================================
+bool Interval::IsValid () const
+{
+    return a <= b;
+}
+
+//=============================================================================
 Interval operator+( const Interval & lhs, const Interval & rhs )
 {
     return Interval( Min(lhs.a, rhs.a), Max(lhs.b, rhs.b) );

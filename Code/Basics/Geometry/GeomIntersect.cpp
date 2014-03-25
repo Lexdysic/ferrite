@@ -13,12 +13,23 @@
 
 
 //=============================================================================
-bool Intersect( IntersectInfo2 & out, const Sphere2 & s, const v2 & v, const Plane2 & p )
+bool Intersect (IntersectInfo2 & out, const Line2 & line, const Plane2 & plane)
+{
+    out.time = (plane.d - Dot(plane.n, line.origin)) / Dot(plane.n, line.direction);
+    out.point = line.origin + out.time * line.direction;
+
+    const bool isValid = Math::IsInRange(out.time, 0.0f, 1.0f);
+
+    return isValid;
+}
+
+//=============================================================================
+bool Intersect (IntersectInfo2 & out, const Sphere2 & s, const Vector2 & v, const Plane2 & p)
 {
     const float32 dist = Distance(s.center, p);
 
     // Sphere starts out touching the plane
-    if( Abs(dist) <= s.radius )
+    if (Abs(dist) <= s.radius)
     {
         out.time    = 0.0f;
         out.point   = s.center;
@@ -28,7 +39,7 @@ bool Intersect( IntersectInfo2 & out, const Sphere2 & s, const v2 & v, const Pla
         const float32 denom = Dot(p.n, v);
 
         // Is sphere moving parallel or away from the plane?
-        if( denom * dist >= 0.0f )
+        if (denom * dist >= 0.0f)
         {
             return false;
         }
@@ -44,28 +55,28 @@ bool Intersect( IntersectInfo2 & out, const Sphere2 & s, const v2 & v, const Pla
 }
 
 //=============================================================================
-bool Intersect( IntersectInfo3 & out, const Sphere3 & s, const v3 & v, const Plane3 & p )
+bool Intersect (IntersectInfo3 & out, const Sphere3 & s, const Vector3 & v, const Plane3 & p)
 {
-    float32 dist = Distance( s.center, p );
+    const float32 dist = Distance( s.center, p );
 
     // Sphere starts out touching the plane
-    if( Abs(dist) <= s.radius )
+    if (Abs(dist) <= s.radius)
     {
         out.time    = 0.0f;
         out.point   = s.center;
     }
     else
     {
-        float32 denom = Dot( p.n, v );
+        const float32 denom = Dot(p.n, v);
 
         // Is sphere moving parallel or away from the plane?
-        if( denom * dist >= 0.0f )
+        if (denom * dist >= 0.0f)
         {
             return false;
         }
         else
         {
-            float32 r       = dist > 0.0f ? s.radius : -s.radius;
+            const float32 r = dist > 0.0f ? s.radius : -s.radius;
             out.time    = (r - dist) / denom;
             out.point   = s.center + out.time * v - r * p.n;
         }
@@ -74,7 +85,7 @@ bool Intersect( IntersectInfo3 & out, const Sphere3 & s, const v3 & v, const Pla
 }
 
 //=============================================================================
-bool Intersect( const Sphere3 & s, const v3 & v, const Plane3 & p )
+bool Intersect( const Sphere3 & s, const Vector3 & v, const Plane3 & p )
 {
     float32 distStart   = Distance( s.center, p );
     float32 distEnd     = Distance( s.center + v, p );
@@ -91,9 +102,9 @@ bool Intersect( const Sphere3 & s, const v3 & v, const Plane3 & p )
 }
 
 //=============================================================================
-bool Intersect( IntersectInfo3 & out, const Aabb3 & b, const v3 & v, const Plane3 & p )
+bool Intersect( IntersectInfo3 & out, const Aabb3 & b, const Vector3 & v, const Plane3 & p )
 {
-    v3  extent = (b.max - b.min) * 0.5f;
+    Vector3  extent = (b.max - b.min) * 0.5f;
     p3  center = b.min + extent;
     float32 radius = Dot(extent, Abs(v));
 
@@ -126,9 +137,9 @@ bool Intersect( IntersectInfo3 & out, const Aabb3 & b, const v3 & v, const Plane
 }
 
 //=============================================================================
-bool Intersect( const Aabb3 & b, const v3 & v, const Plane3 & p )
+bool Intersect( const Aabb3 & b, const Vector3 & v, const Plane3 & p )
 {
-    v3  extent = (b.max - b.min) * 0.5f;
+    Vector3  extent = (b.max - b.min) * 0.5f;
     p3  center = b.min + extent;
     float32 radius = Dot(extent, Abs(v));
 
@@ -148,7 +159,7 @@ bool Intersect( const Aabb3 & b, const v3 & v, const Plane3 & p )
 }
 
 //=============================================================================
-bool Intersect( IntersectInfo3 & out, const Obb3 & b, const v3 & v, const Plane3 & p )
+bool Intersect( IntersectInfo3 & out, const Obb3 & b, const Vector3 & v, const Plane3 & p )
 {
     float32 radius = b.ProjectedRadiusAlongVector( p.n );
 
@@ -181,7 +192,7 @@ bool Intersect( IntersectInfo3 & out, const Obb3 & b, const v3 & v, const Plane3
 }
 
 //=============================================================================
-bool Intersect( const Obb3 & b, const v3 & v, const Plane3 & p )
+bool Intersect( const Obb3 & b, const Vector3 & v, const Plane3 & p )
 {
     float32 radius = b.ProjectedRadiusAlongVector( p.n );
 
@@ -201,21 +212,21 @@ bool Intersect( const Obb3 & b, const v3 & v, const Plane3 & p )
 }
 
 //=============================================================================
-bool Intersect( IntersectInfo3 & out, const Sphere3 & s0, const v3 & v0, const Sphere3 & s1 )
+bool Intersect( IntersectInfo3 & out, const Sphere3 & s0, const Vector3 & v0, const Sphere3 & s1 )
 {
     return Intersect( out, Ray3(s0.center, v0), Sphere3(s1.center, s0.r + s1.r) );
 }
 
 //=============================================================================
-bool Intersect( const Sphere3 & s0, const v3 & v0, const Sphere3 & s1 )
+bool Intersect( const Sphere3 & s0, const Vector3 & v0, const Sphere3 & s1 )
 {
     return Intersect( Ray3(s0.center, v0), Sphere3(s1.center, s0.r + s1.r) );
 }
 
 //=============================================================================
-bool Intersect( IntersectInfo2 & out, const Sphere2 & s0, const v2 & v0, const Sphere2 & s1, const v2 & v1 )
+bool Intersect( IntersectInfo2 & out, const Sphere2 & s0, const Vector2 & v0, const Sphere2 & s1, const Vector2 & v1 )
 {
-    const v2 v = v0 - v1;
+    const Vector2 v = v0 - v1;
     const float32 vLen = Length(v);
     if( Intersect( out, Ray2(s0.center, v / vLen), Sphere2(s1.center, s0.r + s1.r) ) )
     {
@@ -232,21 +243,21 @@ bool Intersect( IntersectInfo2 & out, const Sphere2 & s0, const v2 & v0, const S
 }
 
 //=============================================================================
-bool Intersect( IntersectInfo3 & out, const Sphere3 & s0, const v3 & v0, const Sphere3 & s1, const v3 & v1 )
+bool Intersect (IntersectInfo3 & out, const Sphere3 & s0, const Vector3 & v0, const Sphere3 & s1, const Vector3 & v1)
 {
     return Intersect( out, Ray3(s0.center, v0 - v1), Sphere3(s1.center, s0.r + s1.r) );
 }
 
 //=============================================================================
-bool Intersect( const Sphere3 & s0, const v3 & v0, const Sphere3 & s1, const v3 & v1 )
+bool Intersect (const Sphere3 & s0, const Vector3 & v0, const Sphere3 & s1, const Vector3 & v1)
 {
     return Intersect( Ray3(s0.center, v0 - v1), Sphere3(s1.center, s0.r + s1.r) );
 }
 
 //=============================================================================
-bool Intersect( IntersectInfo2 & out, const Ray2 & r, const Sphere2 & s )
+bool Intersect (IntersectInfo2 & out, const Ray2 & r, const Sphere2 & s)
 {
-    const v2    m = r.origin - s.center;
+    const Vector2    m = r.origin - s.center;
     const float32 b = 2.0f * Dot(m, r.direction);
     const float32 c = LengthSq(m) - Sq(s.radius);
 
@@ -273,13 +284,13 @@ bool Intersect( IntersectInfo2 & out, const Ray2 & r, const Sphere2 & s )
 }
 
 //=============================================================================
-bool Intersect( IntersectInfo3 & out, const Ray3 & r, const Sphere3 & s )
+bool Intersect (IntersectInfo3 & out, const Ray3 & r, const Sphere3 & s)
 {
 #define RAY_SPHERE_HANDLE_START_INSIDE
     const p3 & p = r.origin;
-    const v3 & d = r.direction;
+    const Vector3 & d = r.direction;
 
-    const v3  m = p - s.center;
+    const Vector3  m = p - s.center;
     const float32 a = LengthSq(d);
     const float32 b = 2.0f * Dot(m, d);
     const float32 c = LengthSq(m) - Sq(s.radius);
@@ -318,11 +329,11 @@ bool Intersect( IntersectInfo3 & out, const Ray3 & r, const Sphere3 & s )
 //{
 //#define RAY_SPHERE_HANDLE_START_INSIDE
 //  const p3 & p = r.origin;
-//  const v3 & d = r.direction;
+//  const Vector3 & d = r.direction;
 //
 //  //assert(Normalized(d));
 //
-//  const v3  m = p - s.center;
+//  const Vector3  m = p - s.center;
 //  const float32 b = Dot(m, d);
 //  const float32 c = LengthSq(m) - Sq(s.radius);
 //
@@ -358,7 +369,7 @@ bool Intersect( IntersectInfo3 & out, const Ray3 & r, const Sphere3 & s )
 //=============================================================================
 bool Intersect( const Ray3 & r, const Sphere3 & s )
 {
-    const v3 m = r.origin - s.center;
+    const Vector3 m = r.origin - s.center;
     const float32 c = LengthSq(m) - Sq(s.radius);
 
     // Ray starts inside?
@@ -399,7 +410,7 @@ bool Intersect( IntersectInfo3 & out, const Ray3 & r, const Aabb3 & b )
     float32     tmax = std::numeric_limits<float32>::max();
     tmin = 0;
 
-    v3 nmin(1e-10f, 1e-11f, 1e-12f);
+    Vector3 nmin(1e-10f, 1e-11f, 1e-12f);
 
     for( uint i = 0; i < 3; ++i )
     {
@@ -414,8 +425,8 @@ bool Intersect( IntersectInfo3 & out, const Ray3 & r, const Aabb3 & b )
             const float32 ood = 1.0f / r.direction[i];
             float32 t1 = (b.min[i] - r.origin[i]) * ood;
             float32 t2 = (b.max[i] - r.origin[i]) * ood;
-            v3  n1 = v3::Zero; n1[i] = -1.0f;
-            v3  n2 = v3::Zero; n2[i] = +1.0f;
+            Vector3  n1 = Vector3::Zero; n1[i] = -1.0f;
+            Vector3  n2 = Vector3::Zero; n2[i] = +1.0f;
 
             // make sure that t1 is always less than or equal to t2
             if( t1 > t2 ) 

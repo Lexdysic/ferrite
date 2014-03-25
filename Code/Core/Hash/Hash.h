@@ -6,11 +6,7 @@
 //
 // Defines hash objects that will convert data into single integers
 //==================================================================================================
-#ifndef HASH_H
-#define HASH_H
 
-#include "Math/MathTypes.h"
-#include <string>
 
 //==================================================================================================
 //
@@ -19,10 +15,10 @@
 class Hash32
 {
 public:
-    Hash32( const u8*  pData, uint32 size );
-    Hash32( const u16* pData, uint32 size );
+    Hash32( const uint8*  pData, uint32 size );
+    Hash32( const uint16* pData, uint32 size );
     Hash32( const uint32* pData, uint32 size );
-    Hash32( const u8* pStart, const u8* pEnd );
+    Hash32( const uint8* pStart, const uint8* pEnd );
 
 private:
     uint32             mValue; //!< The hashed value of the data
@@ -60,6 +56,3 @@ private:
         std::string mStr;   //!< string that was hashed (debug only)
     #endif
 };
-
-
-#endif //HASH_H

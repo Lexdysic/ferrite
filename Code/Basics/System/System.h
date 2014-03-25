@@ -24,7 +24,7 @@ interface IWindow
     virtual bool Update () pure;
     virtual bool UpdateBlocking () pure;
     virtual void Invalidate () const pure;
-    virtual void SetTitle (const wchar title[]) pure;
+    virtual void SetTitle (const CString & title) pure;
 
     // Query
     virtual Vector2u GetClientSize () const pure;
@@ -56,7 +56,7 @@ struct CWindowNotify : TNotifyTarget<CWindowNotify>
     virtual void OnWindowSize (const Vector2u & size);
 };
 
-IWindow * WindowCreate (const wchar title[], uint width, uint height);
+IWindow * WindowCreate (const CString & title, uint width, uint height);
 void WindowDestroy (IWindow * window);
 
 IWindow * GetWindow ();

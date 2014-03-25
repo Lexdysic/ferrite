@@ -25,19 +25,23 @@ interface CContextNotify;
 //
 //=============================================================================
 
-enum EPixelFormat
+enum class EPixelFormat
 {
-    PIXEL_FORMAT_R8G8B8,
-    PIXEL_FORMAT_R8G8B8A8,
-    PIXEL_FORMAT_A8,
-    PIXEL_FORMATS
+    R8G8B8,
+    R8G8B8A8,
+    A8
 };
 
-enum EDrawStyle
+enum class EDrawStyle
 {
-    DRAW_STYLE_Filled,
-    DRAW_STYLE_Outline,
-    DRAW_STYLES
+    Filled,
+    Outline
+};
+
+enum class ELoop
+{
+    Closed,
+    Open
 };
 
 enum class ETextWeight
@@ -81,9 +85,12 @@ interface IRenderCommands
 {
     // Primatives
     virtual void Line (const Point2 & a, const Point2 & b, const Color & color, float32 width = 1.0f) pure;
-    virtual void Rectangle(const Point2 & a, const Point2 & b, const Color & color, EDrawStyle style = DRAW_STYLE_Filled) pure;
+    virtual void Line (const TArray<Point2> & points, const Color & color, float32 width = 1.0f, ELoop loop = ELoop::Open) pure;
+
+
+    virtual void Rectangle(const Point2 & a, const Point2 & b, const Color & color, EDrawStyle style = EDrawStyle::Filled) pure;
     virtual void Arrow (const Point2 & a, const Point2 & b, const Color & color, float32 width = 1.0f) pure;
-    virtual void Circle(const Point2 & p, float32 r, const Color & color, EDrawStyle style = DRAW_STYLE_Filled) pure;
+    virtual void Circle(const Point2 & p, float32 r, const Color & color, EDrawStyle style = EDrawStyle::Filled) pure;
 
     // Images
     virtual void Draw (IImage * image, const Point2 & pos, float32 opacity = 1.0f) pure;

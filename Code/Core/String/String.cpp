@@ -34,6 +34,11 @@ const String::CodePoint CODE_POINT_MAX = 0x10ffff;
 //
 //=============================================================================
 
+static bool NeedsUtf16Surrogate(String::CodePoint codepoint)
+{
+    return codepoint > 0xffff;
+}
+
 //=============================================================================
 static bool IsUtf16LeadSurrogate (uint16 codeunit)
 {
@@ -225,19 +230,20 @@ void Encode<EEncoding::Utf8> (CodePoint code, TArray<byte> * data)
 
 //=============================================================================
 template <>
-void Encode<EEncoding::Utf16> (CodePoint code, TArray<wchar> * data)
+void Encode<EEncoding::Utf16> (CodePoint c, TArray<wchar> * data)
 {
-    ASSERT(IsValidCodePoint(code));
+    ASSERT(IsValidCodePoint(c));
 
-    const uint32 u = ((code >> 16) & ((1 << 5) - 1)) - 1;
-    const uint16 lead = UTF16_LEAD_MIN | (u << 6) | code >> 10;
-    const uint16 tail = uint16(UTF16_TAIL_MIN | code & ((1 << 10) - 1));
-
-    data->Add(lead);
-    if (IsUtf16LeadSurrogate(lead))
+    if (NeedsUtf16Surrogate(c))
     {
-        ASSERT(IsUtf16TailSurrogate(tail));
-        data->Add(tail);
+        const uint16 lead = (c >> 10) + 0xd7c0;
+        const uint16 trail = (c & 0x3ff) | UTF16_TAIL_MIN;
+        data->Add(lead);
+        data->Add(trail);
+    }
+    else
+    {
+        data->Add(uint16(c));
     }
 }
 

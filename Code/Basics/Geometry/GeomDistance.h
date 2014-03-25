@@ -15,6 +15,7 @@
 
 inline float32 Distance (const Point2 & a,      const Point2 &      b);
 inline float32 Distance (const Point2 & point,  const Plane2 &      plane);
+       float32 Distance (const Point2 & point,  const Halfspace2 &  hs);
 
 inline float32 Distance (const Point3 & a,      const Point3 &      b);
        float32 Distance (const Point3 & point,  const Line3 &       line);
@@ -27,7 +28,9 @@ inline float32 Distance (const Point3 & point,  const Plane3 &      plane);
        float32 Distance (const Point3 & point,  const Halfspace3 &  hs);
 
 inline float32 DistanceSq (const Point2 & a,        const Point2 &      b);
-       float32 DistanceSq (const Point3 & point,    const Plane3 &      plane);
+       float32 DistanceSq( const Point3 & point,    const Halfspace3 &  hs);
+
+       //float32 DistanceSq (const Point3 & point,    const Plane3 &      plane);
 
 inline float32 DistanceSq (const Point3 & a,        const Point3 &      b);
 inline float32 DistanceSq (const Point3 & point,    const Line3 &       line);

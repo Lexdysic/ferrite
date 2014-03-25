@@ -29,6 +29,7 @@ public:
     inline Aabb2 & operator+= (const Point2 & rhs);
 
     inline float32 ProjectedRadiusAlongVector (const Vector2 & v) const;
+    TArray<Point2> GetPoints() const;
 
     static const Aabb2 Null;
     static const Aabb2 Infinity;

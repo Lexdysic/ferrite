@@ -130,3 +130,5 @@ float32 Distance( const Point2 & point, const Plane2 & plane )
     //return Dot(plane.n, point) - plane.d; if plane is known to be normalized
     return (Dot(plane.n, point) - plane.d) / LengthSq(plane.n);
 }
+
+

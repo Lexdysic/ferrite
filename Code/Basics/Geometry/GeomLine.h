@@ -15,16 +15,36 @@
 
 //=============================================================================
 //
-// Represents a 3D line, defined by a point on the line and vector direction
+// Line2
+//
+//=============================================================================
+class Line2
+{
+public:
+    Line2 ();
+    Line2 (const Point2 & a, const Point2 & b);
+    Line2 (const Point2 & origin, const Vector2 & direction);
+
+
+    Point2  origin;
+    Vector2 direction;   // need not be normalized
+};
+
+
+
+//=============================================================================
+//
+// Line3
 //
 //=============================================================================
 class Line3
 {
 public:
-    Line3();
-    Line3( const p3 & origin, const v3 & direction );
+    Line3 ();
+    Line3 (const Point3 & a, const Point3 & b);
+    Line3 (const Point3 & origin, const Vector3 & direction);
 
 
-    p3 origin;      //!< Any point on the line
-    v3 direction;   //!< A vector direction of the line (need not be normalized)
+    Point3  origin;
+    Vector3 direction;   // need not be normalized
 };

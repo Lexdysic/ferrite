@@ -70,6 +70,9 @@ struct Color : TColorBase<float32>
     static const Color Red;
     static const Color Green;
     static const Color Blue;
+    static const Color Yellow;
+    static const Color Aqua;
+    static const Color Magenta;
 };
 
 

@@ -10,3 +10,5 @@
 
 #include "MathPch.h"
 
+const Interval Interval::Null(0.0f, -1.0f);
+const Interval Interval::Infinite(-Math::Infinity, Math::Infinity);

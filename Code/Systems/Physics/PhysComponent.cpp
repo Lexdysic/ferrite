@@ -107,7 +107,7 @@ void CColliderComponent::RenderDebug (Graphics::IRenderTarget * renderTarget)
                 m_circle.center,
                 m_circle.radius,
                 DEBUG_COLOR,
-                Graphics::DRAW_STYLE_Outline
+                Graphics::EDrawStyle::Outline
             );
         break;
 
@@ -116,7 +116,7 @@ void CColliderComponent::RenderDebug (Graphics::IRenderTarget * renderTarget)
                 m_aabb.min,
                 m_aabb.max,
                 DEBUG_COLOR,
-                Graphics::DRAW_STYLE_Outline
+                Graphics::EDrawStyle::Outline
             );
         break;
     }

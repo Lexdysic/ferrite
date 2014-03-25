@@ -116,6 +116,41 @@ void CRenderTarget::Line (
 }
 
 //=============================================================================
+void CRenderTarget::Line (
+    const TArray<Point2> & points,
+    const Color & color,
+    float32 width,
+    ELoop loop
+) {
+    ID2D1SolidColorBrush * brush = CContext::Get()->GetColorBrush();
+    brush->SetColor(ToColorF(color));
+
+    for (uint i = 1; i < points.Count(); ++i)
+    {
+        const Point2 & a = points[i-1];
+        const Point2 & b = points[i];
+        m_renderTarget->DrawLine(
+            ToD2DPoint2F(a),
+            ToD2DPoint2F(b),
+            brush,
+            width
+        );
+    }
+
+    if (loop == ELoop::Closed)
+    {
+        const Point2 & a = points[0];
+        const Point2 & b = points[points.Count() - 1];
+        m_renderTarget->DrawLine(
+            ToD2DPoint2F(a),
+            ToD2DPoint2F(b),
+            brush,
+            width
+        );
+    }
+}
+
+//=============================================================================
 void CRenderTarget::Rectangle (
     const Point2 & a,
     const Point2 & b, 
@@ -125,7 +160,7 @@ void CRenderTarget::Rectangle (
     ID2D1SolidColorBrush * brush = CContext::Get()->GetColorBrush();
     brush->SetColor(ToColorF(color));
 
-    if (style == DRAW_STYLE_Filled)
+    if (style == EDrawStyle::Filled)
         m_renderTarget->FillRectangle(D2D1::RectF(a.x, a.y, b.x, b.y), brush);
     else
         m_renderTarget->DrawRectangle(D2D1::RectF(a.x, a.y, b.x, b.y), brush);
@@ -163,7 +198,7 @@ void CRenderTarget::Circle(const Point2 & p, float32 r, const Color & color, EDr
     ID2D1SolidColorBrush * brush = CContext::Get()->GetColorBrush();
     brush->SetColor(ToColorF(color));
 
-    if (style == DRAW_STYLE_Filled)
+    if (style == EDrawStyle::Filled)
     {
         m_renderTarget->FillEllipse(
             D2D1::Ellipse(ToD2DPoint2F(p), r, r),

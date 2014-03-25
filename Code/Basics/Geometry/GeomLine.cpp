@@ -11,13 +11,41 @@
 #include "GeomPch.h"
 
 //=============================================================================
-Line3::Line3()
+Line2::Line2 ()
 {
 }
 
 //=============================================================================
-Line3::Line3( const p3 & origin, const v3 & direction )
-: origin(origin)
-, direction(direction)
+Line2::Line2 (const Point2 & a, const Point2 & b) :
+    origin(a),
+    direction(b - a)
+{
+}
+
+//=============================================================================
+Line2::Line2 (const Point2 & origin, const Vector2 & direction) :
+    origin(origin),
+    direction(direction)
+{
+}
+
+
+
+//=============================================================================
+Line3::Line3 ()
+{
+}
+
+//=============================================================================
+Line3::Line3 (const Point3 & a, const Point3 & b) :
+    origin(a),
+    direction(b - a)
+{
+}
+
+//=============================================================================
+Line3::Line3 (const Point3 & origin, const Vector3 & direction) :
+    origin(origin),
+    direction(direction)
 {
 }
