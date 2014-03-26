@@ -29,6 +29,14 @@ TArray<T>::~TArray ()
 
 //=============================================================================
 template <typename T>
+TArray<T> & TArray<T>::operator= (TArray<T> && rhs)
+{
+    m_array = std::forward<std::vector<T>>(rhs.m_array);
+    return *this;
+}
+
+//=============================================================================
+template <typename T>
 bool TArray<T>::IsEmpty () const
 {
     return m_array.empty();

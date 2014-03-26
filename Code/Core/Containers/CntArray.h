@@ -9,6 +9,8 @@ public:
     inline TArray (TArray<T> && rhs);
     inline ~TArray ();
 
+    inline TArray<T> & operator= (TArray<T> && rhs);
+
     inline bool IsEmpty () const;
 
     inline void Add (const T & value);
@@ -53,7 +55,11 @@ private:
 
 template <typename T>
 const T * begin (const TArray<T> & array) { return array.Ptr(); }
+template <typename T>
+T * begin (TArray<T> & array) { return array.Ptr(); }
 
 
 template <typename T>
 const T * end (const TArray<T> & array) { return array.Term(); }
+template <typename T>
+T * end (TArray<T> & array) { return array.Term(); }

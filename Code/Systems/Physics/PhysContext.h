@@ -24,6 +24,9 @@ public: // IContext -----------------------------------------------------------
     void Uninitialize () override;
     void Update (Time::Delta deltaTime) override;
 
+    void SetGravity (const Vector2 & gravity) override { m_gravity = gravity; }
+    Vector2 GetGravity () const override { return m_gravity; }
+
     void DebugToggleRigidBody() override;
     void DebugToggleCollider() override;
 
@@ -41,6 +44,7 @@ private:
     ColliderList  m_colliderList;
     Time::Point   m_time;
     Time::Delta   m_timeAccumulator;
+    Vector2       m_gravity;
 
     // Debug
     bool m_debugDrawRigidBody;

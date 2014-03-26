@@ -72,11 +72,11 @@
 //
 //=============================================================================
 
-//#if defined(_DEBUG)
-//#   define BUILD_DEBUG
-//#else
-//#   define BUILD_RELEASE
-//#endif
+#if defined(_DEBUG)
+#   define BUILD_DEBUG
+#else
+#   define BUILD_RELEASE
+#endif
 
 
 

@@ -103,6 +103,9 @@ inline T MapClamp (const T & inMin, const T & inMax, const T & outMin, const T &
 template <typename T>
 inline bool IsPowerTwo (T value);
 
+template <typename T>
+inline bool IsFinite (T value);
+
 } // namespace Math
 
 

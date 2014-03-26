@@ -47,8 +47,12 @@ float32 Triangle2::ComputeArea () const
 //=============================================================================
 Point2 Triangle2::ComputeCentroid () const
 {
-    Point2 pt;
-    return pt;
+    Vector2 v = Vector2::Zero;
+    v += Vector2(a);
+    v += Vector2(a);
+    v += Vector2(a);
+    v /= 3.0f;
+    return Point2(v);
 }
 
 

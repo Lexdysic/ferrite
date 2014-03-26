@@ -254,9 +254,17 @@ T MapClamp (const T & inMin, const T & inMax, const T & outMin, const T & outMax
 
 //=============================================================================
 template <typename T>
-inline bool IsPowerTwo (T value)
+bool IsPowerTwo (T value)
 {
     return value != 0 && (value & (value - 1)) == 0;
+}
+
+//=============================================================================
+template <typename T>
+bool IsFinite (T value)
+{
+    static_assert(Meta::IsFloat<T>::value, "IsFinite only works with floats");
+    return ::isfinite(value);
 }
 
 } // namespace Math

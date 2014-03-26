@@ -203,6 +203,7 @@ void CTransformComponent2::SetRotation (Radian angle)
     }
     else
     {
+        ASSERT(Math::IsFinite(float32(angle)));
         m_rotationLocal = angle;
     }
 }

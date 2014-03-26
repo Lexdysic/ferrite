@@ -28,6 +28,9 @@ interface IContext
     virtual void Uninitialize () pure;
     virtual void Update (Time::Delta deltaTime) pure;
 
+    virtual void SetGravity (const Vector2 & gravity) pure;
+    virtual Vector2 GetGravity () const pure;
+
     virtual void DebugToggleRigidBody() pure;
     virtual void DebugToggleCollider() pure;
 };
@@ -52,6 +55,10 @@ interface IRigidBodyComponent : IComponent
 
     virtual Radian GetAngularVelocity () const pure;
     virtual void   SetAngularVelocity (Radian angle) pure;
+
+    virtual void AddForce (const Vector2 & f, const Point2 & at) pure;
+    virtual void AddForce (const Vector2 & f) pure;
+    virtual void AddTorque (float32 t) pure;
 };
 
 
@@ -69,6 +76,8 @@ interface IColliderComponent : IComponent
     static IColliderComponent * Attach (IEntity * entity, const Aabb2 & aabb);
 
     virtual void SetGroups(Flags32 groupMasks) pure;
+
+    virtual Polygon2 GetPolygon () const pure;
 };
 
 } // namespace Physics
