@@ -87,3 +87,47 @@ void Polygon2::ComputeInfo (Point2 * centroid, float32 * area) const
     *centroid /= 6 * *area;
     *area = Abs(*area);
 }
+
+//=============================================================================
+Polygon2 Polygon2::Clip (const Polygon2 & subjectPoly, const Polygon2 & clipPoly)
+{
+    // http://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm
+
+    ASSERT(clipPoly.points.Count() >= 3);
+    ASSERT(subjectPoly.points.Count() >= 3);
+
+    Polygon2 outputList = subjectPoly;
+
+    Point2 clipB = *clipPoly.points.Top();
+    for (const auto & clipA : clipPoly.points)
+    {
+        const Plane2 clipPlane(clipA, clipB);
+
+        Polygon2 inputList;
+        inputList.points = std::move(outputList.points);
+
+        Point2 subjectB = *inputList.points.Top();
+        for (const auto & subjectA : inputList.points)
+        {
+            using namespace Geometry;
+
+            const Line2 subjectLine(subjectA, subjectB);
+
+            IntersectInfo2 info;
+            if (Intersect(info, subjectLine, clipPlane))
+                outputList.points.Add(info.point);
+
+            if (Test(subjectA, clipPlane) == TestResult::Inside)
+                outputList.points.Add(subjectA);
+
+            subjectB = subjectA;
+        }
+
+        if (outputList.points.IsEmpty())
+            break;
+
+        clipB = clipA;
+    }
+
+    return outputList;
+}

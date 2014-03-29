@@ -70,6 +70,7 @@ void CContext::Update (Time::Delta deltaTime)
         m_timeAccumulator -= TIME_STEP;
         Tick();
     }
+    Cleanup();
 }
 
 //=============================================================================
@@ -89,11 +90,16 @@ void CContext::Tick ()
         const Radian angularAcceleration = Radian(rigidBody->m_torque / rigidBody->m_momentOfInertia);
         rigidBody->m_angularVelocity += angularAcceleration * dt;
         transform->UpdateRotation(rigidBody->m_angularVelocity * dt + 0.5f * angularAcceleration * Sq(dt));
+    }
+}
 
-        // Reset
+//=============================================================================
+void CContext::Cleanup ()
+{
+    for (auto * rigidBody : m_rigidBodyList)
+    {
         rigidBody->m_force  = Vector2::Zero;
         rigidBody->m_torque = 0.0f;
-
     }
 }
 

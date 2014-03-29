@@ -56,6 +56,9 @@ interface IRigidBodyComponent : IComponent
     virtual Radian GetAngularVelocity () const pure;
     virtual void   SetAngularVelocity (Radian angle) pure;
 
+    virtual void SetMass (float32 mass) pure;
+    virtual float32 GetMass () const pure;
+
     virtual void AddForce (const Vector2 & f, const Point2 & at) pure;
     virtual void AddForce (const Vector2 & f) pure;
     virtual void AddTorque (float32 t) pure;

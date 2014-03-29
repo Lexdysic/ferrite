@@ -40,6 +40,9 @@ public: // IRigidBodyComponent
     Radian GetAngularVelocity () const override { return m_angularVelocity; }
     void   SetAngularVelocity (Radian angle) override { m_angularVelocity = angle; }
 
+    void SetMass (float32 mass) override;
+    float32 GetMass () const override { return m_mass; }
+
     void AddForce (const Vector2 & f, const Point2 & at) override;
     void AddForce (const Vector2 & f) override;
     void AddTorque (float32 t) override;

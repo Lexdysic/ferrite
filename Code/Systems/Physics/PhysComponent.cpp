@@ -17,16 +17,22 @@ CRigidBodyComponent::CRigidBodyComponent () :
     m_linearVelocity(Vector2::Zero),
     m_angularVelocity(0.0f),
     m_force(Vector2::Zero),
-    m_torque(0.0f),
-    m_mass(1.0f),
-    m_momentOfInertia(1.0f * (Sq(50.0f) + Sq(20.0f)) / 12) // Equivelent to mass for rotations
+    m_torque(0.0f)
 {
+    SetMass(1.0f);
 }
 
 //=============================================================================
 CRigidBodyComponent::~CRigidBodyComponent ()
 {
 
+}
+
+//=============================================================================
+void CRigidBodyComponent::SetMass (float32 mass)
+{
+    m_mass = mass;
+    m_momentOfInertia = m_mass * (Sq(50.0f) + Sq(20.0f)) / 12;
 }
 
 //=============================================================================

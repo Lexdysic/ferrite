@@ -11,7 +11,6 @@ public:
     
     void OnCreate (CRigidBodyComponent * comp);
     void OnCreate (CColliderComponent * comp);
-    void Tick ();
 
 public: // Static -------------------------------------------------------------
 
@@ -49,6 +48,10 @@ private:
     // Debug
     bool m_debugDrawRigidBody;
     bool m_debugDrawColliders;
+
+    // Helpers
+    void Tick ();
+    void Cleanup ();
 };
 
 } // namespace Physics

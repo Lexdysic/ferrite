@@ -6,6 +6,7 @@
 #include <cmath>
 
 // Interfaces
+#include "MathSi.h"
 #include "MathConst.h"
 #include "MathTypes.h"
 #include "MathScalar.h"
@@ -19,6 +20,7 @@
 #include "MathRandom.h"
 
 // Inline implementations
+#include "MathSi.inl"
 #include "MathScalar.inl"
 #include "MathAngle.inl"
 #include "MathFixed.inl"
