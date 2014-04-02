@@ -58,7 +58,7 @@ void CContext::Uninitialize ()
 }
 
 //=============================================================================
-void CContext::Update (float32 elapsedTime)
+void CContext::Update (const Time::Delta deltaTime)
 {
     if (!m_root)
         return;

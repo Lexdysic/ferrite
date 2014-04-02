@@ -36,11 +36,11 @@ const uint32 MASK_MOUSE = FLAG_MOUSE_FOCUS | FLAG_MOUSE_CLICK | FLAG_MOUSE_WHEEL
 //==================================================================================================
 interface IContext
 {
-    virtual void Initialize (System::IWindow * window) = 0;
-    virtual void Uninitialize () = 0;
+    virtual void Initialize (System::IWindow * window) pure;
+    virtual void Uninitialize () pure;
 
-    virtual void Update (float32 elapsedTime) = 0;
-    virtual void Render () = 0;
+    virtual void Update (const Time::Delta deltaTime) pure;
+    virtual void Render () pure;
 };
 
 IContext * GetContext ();

@@ -34,7 +34,7 @@ public: // IContext -----------------------------------------------------------
     void Initialize (System::IWindow * window) override;
     void Uninitialize () override;
 
-    void Update (float32 elapsedTime) override;
+    void Update (const Time::Delta deltaTime) override;
     void Render () override;
 
 private: // System::IWindowNotify ---------------------------------------------

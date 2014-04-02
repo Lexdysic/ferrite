@@ -2,19 +2,23 @@
 #   define BLOCK_ALLOCATOR_VALIDATE
 #endif
 
-template <typename T, uint Size = 16>
+template <typename T, uint Count = 16>
 class TBlockAllocator
 {
 public:
     TBlockAllocator ();
     ~TBlockAllocator ();
+    
+    void * Alloc ();
+    void   Free (void * obj);
 
-    void * New ();
-    void   Delete (void * obj);
+    template <typename... Args>
+    T * New (const Args &... args);
+    void   Delete (T * obj);
     void   Clear ();
 	
 private:
-    static const uint BLOCK_BYTES = sizeof(T) * Size;
+    static const uint BLOCK_BYTES = sizeof(T) * Count;
 
     struct FreeObj
     {
@@ -24,13 +28,13 @@ private:
     struct Block
     {
         Block * next;
-        uint8   objects[BLOCK_BYTES];
+        byte    objects[BLOCK_BYTES];
     };
 
-    Block   * m_blockList;
-    FreeObj * m_objList;
+    Block   * m_blockList = null;
+    FreeObj * m_objList = null;
 #ifdef BLOCK_ALLOCATOR_VALIDATE
-    uint      m_allocCount;
+    uint      m_allocCount = 0;
 #endif
 
     void Grow ();

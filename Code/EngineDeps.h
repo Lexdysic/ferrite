@@ -26,6 +26,7 @@
 
 #ifdef USES_ENGINE_USER_INTERFACE
 #   define USES_ENGINE_INPUT
+#   define USES_ENGINE_TIME
 #endif
 
 #ifdef USES_ENGINE_GRAPHICS

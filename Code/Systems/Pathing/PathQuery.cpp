@@ -14,13 +14,13 @@ namespace Pathing
 //=============================================================================
 void * Proxy::operator new (size_t)
 {
-    return CContext::Get()->GetProxyAllocator().New();
+    return CContext::Get()->GetProxyAllocator().Alloc();
 }
 
 //=============================================================================
 void Proxy::operator delete (void * ptr)
 {
-    CContext::Get()->GetProxyAllocator().Delete(ptr);
+    CContext::Get()->GetProxyAllocator().Free(ptr);
 }
 
 

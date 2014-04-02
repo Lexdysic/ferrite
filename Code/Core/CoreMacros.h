@@ -153,10 +153,9 @@ namespace Core
 //
 //=============================================================================
 
-#define CLASS_NO_COPY(classname)                \
-    private:                                    \
-    classname (const classname &);              \
-    classname & operator= (const classname &)   // Note: enforce syntactic semicolon by omitting it here
+#define CLASS_NO_COPY(classname)                         \
+    classname (const classname &) = delete;              \
+    classname & operator= (const classname &) = delete   // Note: enforce syntactic semicolon by omitting it here
 
 
 
@@ -263,18 +262,6 @@ namespace Core
         static name s_instance;     \
     }                               \
     name::~name()
-
-
-
-//=============================================================================
-//
-// TEMPLATE
-//
-//=============================================================================
-
-#define TEMPLATE(T) template <typename T>
-#define TEMPLATE2(T, U) template <typename T, typename U>
-
 
 
 

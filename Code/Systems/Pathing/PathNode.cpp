@@ -18,13 +18,13 @@ CNode::~CNode ()
 //=============================================================================
 void * CNode::operator new (size_t)
 {
-    return CContext::Get()->GetNodeAllocator().New();
+    return CContext::Get()->GetNodeAllocator().Alloc();
 }
 
 //=============================================================================
 void CNode::operator delete (void * ptr)
 {
-    CContext::Get()->GetNodeAllocator().Delete(ptr);
+    CContext::Get()->GetNodeAllocator().Free(ptr);
 }
 
 //=============================================================================
