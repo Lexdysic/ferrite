@@ -23,10 +23,10 @@ class Ellipsoid3
 {
 public:
     Ellipsoid3();
-    Ellipsoid3( const p3 & c, const v3 & u, const v3 & v, const v3 & w );
+    Ellipsoid3( const Point3 & c, const Vector3 & u, const Vector3 & v, const Vector3 & w );
 
     static const Ellipsoid3 Unit;
 
-    p3 center;
-    v3 u, v, w;
+    Point3 center;
+    Vector3 u, v, w;
 };

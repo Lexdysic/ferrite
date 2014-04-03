@@ -22,13 +22,13 @@ class Lozenge3
 {
 public:
     Lozenge3();
-    Lozenge3( const p3 & center, const v3 & u, const v3 & v, float32 radius );
+    Lozenge3( const Point3 & center, const Vector3 & u, const Vector3 & v, float32 radius );
 
-    p3  center;
+    Point3  center;
     union
     {
-        struct{ v3 extent[2]; };
-        struct{ v3 u, v; };
+        struct{ Vector3 extent[2]; };
+        struct{ Vector3 u, v; };
     };
     float32 radius;
 };

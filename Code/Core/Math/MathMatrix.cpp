@@ -238,7 +238,7 @@ Matrix33::Matrix33(
 }
 
 //=============================================================================
-Matrix33::Matrix33( const q32 & q )
+Matrix33::Matrix33( const Quaternion & q )
 {
     const float32 xx = 2.0f * q.v.x * q.v.x;
     const float32 yy = 2.0f * q.v.y * q.v.y;
@@ -323,7 +323,7 @@ Matrix34::Matrix34 (const Matrix33 & m, const Vector3 & t) :
 }
 
 //=============================================================================
-Matrix34::Matrix34 (const q32 & q)
+Matrix34::Matrix34 (const Quaternion & q)
 {
     const float32 xx = 2.0f * q.v.x * q.v.x;
     const float32 yy = 2.0f * q.v.y * q.v.y;
@@ -342,7 +342,7 @@ Matrix34::Matrix34 (const q32 & q)
 }
 
 //=============================================================================
-Matrix34::Matrix34 (const q32 & q, const Vector3 & t)
+Matrix34::Matrix34 (const Quaternion & q, const Vector3 & t)
 {
     const float32 xx = 2.0f * q.v.x * q.v.x;
     const float32 yy = 2.0f * q.v.y * q.v.y;
@@ -425,7 +425,7 @@ Matrix44::Matrix44 (
 }
 
 //=============================================================================
-Matrix44::Matrix44 (const q32 & q)
+Matrix44::Matrix44 (const Quaternion & q)
 {
     const float32 xx = 2.0f * q.v.x * q.v.x;
     const float32 yy = 2.0f * q.v.y * q.v.y;
@@ -446,7 +446,7 @@ Matrix44::Matrix44 (const q32 & q)
 }
 
 //=============================================================================
-Matrix44::Matrix44 (const q32 & q, const Vector3 & t)
+Matrix44::Matrix44 (const Quaternion & q, const Vector3 & t)
 {
     const float32 xx = 2.0f * q.v.x * q.v.x;
     const float32 yy = 2.0f * q.v.y * q.v.y;

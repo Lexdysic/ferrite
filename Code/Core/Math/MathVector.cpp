@@ -32,17 +32,17 @@ const Vector4 Vector4::UnitW(   0.0f, 0.0f, 0.0f, 1.0f );
 const Vector4 Vector4::Infinity( Math::Infinity, Math::Infinity, Math::Infinity, Math::Infinity );
 
 //=============================================================================
-void BuildBasis(const v3 & x, v3 & u, v3 & v, v3 & w)
+void BuildBasis(const Vector3 & x, Vector3 & u, Vector3 & v, Vector3 & w)
 {
     u = Normalize(x);
 
-    const v3 a = Abs(u);
+    const Vector3 a = Abs(u);
     if( a.x <= a.y && a.x <= a.z )      
-        v = Cross(u, Normalize(v3(1.0f, -u.z, u.y)));
+        v = Cross(u, Normalize(Vector3(1.0f, -u.z, u.y)));
     else if( a.y <= a.x && a.y <= a.z ) 
-        v = Cross(u, Normalize(v3(-u.z, 1.0f, u.x)));
+        v = Cross(u, Normalize(Vector3(-u.z, 1.0f, u.x)));
     else                                
-        v = Cross(u, Normalize(v3(-u.y, u.x, 1.0f)));
+        v = Cross(u, Normalize(Vector3(-u.y, u.x, 1.0f)));
 
     w = Cross(u, v);
 

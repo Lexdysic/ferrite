@@ -90,7 +90,7 @@ Obb3::Obb3()
 //    [const v32 & z] - Local z-axis (does not need to be normalized)
 //    
 //=============================================================================
-Obb3::Obb3( const p3 & center, const v3 & x, const v3 & y, const v3 & z )
+Obb3::Obb3( const Point3 & center, const Vector3 & x, const Vector3 & y, const Vector3 & z )
 : center(center)
 {
     u[0] = x;
@@ -110,14 +110,14 @@ Obb3::Obb3( const p3 & center, const v3 & x, const v3 & y, const v3 & z )
 //    Constructs the box from its center and three ortho-normal vectors and the extents.
 //    
 // Parameters: 
-//    [const p3 & center] - Center of the box
+//    [const Point3 & center] - Center of the box
 //    [const v3 & unitX] - Local x-axis (must be normalized)
 //    [const v3 & unitY] - Local y-axis (must be normalized)
 //    [const v3 & unitZ] - Local z-axis (must be normalized)
 //    [const v3 & extent] - Extents in each of the local axes
 //    
 //=============================================================================
-Obb3::Obb3( const p3 & center, const v3 & unitX, const v3 & unitY, const v3 & unitZ, const v3 & extent )
+Obb3::Obb3( const Point3 & center, const Vector3 & unitX, const Vector3 & unitY, const Vector3 & unitZ, const Vector3 & extent )
 : center(center)
 , extent(extent)
 {

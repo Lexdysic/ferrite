@@ -118,16 +118,16 @@ Matrix44 operator*(const Matrix44 & lhs, const Matrix44 & rhs)
 }
 
 //=============================================================================
-bool operator== (const m22 & lhs, const m22 & rhs) { return lhs.Row(0)==rhs.Row(0) && lhs.Row(1)==rhs.Row(1); }
-bool operator== (const m33 & lhs, const m33 & rhs) { return lhs.Row(0)==rhs.Row(0) && lhs.Row(1)==rhs.Row(1) && lhs.Row(2)==rhs.Row(2); }
-bool operator== (const m34 & lhs, const m34 & rhs) { return lhs.Row(0)==rhs.Row(0) && lhs.Row(1)==rhs.Row(1) && lhs.Row(2)==rhs.Row(2); }
-bool operator== (const m44 & lhs, const m44 & rhs) { return lhs.Row(0)==rhs.Row(0) && lhs.Row(1)==rhs.Row(1) && lhs.Row(2)==rhs.Row(2) && lhs.Row(3)==rhs.Row(3); }
+bool operator== (const Matrix22 & lhs, const Matrix22 & rhs) { return lhs.Row(0)==rhs.Row(0) && lhs.Row(1)==rhs.Row(1); }
+bool operator== (const Matrix33 & lhs, const Matrix33 & rhs) { return lhs.Row(0)==rhs.Row(0) && lhs.Row(1)==rhs.Row(1) && lhs.Row(2)==rhs.Row(2); }
+bool operator== (const Matrix34 & lhs, const Matrix34 & rhs) { return lhs.Row(0)==rhs.Row(0) && lhs.Row(1)==rhs.Row(1) && lhs.Row(2)==rhs.Row(2); }
+bool operator== (const Matrix44 & lhs, const Matrix44 & rhs) { return lhs.Row(0)==rhs.Row(0) && lhs.Row(1)==rhs.Row(1) && lhs.Row(2)==rhs.Row(2) && lhs.Row(3)==rhs.Row(3); }
 
 //=============================================================================
-bool operator!= (const m22 & lhs, const m22 & rhs) { return !(lhs == rhs); }
-bool operator!= (const m33 & lhs, const m33 & rhs) { return !(lhs == rhs); }
-bool operator!= (const m34 & lhs, const m34 & rhs) { return !(lhs == rhs); }
-bool operator!= (const m44 & lhs, const m44 & rhs) { return !(lhs == rhs); }
+bool operator!= (const Matrix22 & lhs, const Matrix22 & rhs) { return !(lhs == rhs); }
+bool operator!= (const Matrix33 & lhs, const Matrix33 & rhs) { return !(lhs == rhs); }
+bool operator!= (const Matrix34 & lhs, const Matrix34 & rhs) { return !(lhs == rhs); }
+bool operator!= (const Matrix44 & lhs, const Matrix44 & rhs) { return !(lhs == rhs); }
 
 //=============================================================================
 Matrix22 Transpose (const Matrix22 & m) { return Matrix22(m.Column(0), m.Column(1)); }

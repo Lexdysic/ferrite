@@ -22,8 +22,8 @@ class Plane2
 {
 public:
     Plane2();
-    Plane2( const p2 & point, const v2 & normal );
-    Plane2( const p2 & a, const p2 & b );
+    Plane2( const Point2 & point, const Vector2 & normal );
+    Plane2( const Point2 & a, const Point2 & b );
     Plane2( float32 a, float32 b, float32 d );
 
     static const Plane2 X;
@@ -31,7 +31,7 @@ public:
 
     union 
     {
-        struct { v2 n; float32 d; };
+        struct { Vector2 n; float32 d; };
         struct { float32 a, b, d; };                //!< Coefficients of the implicit equation
     };
 };
@@ -45,8 +45,8 @@ class Plane3
 {
 public:
     Plane3();
-    Plane3( const p3 & point, const v3 & normal );
-    Plane3( const p3 & a, const p3 & b, const p3 & c );
+    Plane3( const Point3 & point, const Vector3 & normal );
+    Plane3( const Point3 & a, const Point3 & b, const Point3 & c );
     Plane3( float32 a, float32 b, float32 c, float32 d );
 
     static const Plane3 YZ;
@@ -55,7 +55,7 @@ public:
 
     union 
     {
-        struct { v3 n; float32 d; };
+        struct { Vector3 n; float32 d; };
         struct { float32 a, b, c, d; };             //!< Coefficients of the implicit equation
     };
 };

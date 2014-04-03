@@ -10,7 +10,7 @@
 
 #include "GeomPch.h"
 
-const Ellipsoid3 Ellipsoid3::Unit( p3::Zero, v3::UnitX, v3::UnitY, v3::UnitZ );
+const Ellipsoid3 Ellipsoid3::Unit( Point3::Zero, Vector3::UnitX, Vector3::UnitY, Vector3::UnitZ );
 
 //=============================================================================
 Ellipsoid3::Ellipsoid3()
@@ -18,7 +18,7 @@ Ellipsoid3::Ellipsoid3()
 }
 
 //=============================================================================
-Ellipsoid3::Ellipsoid3( const p3 & c, const v3 & u, const v3 & v, const v3 & w )
+Ellipsoid3::Ellipsoid3( const Point3 & c, const Vector3 & u, const Vector3 & v, const Vector3 & w )
 : center(c)
 , u(u)
 , v(v)

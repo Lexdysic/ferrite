@@ -23,7 +23,7 @@ float32 DistanceSq( const Point3 & a, const Point3 & b )
 //=============================================================================
 float32 DistanceSq( const Point3 & p, const Line3 & line )
 {
-    v3  ap = p - line.origin;
+    Vector3  ap = p - line.origin;
     float32 e = Dot(ap, line.direction);
     float32 f = LengthSq(line.direction);
 
@@ -33,9 +33,9 @@ float32 DistanceSq( const Point3 & p, const Line3 & line )
 //=============================================================================
 float32 DistanceSq( const Point3 & p, const Segment3 & line )
 {
-    v3  ab = line.b - line.a;
-    v3  ap = p - line.a;
-    v3  bp = p - line.b;
+    Vector3  ab = line.b - line.a;
+    Vector3  ap = p - line.a;
+    Vector3  bp = p - line.b;
 
     float32 e = Dot(ap, ab);
     if( e <= 0.0f ) return LengthSq(ap);
@@ -49,7 +49,7 @@ float32 DistanceSq( const Point3 & p, const Segment3 & line )
 //=============================================================================
 float32 DistanceSq( const Point3 & p, const Ray3 & ray )
 {
-    v3  ap = p - ray.origin;
+    Vector3  ap = p - ray.origin;
     float32 e = Dot(ap, ray.direction);
 
     if( e <= 0.0f ) return LengthSq(ap);
@@ -76,7 +76,7 @@ float32 DistanceSq( const Point3 & p, const Aabb3 & box )
 //=============================================================================
 float32 DistanceSq( const Point3 & p, const Obb3 & box )
 {
-    v3  v       = p - box.center;
+    Vector3  v       = p - box.center;
     float32 distSq  = 0.0f;
 
     for( uint i = 0; i < 3; ++i )

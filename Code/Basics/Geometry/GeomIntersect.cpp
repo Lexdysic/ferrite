@@ -105,7 +105,7 @@ bool Intersect( const Sphere3 & s, const Vector3 & v, const Plane3 & p )
 bool Intersect( IntersectInfo3 & out, const Aabb3 & b, const Vector3 & v, const Plane3 & p )
 {
     Vector3  extent = (b.max - b.min) * 0.5f;
-    p3  center = b.min + extent;
+    Point3  center = b.min + extent;
     float32 radius = Dot(extent, Abs(v));
 
     
@@ -140,7 +140,7 @@ bool Intersect( IntersectInfo3 & out, const Aabb3 & b, const Vector3 & v, const 
 bool Intersect( const Aabb3 & b, const Vector3 & v, const Plane3 & p )
 {
     Vector3  extent = (b.max - b.min) * 0.5f;
-    p3  center = b.min + extent;
+    Point3  center = b.min + extent;
     float32 radius = Dot(extent, Abs(v));
 
 
@@ -233,8 +233,8 @@ bool Intersect( IntersectInfo2 & out, const Sphere2 & s0, const Vector2 & v0, co
         if( out.time <= vLen )
         {
             // sphere center at time of collision
-            const p2 p0 = s0.center + v0 * out.time;
-            const p2 p1 = s1.center + v1 * out.time;
+            const Point2 p0 = s0.center + v0 * out.time;
+            const Point2 p1 = s1.center + v1 * out.time;
             // TODO: compute the actual point of contact
             return true;
         }
@@ -287,7 +287,7 @@ bool Intersect (IntersectInfo2 & out, const Ray2 & r, const Sphere2 & s)
 bool Intersect (IntersectInfo3 & out, const Ray3 & r, const Sphere3 & s)
 {
 #define RAY_SPHERE_HANDLE_START_INSIDE
-    const p3 & p = r.origin;
+    const Point3 & p = r.origin;
     const Vector3 & d = r.direction;
 
     const Vector3  m = p - s.center;
@@ -328,7 +328,7 @@ bool Intersect (IntersectInfo3 & out, const Ray3 & r, const Sphere3 & s)
 //bool Intersect( IntersectInfo3 & out, const Ray3 & r, const Sphere3 & s )
 //{
 //#define RAY_SPHERE_HANDLE_START_INSIDE
-//  const p3 & p = r.origin;
+//  const Point3 & p = r.origin;
 //  const Vector3 & d = r.direction;
 //
 //  //assert(Normalized(d));

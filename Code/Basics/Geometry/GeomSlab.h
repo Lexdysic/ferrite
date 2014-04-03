@@ -26,7 +26,7 @@ public:
     
     union
     {
-        struct { v3 normal; float32 dNear; float32 dFar; };
-        struct { v3 n; Interval extents; };
+        struct { Vector3 normal; float32 dNear; float32 dFar; };
+        struct { Vector3 n; Interval extents; };
     };
 };

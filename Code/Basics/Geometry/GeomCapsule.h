@@ -17,7 +17,7 @@ class Capsule3
 {
 public:
     Capsule3();
-    Capsule3( const p3 & a, const p3 & b, float32 r );
+    Capsule3( const Point3 & a, const Point3 & b, float32 r );
 
     union
     {

@@ -19,18 +19,18 @@
 //    Computes the closest point on a triangle to a point
 //    
 // Parameters: 
-//    [const p3 & p] - Point to test against
+//    [const Point3 & p] - Point to test against
 //    [const Triangle3 & tri] - Triangle to find a point on
 //    
 // Return: 
-//    [p3] - A point on the given triangle
+//    [Point3] - A point on the given triangle
 //=============================================================================
-p3 Closest( const p3 & p, const Triangle3 & tri )
+Point3 Closest( const Point3 & p, const Triangle3 & tri )
 {
     // Check if p is outside of A
-    v3  ab = tri.b - tri.a;
-    v3  ac = tri.c - tri.a;
-    v3  ap = p     - tri.a;
+    Vector3  ab = tri.b - tri.a;
+    Vector3  ac = tri.c - tri.a;
+    Vector3  ap = p     - tri.a;
     float32 d1 = Dot(ab, ap);
     float32 d2 = Dot(ac, ap);
 
@@ -38,7 +38,7 @@ p3 Closest( const p3 & p, const Triangle3 & tri )
         return tri.a;
 
     // Check if p is outside of B
-    v3  bp = p - tri.b;
+    Vector3  bp = p - tri.b;
     float32 d3 = Dot(ab, bp);
     float32 d4 = Dot(ac, bp);
 
@@ -54,7 +54,7 @@ p3 Closest( const p3 & p, const Triangle3 & tri )
     }
 
     // Check if p in vertex region of C
-    v3  cp = p - tri.c;
+    Vector3  cp = p - tri.c;
     float32 d5 = Dot(ab, cp);
     float32 d6 = Dot(ac, cp);
     if( d6 >= 0.0f && d5 <= d6 )
@@ -104,7 +104,7 @@ p3 Closest( const p3 & p, const Triangle3 & tri )
 //=============================================================================
 bool ClosestInfo( ClosestInfoLineLine3 & out, const Line3 & line1, const Line3 & line2 )
 {
-    v3 r = line1.origin - line2.origin;
+    Vector3 r = line1.origin - line2.origin;
 
     float32 a = Dot( line1.direction, line1.direction );
     float32 e = Dot( line2.direction, line2.direction );
@@ -149,9 +149,9 @@ bool ClosestInfo( ClosestInfoLineLine3 & out, const Line3 & line1, const Line3 &
 //=============================================================================
 bool ClosestInfo( ClosestInfoSegmentSegment3 & out, const Segment3 & line1, const Segment3 & line2 )
 {
-    v3      d1 = line1.b - line1.a;
-    v3      d2 = line2.b - line2.a;
-    v3      r  = line1.a - line2.a;
+    Vector3      d1 = line1.b - line1.a;
+    Vector3      d2 = line2.b - line2.a;
+    Vector3      r  = line1.a - line2.a;
     float32     a  = LengthSq(d1);
     float32     e  = LengthSq(d2);
     float32     f  = Dot(d2, r);

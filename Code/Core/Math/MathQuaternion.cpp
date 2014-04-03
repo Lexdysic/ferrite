@@ -18,10 +18,10 @@
 //    Converts a rotation matrix to a quaternion
 //    
 // Parameters: 
-//    [const m33 & m] - The rotation matrix to extract the rotation from
+//    [const Matrix33 & m] - The rotation matrix to extract the rotation from
 //    
 //=============================================================================
-Quaternion::Quaternion( const m33 & m )
+Quaternion::Quaternion( const Matrix33 & m )
 {
     float32 m00 = m(0,0);
     float32 m11 = m(1,1);
@@ -83,10 +83,10 @@ Quaternion::Quaternion( const m33 & m )
 //    Converts a rotation matrix to a quaternion
 //    
 // Parameters: 
-//    [const m33 & m] - The rotation matrix to extract the rotation from
+//    [const Matrix33 & m] - The rotation matrix to extract the rotation from
 //    
 //=============================================================================
-Quaternion::Quaternion( const m34 & m )
+Quaternion::Quaternion( const Matrix34 & m )
 {
     float32 m00 = m(0,0);
     float32 m11 = m(1,1);
@@ -146,10 +146,10 @@ Quaternion::Quaternion( const m34 & m )
 //    Converts a rotation matrix to a quaternion
 //    
 // Parameters: 
-//    [const m44 & m] - The rotation matrix to extract the rotation from
+//    [const Matrix44 & m] - The rotation matrix to extract the rotation from
 //    
 //=============================================================================
-Quaternion::Quaternion( const m44 & m )
+Quaternion::Quaternion( const Matrix44 & m )
 {
     m;
     assert( !"Not Implemented" );

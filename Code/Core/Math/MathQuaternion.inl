@@ -65,10 +65,10 @@ Quaternion::Quaternion( const Vector4 & v )
 //    
 // Parameters: 
 //    [float32 a] - Real component
-//    [const v3 & bcd] - Imaginary components
+//    [const Vector3 & bcd] - Imaginary components
 //    
 //=============================================================================
-Quaternion::Quaternion( float32 a, const v3 & bcd ) 
+Quaternion::Quaternion( float32 a, const Vector3 & bcd ) 
 : a(a)
 , v(bcd) 
 {
@@ -83,11 +83,11 @@ Quaternion::Quaternion( float32 a, const v3 & bcd )
 //    Converts an axis-angle pair to a quaternion
 //    
 // Parameters: 
-//    [const v3 & axis] - Axis of the rotation (does not have to be normalized)
+//    [const Vector3 & axis] - Axis of the rotation (does not have to be normalized)
 //    [float32 angle] - Angle of the rotation around the axis
 //    
 //=============================================================================
-Quaternion::Quaternion( const v3 & axis, Radian angle ) 
+Quaternion::Quaternion( const Vector3 & axis, Radian angle ) 
 : a( Cos( angle * 0.5f ) )
 , v( Normalize(axis) * Sin( angle * 0.5f ) ) 
 {

@@ -20,9 +20,9 @@
 //    [const Plane3 & plane] - Plane to find the closest point on
 //    
 // Return: 
-//    [p3] - The closest point on the plane
+//    [Point3] - The closest point on the plane
 //=============================================================================
-p3 Closest( const Point3 & p, const Plane3 & plane )
+Point3 Closest( const Point3 & p, const Plane3 & plane )
 {
     return p - Distance(p, plane) * plane.n;
 }
@@ -36,13 +36,13 @@ p3 Closest( const Point3 & p, const Plane3 & plane )
 //    Returns the closest point on a line to a point
 //    
 // Parameters: 
-//    [const p3 & p] - Point to test
+//    [const Point3 & p] - Point to test
 //    [const Line3 & line] - Line of which to find the closest point
 //    
 // Return: 
-//    [p3] - A point on the given line closest to the point
+//    [Point3] - A point on the given line closest to the point
 //=============================================================================
-p3 Closest( const p3 & p, const Line3 & line )
+Point3 Closest( const Point3 & p, const Line3 & line )
 {
     float32 t = Dot(p - line.origin, line.direction) / LengthSq(line.direction);
     return line.origin + t * line.direction;
@@ -57,13 +57,13 @@ p3 Closest( const p3 & p, const Line3 & line )
 //    Computes the cloests point on a ray to a point
 //    
 // Parameters: 
-//    [const p3 & p] - Point to test against
+//    [const Point3 & p] - Point to test against
 //    [const Ray3 & line] - Ray to find a point on
 //    
 // Return: 
-//    [p3] - A point on the given ray closest to the point
+//    [Point3] - A point on the given ray closest to the point
 //=============================================================================
-p3 Closest( const p3 & p, const Ray3 &  line )
+Point3 Closest( const Point3 & p, const Ray3 &  line )
 {
     float32 t = Dot(p - line.origin, line.direction) / LengthSq(line.direction);
     if( t < 0.0f ) t = 0.0f;
@@ -100,15 +100,15 @@ Point2 Closest (const Point2 & p, const Segment2 & line)
 //    Computes the closest point on an Axis-aligned bounding box to a point
 //    
 // Parameters: 
-//    [const p3 & p] - Point to test against
+//    [const Point3 & p] - Point to test against
 //    [const Aabb3 & box] - Box to find a point on
 //    
 // Return: 
-//    [p3] - A point on the given Aabb to the point
+//    [Point3] - A point on the given Aabb to the point
 //=============================================================================
-p3 Closest( const p3 & p, const Aabb3 & box )
+Point3 Closest( const Point3 & p, const Aabb3 & box )
 {
-    p3 out;
+    Point3 out;
     for( uint i = 0; i < 3; ++i )
     {
         out[i] = Clamp( p[i], box.min[i], box.max[i] );
@@ -125,16 +125,16 @@ p3 Closest( const p3 & p, const Aabb3 & box )
 //    Computes the closest point on an Oriented bounding box to a point
 //    
 // Parameters: 
-//    [const p3 & p] - Point to test against
+//    [const Point3 & p] - Point to test against
 //    [const Obb3 & box] - Box to find a point on
 //    
 // Return: 
-//    [p3] - A point on the given Obb to the point
+//    [Point3] - A point on the given Obb to the point
 //=============================================================================
-p3 Closest( const p3 & p, const Obb3 & box )
+Point3 Closest( const Point3 & p, const Obb3 & box )
 {
-    v3 d    = p - box.center;
-    p3 out  = box.center;
+    Vector3 d    = p - box.center;
+    Point3 out  = box.center;
     for( uint i = 0; i < 3; ++i )
     {
         float32 dist = Dot(d, box.u[i]);
@@ -152,16 +152,16 @@ p3 Closest( const p3 & p, const Obb3 & box )
 //    Computes the closest point on a rectangle to a point
 //    
 // Parameters: 
-//    [const p3 & p] - Point to test against
+//    [const Point3 & p] - Point to test against
 //    [const Rect3 & rect] - Rectangle to find a point on
 //    
 // Return: 
-//    [p3] - A point on the given rectangle
+//    [Point3] - A point on the given rectangle
 //=============================================================================
-p3 Closest( const p3 & p, const Rect3 & rect )
+Point3 Closest( const Point3 & p, const Rect3 & rect )
 {
-    v3 d    = p - rect.center;
-    p3 out  = rect.center;
+    Vector3 d    = p - rect.center;
+    Point3 out  = rect.center;
     for( uint i = 0; i < 2; ++i )
     {
         float32 dist = Clamp( Dot(d, rect.u[i]), -rect.extent[i], rect.extent[i] );

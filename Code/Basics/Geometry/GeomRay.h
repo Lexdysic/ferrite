@@ -21,10 +21,10 @@ class Ray2
 {
 public:
     Ray2();
-    Ray2( const p2 & origin, const v2 & direction );
+    Ray2( const Point2 & origin, const Vector2 & direction );
 
-    p2 origin;      //!< The start point of the ray
-    v2 direction;   //!< The vector direction of the ray (need not be normalized)
+    Point2 origin;      //!< The start point of the ray
+    Vector2 direction;   //!< The vector direction of the ray (need not be normalized)
 };
 
 //=============================================================================
@@ -36,8 +36,8 @@ class Ray3
 {
 public:
     Ray3();
-    Ray3( const p3 & origin, const v3 & direction );
+    Ray3( const Point3 & origin, const Vector3 & direction );
 
-    p3 origin;      //!< The start point of the ray
-    v3 direction;   //!< The vector direction of the ray (need not be normalized)
+    Point3 origin;      //!< The start point of the ray
+    Vector3 direction;   //!< The vector direction of the ray (need not be normalized)
 };

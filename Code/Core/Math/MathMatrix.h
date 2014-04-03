@@ -134,7 +134,7 @@ public:
         float32 e10, float32 e11, float32 e12,
         float32 e20, float32 e21, float32 e22
     );
-    Matrix33 (const q32 & q);
+    Matrix33 (const Quaternion & q);
 
     const float32 &         operator() (uint32 r, uint32 c) const;
           float32 &         operator() (uint32 r, uint32 c);
@@ -152,8 +152,8 @@ public:
             float32 m10, m11, m12;
             float32 m20, m21, m22;
         };
-        struct { v3 mv[3]; };
-        struct { v3 r0, r1, r2; };
+        struct { Vector3 mv[3]; };
+        struct { Vector3 r0, r1, r2; };
         float32 ma[3*3];
     };
 
@@ -180,9 +180,9 @@ public:
         float32 m10, float32 m11, float32 m12, float32 m13,
         float32 m20, float32 m21, float32 m22, float32 m23
     );
-    Matrix34 (const Matrix33 & m, const v3 & t);
-    Matrix34 (const q32 & q);
-    Matrix34 (const q32 & q, const v3 & t);
+    Matrix34 (const Matrix33 & m, const Vector3 & t);
+    Matrix34 (const Quaternion & q);
+    Matrix34 (const Quaternion & q, const Vector3 & t);
 
     const float32 &         operator() (uint32 r, uint32 c) const;
           float32 &         operator() (uint32 r, uint32 c);
@@ -201,8 +201,8 @@ public:
             float32 m10, m11, m12, m13;
             float32 m20, m21, m22, m23;
         };
-        struct { v4 mv[3]; };
-        struct { v4 r0, r1, r2; };
+        struct { Vector4 mv[3]; };
+        struct { Vector4 r0, r1, r2; };
         float32 ma[3*4];
     };
 };
@@ -232,8 +232,8 @@ public:
         float32 m20, float32 m21, float32 m22, float32 m23,
         float32 m30, float32 m31, float32 m32, float32 m33
     );
-    Matrix44 (const q32 & q);
-    Matrix44 (const q32 & q, const Vector3 & t);
+    Matrix44 (const Quaternion & q);
+    Matrix44 (const Quaternion & q, const Vector3 & t);
 
 
     const float32 & operator() (uint32 r, uint32 c) const;
@@ -254,8 +254,8 @@ public:
             float32 m20, m21, m22, m23;
             float32 m30, m31, m32, m33;
         };
-        struct { v4 mv[4]; };
-        struct { v4 r0, r1, r2, r3; };
+        struct { Vector4 mv[4]; };
+        struct { Vector4 r0, r1, r2, r3; };
         float32 ma[4*4];
     };
 };
@@ -309,15 +309,15 @@ inline Vector3 operator* (const Matrix34 & lhs, const Vector3 & rhs);
 inline Vector3 operator* (const Matrix34 & lhs, const Vector4 & rhs);
 inline Vector4 operator* (const Matrix44 & lhs, const Vector4 & rhs);
 
-inline bool operator== (const m22 & lhs, const m22 & rhs);
-inline bool operator== (const m33 & lhs, const m33 & rhs);
-inline bool operator== (const m34 & lhs, const m34 & rhs);
-inline bool operator== (const m44 & lhs, const m44 & rhs);
+inline bool operator== (const Matrix22 & lhs, const Matrix22 & rhs);
+inline bool operator== (const Matrix33 & lhs, const Matrix33 & rhs);
+inline bool operator== (const Matrix34 & lhs, const Matrix34 & rhs);
+inline bool operator== (const Matrix44 & lhs, const Matrix44 & rhs);
 
-inline bool operator!= (const m22 & lhs, const m22 & rhs);
-inline bool operator!= (const m33 & lhs, const m33 & rhs);
-inline bool operator!= (const m34 & lhs, const m34 & rhs);
-inline bool operator!= (const m44 & lhs, const m44 & rhs);
+inline bool operator!= (const Matrix22 & lhs, const Matrix22 & rhs);
+inline bool operator!= (const Matrix33 & lhs, const Matrix33 & rhs);
+inline bool operator!= (const Matrix34 & lhs, const Matrix34 & rhs);
+inline bool operator!= (const Matrix44 & lhs, const Matrix44 & rhs);
 
 inline Matrix22     Transpose (const Matrix22 & m);
 inline Matrix33     Transpose (const Matrix33 & m);

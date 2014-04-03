@@ -27,13 +27,13 @@ class Sphere2
 {
 public:
     Sphere2();
-    Sphere2( const p2 & c, float32 r );
+    Sphere2( const Point2 & c, float32 r );
 
     static const Sphere2 Unit;
 
     union
     {
-        struct{ p2 center;  float32 radius; };
+        struct{ Point2 center;  float32 radius; };
         struct{ float32 x, y, r; };
     };
 };
@@ -47,13 +47,13 @@ class Sphere3
 {
 public:
     Sphere3();
-    Sphere3( const p3 & c, float32 r );
+    Sphere3( const Point3 & c, float32 r );
 
     static const Sphere3 Unit;
 
     union
     {
-        struct{ p3 center;  float32 radius; };
+        struct{ Point3 center;  float32 radius; };
         struct{ float32 x, y, z, r; };
     };
 };

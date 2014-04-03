@@ -108,10 +108,10 @@ class Vector4
 {
 public:
     inline Vector4();
-    inline Vector4( const p3 & p );
+    inline Vector4( const Point3 & p );
     inline Vector4( const Vector3 & v );
     inline Vector4( const Vector4 & v );
-    inline Vector4( const q32 & q );
+    inline Vector4( const Quaternion & q );
     inline Vector4( const Vector3 & c123, float32 c4 );
     inline Vector4( float32 c1, const Vector3 & c234 );
     inline Vector4( const Vector2 & c12, const Vector2 & c34 );

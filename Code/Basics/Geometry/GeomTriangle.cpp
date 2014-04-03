@@ -64,7 +64,7 @@ Point2 Triangle2::ComputeCentroid () const
 
 
 //=============================================================================
-Triangle3::Triangle3 (const p3 & a, const p3 & b, const p3 & c) :
+Triangle3::Triangle3 (const Point3 & a, const Point3 & b, const Point3 & c) :
     a(a),
     b(b),
     c(c)

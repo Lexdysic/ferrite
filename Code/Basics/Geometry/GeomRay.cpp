@@ -16,7 +16,7 @@ Ray2::Ray2()
 }
 
 //=============================================================================
-Ray2::Ray2( const p2 & origin, const v2 & direction )
+Ray2::Ray2( const Point2 & origin, const Vector2 & direction )
 : origin(origin)
 , direction(direction)
 {
@@ -28,7 +28,7 @@ Ray3::Ray3()
 }
 
 //=============================================================================
-Ray3::Ray3( const p3 & origin, const v3 & direction )
+Ray3::Ray3( const Point3 & origin, const Vector3 & direction )
 : origin(origin)
 , direction(direction)
 {

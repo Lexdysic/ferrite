@@ -31,24 +31,3 @@ class Radian;
 class Degree;
 
 class Interval;
-
-
-//=============================================================================
-//
-// Short type names
-//
-//=============================================================================
-
-typedef Vector2             v2;
-typedef Vector3             v3;
-typedef Vector4             v4;
-
-typedef Point2              p2;
-typedef Point3              p3;
-
-typedef Matrix22            m22;
-typedef Matrix33            m33;
-typedef Matrix34            m34;
-typedef Matrix44            m44;
-
-typedef Quaternion          q32;

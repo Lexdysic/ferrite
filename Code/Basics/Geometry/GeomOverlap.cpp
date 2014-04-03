@@ -23,9 +23,9 @@ bool Overlap( const Obb3 & a, const Obb3 & b)
             R(i,j) = Dot( a.u[i], b.u[j] );
 
     // compute translation
-    v3 t = b.center - a.center;
+    Vector3 t = b.center - a.center;
     // bring translation into a's coordinate frame
-    t = v3( Dot(t, a.u[0]), Dot(t, a.u[1]), Dot(t, a.u[2]) );
+    t = Vector3( Dot(t, a.u[0]), Dot(t, a.u[1]), Dot(t, a.u[2]) );
 
     // Compute common subexpressions.
     for( uint i = 0; i < 3; ++i )

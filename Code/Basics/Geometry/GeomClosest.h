@@ -23,8 +23,8 @@ struct ClosestInfoSegmentSegment3
 {
     float32 time1;      //!< The time of the closest point on the first line
     float32 time2;      //!< The time of the closest point on the second line
-    p3  point1;     //!< The point on first line that is closest to the second
-    p3  point2;     //!< The point on second line that is closest to the first
+    Point3  point1;     //!< The point on first line that is closest to the second
+    Point3  point2;     //!< The point on second line that is closest to the first
     float32 distSq;     //!< The squared distance of the closest points on the lines
 };
 
@@ -32,8 +32,8 @@ struct ClosestInfoRayRay3
 {
     float32 time1;      //!< The time of the closest point on the first line
     float32 time2;      //!< The time of the closest point on the second line
-    p3  point1;     //!< The point on first line that is closest to the second
-    p3  point2;     //!< The point on second line that is closest to the first
+    Point3  point1;     //!< The point on first line that is closest to the second
+    Point3  point2;     //!< The point on second line that is closest to the first
     float32 distSq;     //!< The squared distance of the closest points on the lines
 };
 

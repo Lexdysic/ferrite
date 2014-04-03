@@ -16,7 +16,7 @@ Capsule3::Capsule3()
 }
 
 //=============================================================================
-Capsule3::Capsule3( const p3 & p1, const p3 & p2, float32 r )
+Capsule3::Capsule3( const Point3 & p1, const Point3 & p2, float32 r )
 : a(p1)
 , b(p2)
 , radius(r)
