@@ -4,21 +4,18 @@ namespace Pathing
 class CGraph :
     public IGraph
 {
-public:
+    CLASS_CONVERSION(CGraph, IGraph);
+
+public: // Internal -----------------------------------------------------------
 
     CGraph ();
     ~CGraph ();
 
-public:
-
-    static CGraph * From (IGraph * graph) { return (CGraph *)graph; }
-    static const CGraph * From (const IGraph * graph) { return (CGraph *)graph; }
-
-public: // Intrusive links
+public: // Links --------------------------------------------------------------
 
     TLink<CGraph> m_link;
 
-public:
+public: // IGraph -------------------------------------------------------------
 
     INode * NodeAdd (IData * data) override;
 
@@ -26,9 +23,10 @@ public:
     void EdgeAddSymetric (INode * a, INode * b) override;
 
     TArray<INode *> GetNodes () override;
-private:
 
-    TArray<CNode *> m_nodes;
+private: // Data --------------------------------------------------------------
+
+    NodeArray m_nodes;
 
 };
 

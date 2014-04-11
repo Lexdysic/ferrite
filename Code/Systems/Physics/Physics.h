@@ -16,6 +16,14 @@
 namespace Physics
 {
 
+enum class EMaterial
+{
+    Solid,
+    Liquid
+};
+
+
+
 //=============================================================================
 //
 // Context
@@ -75,10 +83,12 @@ interface IRigidBodyComponent : IComponent
 interface IColliderComponent : IComponent
 {
     static const ComponentType TYPE;
-    static IColliderComponent * Attach (IEntity * entity, const Circle & circle);
-    static IColliderComponent * Attach (IEntity * entity, const Aabb2 & aabb);
+    static IColliderComponent * Attach (IEntity * entity, const Circle & circle, EMaterial material = EMaterial::Solid);
+    static IColliderComponent * Attach (IEntity * entity, const Aabb2 & aabb, EMaterial material = EMaterial::Solid);
 
     virtual void SetGroups(Flags32 groupMasks) pure;
+
+    virtual EMaterial GetMaterial () const pure;
 
     virtual Polygon2 GetPolygon () const pure;
 };

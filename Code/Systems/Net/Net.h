@@ -5,8 +5,8 @@
 // Basic Types
 //
 //=============================================================================
-typedef unsigned int IpAddress;
-typedef unsigned short Port;
+typedef uint32 IpAddress;
+typedef uint16 Port;
 
 
 //=============================================================================
@@ -50,6 +50,7 @@ public:
 
     bool Send (const byte data[], unsigned len);
     unsigned Recv (byte data[], unsigned len);
+    uint BytesAvailable () const;
     
 
     void SetBlocking (bool value);
@@ -71,6 +72,7 @@ namespace Network
 {
 
 interface IManager;
+interface IManagerNotify;
 interface IConnection;
 
 
@@ -85,10 +87,26 @@ interface IManager
 {
     virtual void Update () pure;
 
-    virtual IConnection * CreateConnection(IpAddress address, Port port) pure;
+    virtual void SetListenPort (Port port) pure;
+
+    virtual IConnection * CreateConnection (IpAddress address, Port port) pure;
 };
 
-IManager * NetGetMananger ();
+IManager * GetMananger ();
+
+
+
+//=============================================================================
+//
+// IManagerNotify
+//
+//=============================================================================
+interface IManagerNotify : TNotifyTarget<IManagerNotify>
+{
+    virtual void OnNetConnectionOpen (IConnection * connection);
+    virtual void OnNetConnectionClose (IConnection * connection);
+};
+
 
 
 //=============================================================================
@@ -98,9 +116,9 @@ IManager * NetGetMananger ();
 //=============================================================================
 interface IConnection
 {
-    virtual void Send (const byte data[], const unsigned length) pure;
+    virtual void Send (const byte data[], const uint length) pure;
 
-    virtual void Read (byte data[], const unsigned length) pure;
+    virtual void Read (byte data[], const uint length) pure;
     virtual unsigned BytesAvailable () const pure;
 };
 

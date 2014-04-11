@@ -12,6 +12,17 @@ namespace Pathing
 //============================================================================
 
 //=============================================================================
+Proxy::Proxy (CNode * node) :
+    graphNode(node),
+    location(ELocation::None),
+    score(0.0f),
+    heuristic(0.0f),
+    total(0.0f),
+    previous(null)
+{
+}
+
+//=============================================================================
 void * Proxy::operator new (size_t)
 {
     return CContext::Get()->GetProxyAllocator().Alloc();
@@ -38,7 +49,7 @@ CQuery::CQuery (
     FHeuristic      heuristic,
     FDistance       distance
 ) :
-    m_state(STATE_Working),
+    m_state(EState::Working),
     m_start(start),
     m_goal(goal),
     m_heuristic(heuristic),
@@ -63,11 +74,11 @@ void CQuery::Update ()
         return;
 
     if (m_open.IsEmpty())
-        return Finalize(STATE_Failed);
+        return Finalize(EState::Failed);
 
     Proxy * current = m_open.Pop();
     if  (current->graphNode == m_goal)
-        return Finalize(STATE_Success);
+        return Finalize(EState::Success);
 
     PutInClosed(current);
 
@@ -75,13 +86,13 @@ void CQuery::Update ()
     {
         Proxy * neighborProxy = GetProxy(neighborNode);
 
-        if (neighborProxy->location == Proxy::LOCATION_Closed)
+        if (neighborProxy->location == Proxy::ELocation::Closed)
             continue;
 
         const float tentativeScore = current->score + m_distance(current->graphNode, neighborNode);
 
         // First time encountering this node
-        if (neighborProxy->location != Proxy::LOCATION_Open)
+        if (neighborProxy->location != Proxy::ELocation::Open)
         {
             neighborProxy->previous   = current;
             neighborProxy->score      = tentativeScore;
@@ -125,14 +136,14 @@ const Proxy * CQuery::GetProxy (CNode * node) const
 //=============================================================================
 void CQuery::PutInOpen (Proxy * proxy)
 {
-    proxy->location = Proxy::LOCATION_Open;
+    proxy->location = Proxy::ELocation::Open;
     m_open.Push(proxy);
 }
 
 //=============================================================================
 void CQuery::PutInClosed (Proxy * proxy)
 {
-    proxy->location = Proxy::LOCATION_Closed;
+    proxy->location = Proxy::ELocation::Closed;
 }
 
 //=============================================================================

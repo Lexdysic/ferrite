@@ -36,14 +36,16 @@ private: // Graphics::CContextNotify ------------------------------------------
 private:
     // Types
     typedef LIST_DECLARE(CRigidBodyComponent, m_link) RigidBodyList;
-    typedef LIST_DECLARE(CColliderComponent, m_link) ColliderList;
+    typedef LIST_DECLARE(CColliderComponent, m_linkAll) ColliderAllList;
+    typedef LIST_DECLARE(CColliderComponent, m_linkMaterial) ColliderMaterialList;
 
     // Data
-    RigidBodyList m_rigidBodyList;
-    ColliderList  m_colliderList;
-    Time::Point   m_time;
-    Time::Delta   m_timeAccumulator;
-    Vector2       m_gravity;
+    RigidBodyList           m_rigidBodyList;
+    ColliderAllList         m_colliderList;
+    ColliderMaterialList    m_solidList;
+    ColliderMaterialList    m_liquidList;
+    Time::Delta             m_timeAccumulator;
+    Vector2                 m_gravity;
 
     // Debug
     bool m_debugDrawRigidBody;

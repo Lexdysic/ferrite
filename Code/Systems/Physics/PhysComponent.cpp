@@ -93,26 +93,29 @@ void CRigidBodyComponent::UpdateAngularVelocity (Radian angle)
 //=============================================================================
 
 //=============================================================================
-CColliderComponent::CColliderComponent (const Circle & circle) :
+CColliderComponent::CColliderComponent (const Circle & circle, EMaterial material) :
     m_type(EType::Circle),
     m_circle(circle),
-    m_coeffOfRestitution(1.0f)
+    m_coeffOfRestitution(1.0f),
+    m_material(material)
 {
 
 }
 
 //=============================================================================
-CColliderComponent::CColliderComponent (const Aabb2 & aabb) :
+CColliderComponent::CColliderComponent (const Aabb2 & aabb, EMaterial material) :
     m_type(EType::Box),
     m_aabb(aabb),
-    m_coeffOfRestitution(1.0f)
+    m_coeffOfRestitution(1.0f),
+    m_material(material)
 {
 }
 
 //=============================================================================
-CColliderComponent::CColliderComponent (EType type) :
+CColliderComponent::CColliderComponent (EType type, EMaterial material) :
     m_type(type),
-    m_coeffOfRestitution(1.0f)
+    m_coeffOfRestitution(1.0f),
+    m_material(material)
 {
 }
 
@@ -213,9 +216,9 @@ IRigidBodyComponent * IRigidBodyComponent::Attach (IEntity * entity)
 const ComponentType IColliderComponent::TYPE('C','o','l','l','i','d','e','r');
 
 //=============================================================================
-IColliderComponent * IColliderComponent::Attach (IEntity * entity, const Circle & circle)
+IColliderComponent * IColliderComponent::Attach (IEntity * entity, const Circle & circle, EMaterial material)
 {
-    CColliderComponent * comp = new CColliderComponent(circle);
+    CColliderComponent * comp = new CColliderComponent(circle, material);
     
     CContext::Get()->OnCreate(comp);
 
@@ -225,9 +228,9 @@ IColliderComponent * IColliderComponent::Attach (IEntity * entity, const Circle 
 }
 
 //=============================================================================
-IColliderComponent * IColliderComponent::Attach (IEntity * entity, const Aabb2 & aabb)
+IColliderComponent * IColliderComponent::Attach (IEntity * entity, const Aabb2 & aabb, EMaterial material)
 {
-    CColliderComponent * comp = new CColliderComponent(aabb);
+    CColliderComponent * comp = new CColliderComponent(aabb, material);
     
     CContext::Get()->OnCreate(comp);
 

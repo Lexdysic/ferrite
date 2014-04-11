@@ -88,7 +88,7 @@ Point TLinearCurve<Point, Vector, Segment>::Eval (float32 destDist)
         return Lerp(*lastPoint, *currPoint, t);
     }
 
-    FATAL_EXIT(L"Surpassed extents of curve");
+    FATAL_EXIT("Surpassed extents of curve");
 }
 
 //=============================================================================

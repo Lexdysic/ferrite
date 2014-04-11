@@ -68,6 +68,7 @@
 #endif
 
 #ifdef USES_ENGINE_NET
+#   define USES_ENGINE_UTILITY_NOTIFIER
 #   define USES_ENGINE_TIME
 #endif
 

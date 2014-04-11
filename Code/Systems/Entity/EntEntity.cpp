@@ -57,5 +57,5 @@ uint CEntity::GetComponentCount () const
 CComponent * CEntity::EnumComponent (uint i)
 {
     ASSERT(!"need to implement");
-    return NULL;
+    return null;
 }

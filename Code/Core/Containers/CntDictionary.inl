@@ -134,7 +134,7 @@ V * TDictionary<K, V>::Find (const K & key)
 {
     auto it = m_map.find(key);
     if (it == m_map.end())
-        return NULL;
+        return null;
 
     return &it->second;
 }
@@ -145,7 +145,7 @@ const V * TDictionary<K, V>::Find (const K & key) const
 {
     auto it = m_map.find(key);
     if (it == m_map.end())
-        return NULL;
+        return null;
 
     return &it->second;
 }
@@ -176,7 +176,7 @@ V * TDictionary<K, V *>::Find (const K & key)
 {
     auto it = m_map.find(key);
     if (it == m_map.end())
-        return NULL;
+        return null;
 
     return it->second;
 }
@@ -187,7 +187,7 @@ const V * TDictionary<K, V *>::Find (const K & key) const
 {
     auto it = m_map.find(key);
     if (it == m_map.end())
-        return NULL;
+        return null;
 
     return it->second;
 }

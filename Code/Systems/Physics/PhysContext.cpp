@@ -66,7 +66,6 @@ void CContext::Update (Time::Delta deltaTime)
     m_timeAccumulator += deltaTime;
     while (m_timeAccumulator >= TIME_STEP)
     {
-        m_time += TIME_STEP;
         m_timeAccumulator -= TIME_STEP;
         Tick();
     }
@@ -113,6 +112,17 @@ void CContext::OnCreate (CRigidBodyComponent * comp)
 void CContext::OnCreate (CColliderComponent * comp)
 {
     m_colliderList.InsertTail(comp);
+
+    switch (comp->GetMaterial())
+    {
+        case EMaterial::Solid:
+            m_solidList.InsertTail(comp);
+        break;
+
+        case EMaterial::Liquid:
+            m_liquidList.InsertTail(comp);
+        break;
+    }
 }
 
 //=============================================================================

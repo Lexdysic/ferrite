@@ -4,10 +4,4 @@
 #define USES_ENGINE_UTILITY_ALLOCATOR
 
 #include "EngineDeps.h"
-
 #include "PathInt.h"
-
-namespace Pathing
-{
-
-} // namespace Pathing

@@ -95,6 +95,13 @@ void TArray<T>::RemoveOrdered (uint index)
 
 //=============================================================================
 template <typename T>
+void TArray<T>::RemoveOrdered (uint first, uint term)
+{
+    m_array.erase(m_array.begin() + first, m_array.begin() + term);
+}
+
+//=============================================================================
+template <typename T>
 void TArray<T>::Clear ()
 {
     m_array.clear();

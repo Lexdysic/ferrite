@@ -122,8 +122,8 @@ template <>           struct EncodingType<uint16> { static const EEncoding value
 inline bool CharIsUpper (String::CodePoint code);
 inline bool CharIsLower (String::CodePoint code);
 
-inline wchar CharToUpper (String::CodePoint code);
-inline wchar CharToLower (String::CodePoint code);
+inline String::CodePoint CharToUpper (String::CodePoint code);
+inline String::CodePoint CharToLower (String::CodePoint code);
 
 inline bool CharIsAlpha (String::CodePoint ch);
 inline bool CharIsNumeric (String::CodePoint ch);
@@ -133,9 +133,6 @@ inline bool CharIsWhitespace (String::CodePoint ch);
 
 inline uint StrLen (const wchar text[]);
 inline uint StrLen (const char text[]);
-
-inline uint StrBytes (const wchar text[]);
-inline uint StrBytes (const char text[]);
 
 inline const wchar * StrFind (const wchar text[], wchar ch);
 inline const char *  StrFind (const char text[], char ch);

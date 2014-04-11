@@ -105,7 +105,7 @@ template<class T>
 T * TLink<T>::Prev () {
     T * prevNode = m_prevLink->m_prevLink->m_nextNode;
     if ((size_t) prevNode & 1)
-        return NULL;
+        return null;
     return prevNode;
 }
 
@@ -114,7 +114,7 @@ template<class T>
 const T * TLink<T>::Prev () const {
     const T * prevNode = m_prevLink->m_prevLink->m_nextNode;
     if ((size_t) prevNode & 1)
-        return NULL;
+        return null;
     return prevNode;
 }
 
@@ -122,7 +122,7 @@ const T * TLink<T>::Prev () const {
 template<class T>
 T * TLink<T>::Next () {
     if ((size_t) m_nextNode & 1)
-        return NULL;
+        return null;
     return m_nextNode;
 }
 
@@ -130,7 +130,7 @@ T * TLink<T>::Next () {
 template<class T>
 const T * TLink<T>::Next () const {
     if ((size_t) m_nextNode & 1)
-        return NULL;
+        return null;
     return m_nextNode;
 }
 
@@ -164,7 +164,7 @@ TList<T>::TList (size_t offset) :
 //=============================================================================
 template<class T>
 bool TList<T>::IsEmpty () const {
-    return m_link.Next() == NULL;
+    return m_link.Next() == null;
 }
 
 //=============================================================================
@@ -236,13 +236,13 @@ const T * TList<T>::Next (const T * node) const {
 //=============================================================================
 template<class T>
 void TList<T>::InsertHead (T * node) {
-    InsertAfter(node, NULL);
+    InsertAfter(node, null);
 }
 
 //=============================================================================
 template<class T>
 void TList<T>::InsertTail (T * node) {
-    InsertBefore(node, NULL);
+    InsertBefore(node, null);
 }
 
 //=============================================================================
@@ -296,8 +296,8 @@ TListDeclare<T, offset>::TListDeclare () :
 //=============================================================================
 template <class T>
 TListIterator<T>::TListIterator () :
-    m_curr(NULL),
-    m_list(NULL)
+    m_curr(null),
+    m_list(null)
 {
 }
 
@@ -401,5 +401,5 @@ TListIterator<T> begin (TListDeclare<T, offset> & list)
 template <typename T, size_t offset>
 TListIterator<T> end (TListDeclare<T, offset> & list)
 {
-    return TListIterator<T>(NULL, &list);
+    return TListIterator<T>(null, &list);
 }

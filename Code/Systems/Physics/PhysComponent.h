@@ -79,9 +79,9 @@ class CColliderComponent :
 
 public:
 
-    CColliderComponent (const Circle & circle);
-    CColliderComponent (const Aabb2 & aabb);
-    CColliderComponent (EType type);
+    CColliderComponent (const Circle & circle, EMaterial material);
+    CColliderComponent (const Aabb2 & aabb, EMaterial material);
+    CColliderComponent (EType type, EMaterial material);
     ~CColliderComponent ();
 
     void RenderDebug(Graphics::IRenderTarget * renderTarget);
@@ -100,11 +100,15 @@ private: // CComponent
 public: // IColliderComponent
 
     void SetGroups (Flags32 groupMask) override { m_groupMask = groupMask; }
+
+    virtual EMaterial GetMaterial () const override { return m_material; }
+
     Polygon2 GetPolygon () const override;
 
 public: // Links
 
-    LIST_LINK(CColliderComponent) m_link;
+    LIST_LINK(CColliderComponent) m_linkAll;
+    LIST_LINK(CColliderComponent) m_linkMaterial;
 
 private:
 
@@ -121,6 +125,7 @@ private:
 
     float32     m_coeffOfRestitution;
     Flags32     m_groupMask;
+    EMaterial   m_material;
 
 };
 

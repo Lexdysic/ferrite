@@ -6,7 +6,10 @@ enum class EEndian
     Unknown
 };
 
+
+// MemSet
 inline void MemSet (void * ptr, uint bytes, byte value); 
+
 
 // MemCopy
 inline void MemCopy (void * destination, const void * source, uint bytes);

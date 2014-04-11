@@ -12,7 +12,7 @@
 //=============================================================================
 CComponent::CComponent () :
     m_id(CContext::Get()->GetComponentIdManager().New()),
-    m_owner(NULL)
+    m_owner(null)
 {
 
 }
@@ -38,7 +38,7 @@ IEntity * CComponent::GetOwner () const
 //=============================================================================
 ComponentType CComponent::GetType () const
 {
-    FATAL_EXIT(L"Dervied components must specify a type");
+    FATAL_EXIT("Dervied components must specify a type");
     return ComponentType::Null;
 }
 
@@ -52,7 +52,7 @@ void CComponent::Attached (IEntity * entity)
 void CComponent::Detached (IEntity * entity)
 {
     ASSERT(m_owner == entity);
-    m_owner = NULL;
+    m_owner = null;
 }
 
 //=============================================================================
@@ -149,7 +149,7 @@ void CTransformComponent2::SetPosition (const Point2 & pos)
 {
     if (m_parent)
     {
-        FATAL_EXIT(L"Not implemented");
+        FATAL_EXIT("Not implemented");
     }
     else
     {
@@ -199,7 +199,7 @@ void CTransformComponent2::SetRotation (Radian angle)
 {
     if (m_parent)
     {
-        FATAL_EXIT(L"Not implemented");
+        FATAL_EXIT("Not implemented");
     }
     else
     {

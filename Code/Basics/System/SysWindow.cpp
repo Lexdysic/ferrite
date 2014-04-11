@@ -179,7 +179,7 @@ static CManager s_manager;
 
 //=============================================================================
 CManager::CManager () :
-    m_mainWindow(NULL)
+    m_mainWindow(null)
 {
 }
 
@@ -202,16 +202,16 @@ void CManager::SetMainWindow (CWindow * window)
 //=============================================================================
 ULONG_PTR CWindow::msGdiStartupToken = 0;
 ULONG_PTR CWindow::msGdiHookToken = 0;
-Gdiplus::NotificationUnhookProc CWindow::msGdiUnhookProc = NULL;
+Gdiplus::NotificationUnhookProc CWindow::msGdiUnhookProc = null;
 
 
 //=============================================================================
 CWindow::CWindow (const CString & title, uint width, uint height) :
     mWidth(width),
     mHeight(height),
-    mWindowHandle(NULL),
-    mCursorNormal(NULL),
-    mCursorNull(NULL)
+    mWindowHandle(null),
+    mCursorNormal(null),
+    mCursorNull(null)
 {
     HINSTANCE instance = GetModuleHandle(0);
 
@@ -222,8 +222,8 @@ CWindow::CWindow (const CString & title, uint width, uint height) :
     {
         uint32 cursorAnd = 0xFFFFFFFF;
         uint32 cursorXor = 0x00000000;
-        mCursorNull   = CreateCursor(NULL, 0, 0, 1, 1, &cursorAnd, &cursorXor);
-        mCursorNormal = LoadCursor(NULL, IDC_ARROW);
+        mCursorNull   = CreateCursor(null, 0, 0, 1, 1, &cursorAnd, &cursorXor);
+        mCursorNormal = LoadCursor(null, IDC_ARROW);
     }
 
     // Window Class
@@ -237,11 +237,11 @@ CWindow::CWindow (const CString & title, uint width, uint height) :
         windowClass.cbClsExtra    = 0;
         windowClass.cbWndExtra    = 0;
         windowClass.hInstance     = instance;
-        windowClass.hIcon         = LoadIcon(NULL, IDI_APPLICATION);
-        windowClass.hCursor       = NULL;
-        windowClass.hbrBackground = NULL;
-        windowClass.lpszMenuName  = NULL;
-        windowClass.hIconSm       = NULL;
+        windowClass.hIcon         = LoadIcon(null, IDI_APPLICATION);
+        windowClass.hCursor       = null;
+        windowClass.hbrBackground = null;
+        windowClass.lpszMenuName  = null;
+        windowClass.hIconSm       = null;
         windowClass.lpszClassName = className;
 
         const ATOM ret = RegisterClassExW(&windowClass);
@@ -266,10 +266,10 @@ CWindow::CWindow (const CString & title, uint width, uint height) :
             CW_USEDEFAULT, 
             adjustedWidth, 
             adjustedHeight, 
-            NULL, 
-            NULL, 
+            null, 
+            null, 
             instance, 
-            NULL
+            null
         );
 
         assert(mWindowHandle);
@@ -327,7 +327,7 @@ Vector2u CWindow::GetClientSize () const
 //=============================================================================
 void CWindow::Invalidate() const
 {
-    InvalidateRect(mWindowHandle, NULL, false);
+    InvalidateRect(mWindowHandle, null, false);
 }
 
 //=============================================================================
@@ -628,7 +628,7 @@ void WindowDestroy (IWindow * w)
     CWindow * window = CWindow::From(w);
 
     if (window == s_manager.GetMainWindow())
-        s_manager.SetMainWindow(NULL);
+        s_manager.SetMainWindow(null);
 
     delete window;
 }

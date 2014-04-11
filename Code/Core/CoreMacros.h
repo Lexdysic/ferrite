@@ -17,14 +17,10 @@
 
 //=============================================================================
 //
-// NULL
+// null
 //
 //=============================================================================
 
-#ifdef NULL
-#   undef NULL
-#endif
-#define NULL nullptr
 #define null nullptr
 
 
@@ -107,7 +103,7 @@ namespace Core
     static_cast<size_t>(                                \
         reinterpret_cast<ptrdiff_t>(                    \
             &reinterpret_cast<const uint8 &>(           \
-                reinterpret_cast<type *>(NULL)->field   \
+                reinterpret_cast<type *>(null)->field   \
             )                                           \
         )                                               \
     )
@@ -167,7 +163,7 @@ namespace Core
 
 #define CLASS_CONVERSION(classname, interfacename)                                      \
     public:                                                                             \
-    static classname * From (interfacename * x) { return (classname *)x; }              \
+    static       classname * From (interfacename * x)       { return (classname *)x; }  \
     static const classname * From (const interfacename * x) { return (classname *)x; }
 
 
@@ -197,7 +193,8 @@ namespace Core
 //
 //=============================================================================
 
-#define STRINGIZE(x) #x
+#define STRINGIZE_(x) #x
+#define STRINGIZE(x) STRINGIZE_(x)
 
 
 

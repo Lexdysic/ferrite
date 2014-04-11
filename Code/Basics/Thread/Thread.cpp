@@ -36,7 +36,7 @@ Thread::~Thread()
 //=============================================================================
 void Thread::ThreadStart()
 {
-    mHandle = ::CreateThread(NULL, 0, ThreadEntryPoint, this, 0, (LPDWORD)&mId);
+    mHandle = ::CreateThread(null, 0, ThreadEntryPoint, this, 0, (LPDWORD)&mId);
 }
 
 //=============================================================================
@@ -122,7 +122,7 @@ void CriticalSection::Leave()
 uint ThreadLogicalProcessorCount ()
 {
     DWORD numStructs = 0;
-    GetLogicalProcessorInformation(NULL, &numStructs);
+    GetLogicalProcessorInformation(null, &numStructs);
 
     SYSTEM_LOGICAL_PROCESSOR_INFORMATION * infos = new SYSTEM_LOGICAL_PROCESSOR_INFORMATION[numStructs];
     GetLogicalProcessorInformation(infos, &numStructs);

@@ -35,7 +35,7 @@ void CContext::Initialize (System::IWindow * window)
 {
     ASSERT(window);
 
-    CoInitialize(NULL);
+    CoInitialize(null);
 
     m_pWindow = window;
 
@@ -57,7 +57,7 @@ void CContext::Initialize (System::IWindow * window)
     // WIC Factory
     CoCreateInstance(
         CLSID_WICImagingFactory1,
-        NULL,
+        null,
         CLSCTX_INPROC_SERVER,
         IID_PPV_ARGS(&m_pWicFactory)
     );
@@ -243,7 +243,7 @@ void CContext::TextRegisterStyle(Token name, const wchar font[], float32 size)
     IDWriteTextFormat * textFormat;
     m_pDWriteFactory->CreateTextFormat(
         font,
-        NULL,
+        null,
         DWRITE_FONT_WEIGHT_NORMAL,
         DWRITE_FONT_STYLE_NORMAL,
         DWRITE_FONT_STRETCH_NORMAL,

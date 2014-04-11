@@ -7,7 +7,7 @@ const float32 CURVE_COLLINEARITY_EPSILON = 1.0f;
 
 //=============================================================================
 CRenderTarget::CRenderTarget () :
-    m_renderTarget(NULL),
+    m_renderTarget(null),
     m_transformWorld(
         1.0f, 0.0f, 0.0f,
         0.0f, 1.0f, 0.0f
@@ -242,7 +242,7 @@ void CRenderTarget::Draw (IImage * i, IImage * m, const Point2 & pos, float32 op
         D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR
     );
 
-    ID2D1BitmapBrush * imageBrush = NULL;
+    ID2D1BitmapBrush * imageBrush = null;
     m_renderTarget->CreateBitmapBrush(
         image->GetBitmap(),
         propertiesXClampYClamp,
@@ -250,7 +250,7 @@ void CRenderTarget::Draw (IImage * i, IImage * m, const Point2 & pos, float32 op
     );
     ASSERT(imageBrush);
 
-    ID2D1BitmapBrush * maskBrush = NULL;
+    ID2D1BitmapBrush * maskBrush = null;
     m_renderTarget->CreateBitmapBrush(
         mask->GetBitmap(),
         propertiesXClampYClamp,

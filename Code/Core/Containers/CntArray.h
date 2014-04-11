@@ -20,6 +20,7 @@ public:
     inline T *  New ();
     inline void RemoveUnordered (uint index);
     inline void RemoveOrdered (uint index);
+    inline void RemoveOrdered (uint first, uint term);
     inline void Clear ();
     inline void Reserve (uint count);
     inline void ReserveAdditional (uint count);

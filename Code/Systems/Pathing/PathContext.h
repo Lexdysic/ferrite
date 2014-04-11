@@ -6,7 +6,7 @@ typedef TNotifier<CContextNotify> Notifier;
 class CContext :
     public IContext
 {
-public: // Internal
+public: // Internal -----------------------------------------------------------
 
     CContext ();
     ~CContext ();
@@ -15,12 +15,12 @@ public: // Internal
     CProxyAllocator & GetProxyAllocator () { return m_proxyAllocator; }
     Notifier & GetNotifier () { return m_notifier; }
 
-public: // Static
+public: // Static -------------------------------------------------------------
 
     static CContext * Get () { return &s_context; }
     static CContext s_context;
 
-public: // IContext
+public: // IContext -----------------------------------------------------------
 
     void     Update () override;
 
@@ -28,10 +28,10 @@ public: // IContext
     void     GraphDestroy (IGraph * graph) override;
 
     IQuery * QueryCreate (
-        IGraph * graph,
-        INode * start,
-        INode * goal,
-        FDistance distance,
+        IGraph *   graph,
+        INode *    start,
+        INode *    goal,
+        FDistance  distance,
         FHeuristic heuristic
     ) override;
     void     QueryDestroy (IQuery * query) override;
@@ -42,7 +42,8 @@ public: // IContext
 
     uint DebugUpdateCount () const override { return m_debugUpdateCount; }
 
-private:
+private: // -------------------------------------------------------------------
+
     // Types
     typedef LIST_DECLARE(CGraph, m_link) GraphList;
     typedef LIST_DECLARE(CQuery, m_link) QueryList;

@@ -54,7 +54,7 @@ void CContext::Uninitialize ()
     m_proxyLookup.Clear();
 
     m_window->NotifyUnregister(this);
-    m_window = NULL;
+    m_window = null;
 }
 
 //=============================================================================

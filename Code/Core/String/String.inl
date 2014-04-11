@@ -14,13 +14,13 @@ bool CharIsLower (String::CodePoint code)
 }
 
 //=============================================================================
-wchar CharToUpper (String::CodePoint code)
+String::CodePoint CharToUpper (String::CodePoint code)
 {
     return CharIsLower(code) ? (code + ('A' - 'a')) : code; // TODO: others
 }
 
 //=============================================================================
-wchar CharToLower (String::CodePoint code)
+String::CodePoint CharToLower (String::CodePoint code)
 {
     return CharIsUpper(code) ? (code + ('a' - 'A')) : code; // TODO: others
 }
@@ -75,18 +75,6 @@ uint StrLen (const wchar text[])
 uint StrLen (const char text[])
 {
     return strlen(text);
-}
-
-//=============================================================================
-uint StrBytes (const wchar text[])
-{
-    return StrLen(text) * sizeof(wchar);
-}
-
-//=============================================================================
-uint StrBytes (const char text[])
-{
-    return StrLen(text) * sizeof(char);
 }
 
 //=============================================================================

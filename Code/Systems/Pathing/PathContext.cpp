@@ -58,7 +58,7 @@ void CContext::Update ()
             if (query->IsFinished())
             {
                 query->m_link.Unlink();
-                m_queriesFinished.InsertBefore(query, NULL);
+                m_queriesFinished.InsertBefore(query, null);
             }
         }
     }

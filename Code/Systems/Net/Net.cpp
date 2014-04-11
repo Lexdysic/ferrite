@@ -1,10 +1,8 @@
+#include <winsock2.h>
+
 #define USES_ENGINE_NET
 
 #include "EngineDeps.h"
-
-#include <winsock2.h>
-#include <cassert>
-#include <iostream>
 
 #pragma comment(lib, "ws2_32.lib")
 
@@ -79,10 +77,10 @@ bool Socket::IsValid () const
 //=============================================================================
 void Socket::Init ()
 {
-    assert(!IsValid());
+    ASSERT(!IsValid());
     //m_socket = ::WSASocket(PF_INET, SOCK_STREAM, 0, null, 0, WSA_FLAG_OVERLAPPED);
     m_socket = ::socket(AF_INET, SOCK_STREAM, 0);
-    assert(IsValid());
+    ASSERT(IsValid());
 }
 
 //=============================================================================
@@ -135,16 +133,16 @@ bool Socket::Connect (IpAddress ip, Port port)
 //=============================================================================
 Socket Socket::Accept ()
 {
-    assert(IsValid());
+    ASSERT(IsValid());
 
-    const unsigned int socket = ::accept(m_socket, NULL, NULL);
+    const unsigned int socket = ::accept(m_socket, null, null);
     return Socket(socket);
 }
 
 //=============================================================================
 bool Socket::Send (const byte data[], unsigned len)
 { 
-    assert(IsValid());
+    ASSERT(IsValid());
     const int ret = ::send(m_socket, (const char *)data, len, 0);
     if (ret > 0)
         return true;
@@ -156,7 +154,7 @@ bool Socket::Send (const byte data[], unsigned len)
 //=============================================================================
 unsigned Socket::Recv (byte data[], unsigned len)
 {
-    assert(IsValid());
+    ASSERT(IsValid());
     const int ret = ::recv(m_socket, (char *)data, len, 0);
     if (ret > 0)
         return ret;
@@ -166,9 +164,17 @@ unsigned Socket::Recv (byte data[], unsigned len)
 }
 
 //=============================================================================
+uint Socket::BytesAvailable () const
+{
+    u_long bytes = 0;
+    ::ioctlsocket(m_socket, FIONREAD, &bytes);
+    return bytes;
+}
+
+//=============================================================================
 void Socket::SetBlocking (bool value)
 {
-    assert(IsValid());
+    ASSERT(IsValid());
 
     // Set as non-blocking by default
     u_long nonBlocking = !value;
@@ -216,9 +222,7 @@ void Socket::HandleErrors ()
             Close();
         break;
 
-        default:
-            std::cout << "Error: Unhandled = " << error << std::endl;
-            Close();
-        break;
+        DEFAULT_FATAL("Unknown error");
+
     }
 }

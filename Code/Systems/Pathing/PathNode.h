@@ -5,10 +5,12 @@ class CNode;
 
 typedef TArray<CNode *> NodeArray;
 
+
 class CNode :
     public INode
 {
-public: // Public
+    CLASS_CONVERSION(CNode, INode);
+public: // Internal -----------------------------------------------------------
 
     CNode (IData * data);
     ~CNode ();
@@ -20,21 +22,16 @@ public: // Public
     void * operator new (size_t);
     void operator delete (void * ptr);
 
-public: // Static
-
-    static CNode * From (INode * x) { return (CNode *)x; }
-    static const CNode * From (const INode * x) { return (CNode *)x; }
-
-public: // INode
+public: // INode --------------------------------------------------------------
 
     IData * GetData () const override { return m_data; }
 
     TArray<INode *> GetNeighbors () override;
 
-private: // Data
+private: // Data --------------------------------------------------------------
 
-    TArray<CNode *> m_neighbors;
-    IData *         m_data;
+    NodeArray m_neighbors;
+    IData *   m_data;
 
 };
 
