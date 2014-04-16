@@ -29,56 +29,25 @@ template <typename T>
 class SmartPtrBase
 {
 public:
-    SmartPtrBase () :
-        m_data(null)
-    {
-    }
 
-    SmartPtrBase (T * data) :
-        m_data(data)
-    {
-    }
+    SmartPtrBase ();
+    SmartPtrBase (T * data);
+    ~SmartPtrBase ();
 
-    ~SmartPtrBase ()
-    {
-        // TODO: assert that m_data == null
-    }
+    T & operator* ();
+    T * operator-> ();
 
-    T & operator* ()
-    {
-        return *m_data;
-    }
-
-    T * operator-> ()
-    {
-        return m_data;
-    }
-
-    operator bool ()
-    {
-        return m_data != null;
-    }
-
-    operator T * ()
-    {
-        return m_data;
-    }
-
-    operator const T * ()
-    {
-        return m_data;
-    }
-
-    operator const T * () const
-    {
-        return m_data;
-    }
+    operator bool ();
+    operator T * ();
+    operator const T * ();
+    operator const T * () const;
 
 protected:
+
     T * m_data;
 };
 
-}
+} // namespace Private
 
 
 
@@ -93,64 +62,19 @@ class StrongPtr :
     public Private::SmartPtrBase<T>
 {
 public:
-    StrongPtr ()
-    {
-    }
 
-    StrongPtr (T * rhs) :
-        Private::SmartPtrBase<T>(rhs)
-    {
-        IncRef();
-    }
+    StrongPtr ();
+    StrongPtr (T * rhs);
+    StrongPtr (const StrongPtr<T> & rhs);
+    ~StrongPtr ();
 
-    StrongPtr (const StrongPtr<T> & rhs) :
-        Private::SmartPtrBase<T>(rhs.m_data)
-    {
-        IncRef();
-    }
-
-    ~StrongPtr ()
-    {
-        DecRef();
-    }
-
-    const StrongPtr<T> & operator= (const StrongPtr<T> & rhs)
-    {
-        DecRef();
-
-        m_data = rhs.m_data;
-
-        IncRef();
-
-        return *this;
-    }
-
-    const StrongPtr<T> & operator= (const nullptr_t & rhs)
-    {
-        DecRef();
-
-        m_data = null;
-
-        return *this;
-    }
+    const StrongPtr<T> & operator= (const StrongPtr<T> & rhs);
+    const StrongPtr<T> & operator= (const nullptr_t & rhs);
 
 private:
-    inline void IncRef ()
-    {
-        if (m_data)
-            m_data->GetRefCountData()->IncRef();
-    }
 
-    inline void DecRef ()
-    {
-        if (m_data)
-        {
-            const uint refCount = m_data->GetRefCountData()->DecRef();
-            if (!refCount)
-                delete m_data;
-        }
-    }
-
+    inline void IncRef ();
+    inline void DecRef ();
 };
 
 
@@ -168,45 +92,16 @@ class WeakPtr :
     template <typename T>
     friend class CRefCounted;
 public:
-    WeakPtr ()
-    {
-    }
 
-    WeakPtr (const WeakPtr & rhs) :
-        Private::SmartPtrBase<T>(rhs.m_data)
-    {
-        if (m_data)
-            m_data->GetRefCountData()->m_weak.InsertTail(this);
-    }
+    WeakPtr ();
+    WeakPtr (const WeakPtr & rhs);
+    WeakPtr (T * data);
 
-    WeakPtr (T * data) :
-        Private::SmartPtrBase<T>(data)
-    {
-        if (m_data)
-            m_data->GetRefCountData()->m_weak.InsertTail(this);
-    }
-
-    WeakPtr<T> & operator= (const WeakPtr<T> & rhs)
-    {
-        m_link.Unlink();
-
-        m_data = rhs.m_data;
-
-        if (m_data)
-            m_data->GetRefCountData()->m_weak.InsertTail(this);
-
-        return *this;
-    }
+    WeakPtr<T> & operator= (const WeakPtr<T> & rhs);
 
 private:
+    void OnDestroy ();
 
-    // Notifications
-    void OnDestroy ()
-    {
-        m_data = null;
-    }
-
-    // Data
     TLink<WeakPtr<T>> m_link;
 };
 
@@ -224,31 +119,12 @@ class SmartPtrData
     template <typename T>
     friend class WeakPtr;
 public:
-    SmartPtrData () :
-        m_refCount(0)
-    {
-    }
 
-    ~SmartPtrData ()
-    {
-        for (auto weak : m_weak)
-        {
-            weak->OnDestroy();
-        }
+    SmartPtrData ();
+    ~SmartPtrData ();
 
-        ASSERT(m_refCount == 0);
-    }
-
-    void IncRef ()
-    {
-        m_refCount++;
-    }
-
-    uint DecRef ()
-    {
-        ASSERT(m_refCount != 0);
-        return --m_refCount;
-    }
+    void IncRef ();
+    uint DecRef ();
 
 private:
     // Types
@@ -288,36 +164,15 @@ class CRefCounted
     template <typename T> friend class StrongPtr;
 
 public:
-    CRefCounted () :
-        m_refCount(0)
-    {
-    }
+    CRefCounted ();
+    ~CRefCounted ();
 
-    ~CRefCounted ()
-    {
-        for (auto weak : m_weak)
-        {
-            weak->OnDestroy();
-        }
-
-        ASSERT(m_refCount == 0);
-    }
-
-    void IncRef ()
-    {
-        m_refCount++;
-    }
-
-    uint DecRef ()
-    {
-        ASSERT(m_refCount != 0);
-        return --m_refCount;
-    }
-
+    void IncRef ();
+    uint DecRef ();
 
 private: // IRefCounted<T>
 
-    CRefCounted<T> * GetRefCountData () { return this; }
+    CRefCounted<T> * GetRefCountData ();
 
 private:
     // Types
