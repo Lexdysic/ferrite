@@ -8,14 +8,8 @@ const float32 CURVE_COLLINEARITY_EPSILON = 1.0f;
 //=============================================================================
 CRenderTarget::CRenderTarget () :
     m_renderTarget(null),
-    m_transformWorld(
-        1.0f, 0.0f, 0.0f,
-        0.0f, 1.0f, 0.0f
-    ),
-    m_transformView(
-        1.0f, 0.0f, 0.0f,
-        0.0f, 1.0f, 0.0f
-    )
+    m_transformWorld(Matrix23::Identity),
+    m_transformView(Matrix23::Identity)
 {
 }
 
@@ -335,18 +329,17 @@ void CRenderTarget::Draw (const CubicCurve2 & curve, const Color & color, float3
 
 
 //=============================================================================
-void CRenderTarget::Draw(const wchar text[], Token style, const Point2 & pos, const Vector2 & size)
+void CRenderTarget::Draw(const CString & text, Token style, const Point2 & pos, const Vector2 & size)
 {
-    const uint textLen = StrLen(text);
-
     ID2D1SolidColorBrush * brush = CContext::Get()->GetColorBrush();
     brush->SetColor(ToColorF(Color::White));
 
     IDWriteTextFormat * textFormat = CContext::Get()->FindTextFormat(style);
 
+    CStringUtf16 textUtf16 = text;
     m_renderTarget->DrawText(
-        text,
-        textLen,
+        textUtf16.Ptr(),
+        textUtf16.Count(),
         textFormat,
         D2D1::RectF(pos.x, pos.y, pos.x + size.x, pos.y + size.y),
         brush
@@ -354,16 +347,16 @@ void CRenderTarget::Draw(const wchar text[], Token style, const Point2 & pos, co
 }
 
 //=============================================================================
-Vector2 CRenderTarget::Measure(const wchar text[], Token style, const Vector2 & size)
+Vector2 CRenderTarget::Measure(const CString & text, Token style, const Vector2 & size)
 {
-    const uint textLen = StrLen(text);
-
     IDWriteTextFormat * textFormat = CContext::Get()->FindTextFormat(style);
+    
+    CStringUtf16 textUtf16 = text;
 
     IDWriteTextLayout * textLayout;
     CContext::Get()->GetDwriteFactory()->CreateTextLayout(
-        text,
-        textLen,
+        textUtf16.Ptr(),
+        textUtf16.Count(),
         textFormat,
         size.x,
         size.y,

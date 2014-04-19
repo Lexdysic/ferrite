@@ -5,6 +5,42 @@ namespace Graphics
 
 //=============================================================================
 //
+// CImageComponent
+//
+//=============================================================================
+
+class CImageComponent :
+    public IImageComponent,
+    public CRenderComponent
+{
+public:
+
+    CImageComponent (const CString & filename, const Vector2 & size);
+    ~CImageComponent ();
+
+private: // CRenderComponent
+
+    void Render (IRenderTarget * renderTarget);
+
+private: // IComponent
+
+    ComponentId     GetId () const { return CComponent::GetId(); }
+    IEntity *       GetOwner () const override { return CComponent::GetOwner(); }
+    ComponentType   GetType () const override { return IImageComponent::TYPE; }
+
+private: // IImageComponent
+
+
+private: // 
+
+    IImage * m_image;
+    Vector2  m_size;
+};
+
+
+
+//=============================================================================
+//
 // CPrimativeComponent
 //
 //=============================================================================

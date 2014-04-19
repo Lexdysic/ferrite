@@ -70,7 +70,7 @@ interface IImage
     // Properties
     virtual Vector2 GetSize () const pure;
     virtual Vector2u GetDims () const pure;
-    virtual const wchar * GetFilename () const pure;
+    virtual const CString & GetFilename () const pure;
 };
 
 
@@ -101,8 +101,8 @@ interface IRenderCommands
     virtual void Draw (const CubicCurve2 & curve, const Color & color, float32 width = 1.0f) pure;
 
     // Text
-    virtual void Draw(const wchar text[], Token style, const Point2 & pos, const Vector2 & size = Vector2::Infinity) pure;
-    virtual Vector2 Measure(const wchar text[], Token style, const Vector2 & size) pure;
+    virtual void Draw(const CString & text, Token style, const Point2 & pos, const Vector2 & size = Vector2::Infinity) pure;
+    virtual Vector2 Measure(const CString & text, Token style, const Vector2 & size) pure;
 
 };
 
@@ -153,17 +153,17 @@ interface IContext
     
     // Debug
     virtual void DebugRender () pure;
-    virtual void DebugText (const wchar text[], const Point2 & pos, const Vector2 & size = Vector2::Infinity) pure;
-    virtual Vector2 DebugTextMeasure (const wchar text[], const Vector2 & size) pure;
+    virtual void DebugText (const CString & text, const Point2 & pos, const Vector2 & size = Vector2::Infinity) pure;
+    virtual Vector2 DebugTextMeasure (const CString & text, const Vector2 & size) pure;
 
     // Images
-    virtual IImage * ImageLoad (const wchar filename[]) pure;
+    virtual IImage * ImageLoad (const CString & filename) pure;
     virtual IImage * ImageCreate (uint width, uint height) pure;
     virtual IImage * ImageCreate (const Vector2u & size) pure;
     virtual void     ImageDestroy (IImage * image) pure;
 
     // Text
-    virtual void TextRegisterStyle(Token name, const wchar font[], float32 size) pure;
+    virtual void TextRegisterStyle(Token name, const CString & font, float32 size) pure;
 
     // Render Targets
     virtual IRenderTarget * RenderTargetCreate (const Vector2u & size) pure;
@@ -225,6 +225,7 @@ private: // Links
 interface IImageComponent : IComponent
 {
     static const ComponentType TYPE;
+    static IImageComponent * Attach (IEntity * entity, const CString & filename, const Vector2 & size);
 };
 
 
@@ -240,7 +241,6 @@ interface IPrimativeComponent : IComponent
     static const ComponentType TYPE;
     static IPrimativeComponent * Attach (IEntity * entity, float32 radius);
     static IPrimativeComponent * Attach (IEntity * entity, const Vector2 & size);
-
 
     virtual void SetColor (const Color & color) pure;
     virtual void SetPosition (const Point2 & pos) pure;

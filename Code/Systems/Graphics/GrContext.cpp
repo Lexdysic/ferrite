@@ -64,7 +64,7 @@ void CContext::Initialize (System::IWindow * window)
     ASSERT(m_pWicFactory);
 
     // Debug Font
-    TextRegisterStyle(Token("Debug"), L"Courier New", 10);
+    TextRegisterStyle(Token("Debug"), "Courier New", 10);
 
     // Create the render target
     {
@@ -145,16 +145,16 @@ void CContext::DebugRender ()
 }
 
 //=============================================================================
-void CContext::DebugText (const wchar text[], const Point2 & pos, const Vector2 & size)
+void CContext::DebugText (const CString & text, const Point2 & pos, const Vector2 & size)
 {
-    const uint textLen = StrLen(text);
+    const CStringUtf16 textUtf16 = text;
 
     IDWriteTextFormat * textFormat = CContext::Get()->FindTextFormat(Token("Debug"));
 
     m_pSolidBrush->SetColor(D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f));
     m_pRenderTarget->DrawText(
-        text,
-        textLen,
+        textUtf16.Ptr(),
+        textUtf16.Count(),
         textFormat,
         D2D1::RectF(pos.x, pos.y, pos.x + size.x, pos.y + size.y),
         m_pSolidBrush
@@ -162,16 +162,16 @@ void CContext::DebugText (const wchar text[], const Point2 & pos, const Vector2 
 }
 
 //=============================================================================
-Vector2 CContext::DebugTextMeasure (const wchar text[], const Vector2 & size)
+Vector2 CContext::DebugTextMeasure (const CString & text, const Vector2 & size)
 {
-    const uint textLen = StrLen(text);
+    const CStringUtf16 textUtf16 = text;
 
     IDWriteTextFormat * textFormat = CContext::Get()->FindTextFormat(Token("Debug"));
 
     IDWriteTextLayout * textLayout;
     m_pDWriteFactory->CreateTextLayout(
-        text,
-        textLen,
+        textUtf16.Ptr(),
+        textUtf16.Count(),
         textFormat,
         size.x,
         size.y,
@@ -196,13 +196,16 @@ void CContext::OnWindowSize (const Vector2u & size)
 }
 
 //=============================================================================
-IImage * CContext::ImageLoad (const wchar filename[])
+IImage * CContext::ImageLoad (const CString & filename)
 {
-    ASSERT(filename && *filename);
+    ASSERT(!filename.IsNullOrEmpty());
+
     CImage * pImage = CImage::Create(filename);
     if (!pImage)
         return nullptr;
+
     m_images.push_back(pImage);
+
     return pImage;
 }
 
@@ -224,25 +227,28 @@ IImage * CContext::ImageCreate (const Vector2u & size)
 }
 
 //=============================================================================
-void CContext::ImageDestroy (IImage * image)
+void CContext::ImageDestroy (IImage * image_)
 {
+    CImage * image = CImage::From(image_);
     auto it = std::find(m_images.begin(), m_images.end(), image);
     ASSERT(it != m_images.end());
 
     m_images.erase(it);
 
-    delete CImage::From(image);
+    delete image;
 }
 
 //=============================================================================
-void CContext::TextRegisterStyle(Token name, const wchar font[], float32 size)
+void CContext::TextRegisterStyle(Token name, const CString & font, float32 size)
 {
     ASSERT(!m_textFormats.Contains(name));
     ASSERT(m_pDWriteFactory);
 
+    const CStringUtf16 fontUtf16 = font;
+
     IDWriteTextFormat * textFormat;
     m_pDWriteFactory->CreateTextFormat(
-        font,
+        fontUtf16.Ptr(),
         null,
         DWRITE_FONT_WEIGHT_NORMAL,
         DWRITE_FONT_STYLE_NORMAL,

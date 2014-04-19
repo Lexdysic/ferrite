@@ -50,8 +50,8 @@ private: // IRenderCommands
     void Draw (const QuadraticCurve2 & curve, const Color & color, float32 width = 1.0f) override;
     void Draw (const CubicCurve2 & curve, const Color & color, float32 width = 1.0f) override;
 
-    void Draw(const wchar text[], Token style, const Point2 & pos, const Vector2 & size) override;
-    Vector2 Measure(const wchar text[], Token style, const Vector2 & size) override;
+    void Draw(const CString & text, Token style, const Point2 & pos, const Vector2 & size) override;
+    Vector2 Measure(const CString & text, Token style, const Vector2 & size) override;
 
 private: // Internals
 

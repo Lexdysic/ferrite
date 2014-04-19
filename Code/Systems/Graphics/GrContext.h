@@ -24,6 +24,8 @@ public: // Internal -----------------------------------------------------------
     IDWriteTextFormat * FindTextFormat(Token name) { return m_textFormats.Find(name); }
 
     void OnCreate (CRenderComponent * comp);
+    void OnCreate (CImage * image);
+    void OnDestroy (CImage * image);
 
 public: // Static -------------------------------------------------------------
 
@@ -42,17 +44,17 @@ public: // IContext -----------------------------------------------------------
     void Render () override;
 
     void DebugRender () override;
-    void DebugText (const wchar text[], const Point2 & pos, const Vector2 & size) override;
-    Vector2 DebugTextMeasure (const wchar text[], const Vector2 & size) override;
+    void DebugText (const CString & text, const Point2 & pos, const Vector2 & size) override;
+    Vector2 DebugTextMeasure (const CString & text, const Vector2 & size) override;
 
     // Images
-    IImage * ImageLoad (const wchar filename[]) override;
+    IImage * ImageLoad (const CString & filename) override;
     IImage * ImageCreate (uint width, uint height) override;
     IImage * ImageCreate (const Vector2u & size) override;
     void     ImageDestroy (IImage * image) override;
 
     // Text
-    void TextRegisterStyle(Token name, const wchar font[], float32 size) override;
+    void TextRegisterStyle(Token name, const CString & font, float32 size) override;
 
     // Render Targets
     IRenderTarget * RenderTargetCreate (const Vector2u & size) override;

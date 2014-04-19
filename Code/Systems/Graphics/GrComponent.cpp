@@ -43,6 +43,67 @@ CRenderComponent::~CRenderComponent ()
 
 //=============================================================================
 //
+// CImageComponent
+//
+//=============================================================================
+
+//=============================================================================
+CImageComponent::CImageComponent (const CString & filename, const Vector2 & size) :
+    m_size(size)
+{
+    m_image = CContext::Get()->ImageLoad(filename);
+}
+
+//=============================================================================
+CImageComponent::~CImageComponent ()
+{
+    CContext::Get()->ImageDestroy(m_image);
+}
+
+//=============================================================================
+void CImageComponent::Render (IRenderTarget * renderTarget)
+{
+    IEntity * entity = GetOwner();
+    if (auto * transform = entity->Get<CTransformComponent2>())
+    {
+        const Matrix23 & transOffset = Matrix23::CreateTranslation(-0.5f * m_image->GetSize());
+        renderTarget->SetWorld(transform->GetMatrix() * transOffset);
+    }
+    else
+    {
+        renderTarget->SetWorld(Matrix23::Identity);
+    }
+
+    renderTarget->Draw(m_image, Point2::Zero);
+}
+
+
+
+//=============================================================================
+//
+// IImageComponent
+//
+//=============================================================================
+
+//=============================================================================
+const ComponentType IImageComponent::TYPE('P','r','i','m','a','t','i','v','e');
+
+//=============================================================================
+IImageComponent * IImageComponent::Attach (IEntity * entity, const CString & filename, const Vector2 & size)
+{
+    CImageComponent * comp = new CImageComponent(filename, size);
+
+    CContext::Get()->OnCreate(comp);
+
+    entity->Attach(comp);
+
+    return comp;
+}
+
+
+
+//=============================================================================
+//
 // CPrimativeComponent
 //
 //=============================================================================
