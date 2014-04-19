@@ -32,7 +32,7 @@ CRigidBodyComponent::~CRigidBodyComponent ()
 void CRigidBodyComponent::SetMass (float32 mass)
 {
     m_mass = mass;
-    m_momentOfInertia = m_mass * (Sq(50.0f) + Sq(20.0f)) / 12;
+    m_momentOfInertia = m_mass * (Sq(100.0f) + Sq(70.0f)) / 12; // TODO: need a generic way to compute this
 }
 
 //=============================================================================

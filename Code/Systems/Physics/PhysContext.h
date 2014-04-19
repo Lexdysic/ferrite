@@ -35,8 +35,8 @@ private: // Graphics::CContextNotify ------------------------------------------
 
 private:
     // Types
-    typedef LIST_DECLARE(CRigidBodyComponent, m_link) RigidBodyList;
-    typedef LIST_DECLARE(CColliderComponent, m_linkAll) ColliderAllList;
+    typedef LIST_DECLARE(CRigidBodyComponent, m_linkAll)     RigidBodyList;
+    typedef LIST_DECLARE(CColliderComponent, m_linkAll)      ColliderAllList;
     typedef LIST_DECLARE(CColliderComponent, m_linkMaterial) ColliderMaterialList;
 
     // Data

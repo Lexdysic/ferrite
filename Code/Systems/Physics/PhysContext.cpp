@@ -75,6 +75,10 @@ void CContext::Update (Time::Delta deltaTime)
 //=============================================================================
 void CContext::Tick ()
 {
+    // TODO: Collision Detection and Response
+
+
+
     const float dt = TIME_STEP.GetSeconds();
     for (auto * rigidBody : m_rigidBodyList)
     {

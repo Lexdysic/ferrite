@@ -52,7 +52,7 @@ void CConnection::Read (byte data[], const uint length)
 }
 
 //=============================================================================
-unsigned CConnection::BytesAvailable () const
+uint CConnection::BytesAvailable () const
 {
     return m_readBuffer.Count();
 }

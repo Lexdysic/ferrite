@@ -16,7 +16,7 @@ private: // IConnection -------------------------------------------------------
     void Send (const byte data[], const uint length) override;
 
     void Read (byte data[], const uint length) override;
-    unsigned BytesAvailable () const override;
+    uint BytesAvailable () const override;
 
 public: // Links --------------------------------------------------------------
 

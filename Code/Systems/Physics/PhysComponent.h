@@ -49,7 +49,8 @@ public: // IRigidBodyComponent
 
 public: // Links
 
-    LIST_LINK(CRigidBodyComponent) m_link;
+    LIST_LINK(CRigidBodyComponent) m_linkAll;
+    LIST_LINK(CRigidBodyComponent) m_linkBroadphase;
 
 private:
 
