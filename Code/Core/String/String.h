@@ -195,6 +195,12 @@ public:
     // Queries
     uint Length () const;
     inline uint Bytes () const;
+    inline uint Count () const; // CodeUnits
+
+    bool IsNull () const;
+    bool IsEmpty () const;
+    bool IsNullOrEmpty () const;
+    bool IsValid () const;
 
 public:
 

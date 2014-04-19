@@ -239,7 +239,7 @@ TString<E>::~TString ()
 template <String::EEncoding E>
 TString<E> & TString<E>::operator= (const TString<E> & rhs)
 {
-    m_data = rhs;
+    m_data = rhs.m_data;
     return *this;
 }
 
@@ -312,8 +312,46 @@ uint TString<E>::Bytes () const
 
 //=============================================================================
 template <String::EEncoding E>
+uint TString<E>::Count () const
+{
+    return m_data.Count();
+}
+
+//=============================================================================
+template <String::EEncoding E>
+bool TString<E>::IsNull () const
+{
+    return m_data.Count() == 0;
+}
+
+//=============================================================================
+template <String::EEncoding E>
+bool TString<E>::IsEmpty () const
+{
+    return m_data.Count() && m_data[0] == 0;
+}
+
+//=============================================================================
+template <String::EEncoding E>
+bool TString<E>::IsNullOrEmpty () const
+{
+    return m_data.Count() == 0 || m_data[0] == 0;
+}
+
+//=============================================================================
+template <String::EEncoding E>
+bool TString<E>::IsValid () const
+{
+    return !IsNullOrEmpty();
+}
+
+//=============================================================================
+template <String::EEncoding E>
 TString<E> TString<E>::FromData(const Type data[])
 {
+    if (!data)
+        return TString<E>::Null;
+
     // TODO: check that the data is valid
     const Type * dataEnd = data;
     while (*dataEnd++ != 0);
