@@ -63,22 +63,70 @@ void CContext::DebugToggleCollider ()
 //=============================================================================
 void CContext::Update (Time::Delta deltaTime)
 {
+    uint counter = 0;
+    m_debugCollisionCount = 0;
+
     m_timeAccumulator += deltaTime;
     while (m_timeAccumulator >= TIME_STEP)
     {
+        counter++;
+
         m_timeAccumulator -= TIME_STEP;
+
         Tick();
     }
+
     Cleanup();
+
+    DebugValue("Physics::Ticks", counter);
+    DebugValue("Physics::Collisions", m_debugCollisionCount);
 }
 
 //=============================================================================
 void CContext::Tick ()
 {
-    // TODO: Collision Detection and Response
+    Detection();
+    Integrate();
+}
 
+//=============================================================================
+void CContext::Detection ()
+{
+    for (auto * colliderA : m_colliderList)
+    {
+        const Aabb2 boundingBox = colliderA->GetBoundingBox();
 
+        const auto & potentials = m_broadphase.Find(boundingBox, colliderA->GetGroups());
 
+        if (potentials.IsEmpty())
+            continue;
+
+        const Polygon2 & polygonA = colliderA->GetPolygon();
+
+        for (auto * colliderB : potentials)
+        {
+            if (colliderA == colliderB)
+                continue;
+
+            const Polygon2 & polygonB = colliderB->GetPolygon();
+
+            const Polygon2 & clipped = Polygon2::Clip(polygonA, polygonB);
+            if (clipped.points.IsEmpty())
+                continue;
+
+            m_debugCollisionCount++;
+        }
+    }
+}
+
+//=============================================================================
+void CContext::Response (CColliderComponent * colliderA, CColliderComponent * colliderB)
+{
+}
+
+//=============================================================================
+void CContext::Integrate()
+{
     const float dt = TIME_STEP.GetSeconds();
     for (auto * rigidBody : m_rigidBodyList)
     {
@@ -127,6 +175,14 @@ void CContext::OnCreate (CColliderComponent * comp)
             m_liquidList.InsertTail(comp);
         break;
     }
+    
+    m_broadphase.Add(comp);
+}
+
+//=============================================================================
+void CContext::OnDestroy (CColliderComponent * comp)
+{
+    m_broadphase.Remove(comp);
 }
 
 //=============================================================================

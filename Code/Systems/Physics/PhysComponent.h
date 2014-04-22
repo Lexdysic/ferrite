@@ -50,7 +50,6 @@ public: // IRigidBodyComponent
 public: // Links
 
     LIST_LINK(CRigidBodyComponent) m_linkAll;
-    LIST_LINK(CRigidBodyComponent) m_linkBroadphase;
 
 private:
 
@@ -87,6 +86,8 @@ public:
 
     void RenderDebug(Graphics::IRenderTarget * renderTarget);
 
+    Aabb2 GetBoundingBox () const;
+
 
 public: // IComponent
 
@@ -101,6 +102,7 @@ private: // CComponent
 public: // IColliderComponent
 
     void SetGroups (Flags32 groupMask) override { m_groupMask = groupMask; }
+    Flags32 GetGroups () const { return m_groupMask; }
 
     virtual EMaterial GetMaterial () const override { return m_material; }
 
@@ -110,6 +112,7 @@ public: // Links
 
     LIST_LINK(CColliderComponent) m_linkAll;
     LIST_LINK(CColliderComponent) m_linkMaterial;
+    LIST_LINK(CColliderComponent) m_linkBroadphase;
 
 private:
 
@@ -120,7 +123,7 @@ private:
     };
 
 
-    EType m_type;
+    EType  m_type;
     Circle m_circle;
     Aabb2  m_aabb;
 

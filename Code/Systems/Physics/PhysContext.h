@@ -11,6 +11,7 @@ public:
     
     void OnCreate (CRigidBodyComponent * comp);
     void OnCreate (CColliderComponent * comp);
+    void OnDestroy (CColliderComponent * comp);
 
 public: // Static -------------------------------------------------------------
 
@@ -46,13 +47,18 @@ private:
     ColliderMaterialList    m_liquidList;
     Time::Delta             m_timeAccumulator;
     Vector2                 m_gravity;
+    CBroadphase             m_broadphase;
 
     // Debug
     bool m_debugDrawRigidBody;
     bool m_debugDrawColliders;
+    uint m_debugCollisionCount;
 
     // Helpers
     void Tick ();
+    void Detection ();
+    void Integrate ();
+    void Response (CColliderComponent * colliderA, CColliderComponent * colliderB);
     void Cleanup ();
 };
 

@@ -21,4 +21,5 @@
 #include "EngineDeps.h"
 
 #include "PhysComponent.h"
+#include "PhysBroadphase.h"
 #include "PhysContext.h"

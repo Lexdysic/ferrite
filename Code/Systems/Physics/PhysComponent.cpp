@@ -97,7 +97,8 @@ CColliderComponent::CColliderComponent (const Circle & circle, EMaterial materia
     m_type(EType::Circle),
     m_circle(circle),
     m_coeffOfRestitution(1.0f),
-    m_material(material)
+    m_material(material),
+    m_groupMask(Flags32::All)
 {
 
 }
@@ -107,7 +108,8 @@ CColliderComponent::CColliderComponent (const Aabb2 & aabb, EMaterial material) 
     m_type(EType::Box),
     m_aabb(aabb),
     m_coeffOfRestitution(1.0f),
-    m_material(material)
+    m_material(material),
+    m_groupMask(Flags32::All)
 {
 }
 
@@ -115,7 +117,8 @@ CColliderComponent::CColliderComponent (const Aabb2 & aabb, EMaterial material) 
 CColliderComponent::CColliderComponent (EType type, EMaterial material) :
     m_type(type),
     m_coeffOfRestitution(1.0f),
-    m_material(material)
+    m_material(material),
+    m_groupMask(Flags32::All)
 {
 }
 
@@ -128,6 +131,15 @@ CColliderComponent::~CColliderComponent ()
 void CColliderComponent::OnAttached (IEntity * entity)
 {
     CTransformComponent2 * comp = EnsureComponent<CTransformComponent2>(entity);
+}
+
+//=============================================================================
+Aabb2 CColliderComponent::GetBoundingBox () const
+{
+    auto * transform = GetOwner()->Get<CTransformComponent2>();
+    const float32 radius = Length(m_aabb.max - m_aabb.min) * 0.5f;
+
+    return Aabb2(transform->GetPosition(), Vector2(radius, radius));
 }
 
 //=============================================================================
