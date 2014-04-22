@@ -175,43 +175,43 @@ StringHash32& StringHash32::operator=( const StringHash32& rhs )
 
 bool StringHash32::operator==( const StringHash32& rhs ) const 
 {
-    assert( (mHash == rhs.mHash) == (mStr == rhs.mStr)) && "Hash Collision" );
+    ASSERT( (mHash == rhs.mHash) == (mStr == rhs.mStr)) && "Hash Collision" );
     return mHash == rhs.mHash;
 }
 
 bool StringHash32::operator!=( const StringHash32& rhs ) const 
 {
-    assert( (mHash == rhs.mHash) == (mStr == rhs.mStr)) && "Hash Collision" );
+    ASSERT( (mHash == rhs.mHash) == (mStr == rhs.mStr)) && "Hash Collision" );
     return mHash != rhs.mHash;
 }
 
 bool StringHash32::operator<=( const StringHash32& rhs ) const 
 { 
-    assert( (mHash == rhs.mHash) == (mStr == rhs.mStr)) && "Hash Collision" );
+    ASSERT( (mHash == rhs.mHash) == (mStr == rhs.mStr)) && "Hash Collision" );
     return mHash <= rhs.mHash; 
 }
 
 bool StringHash32::operator>=( const StringHash32& rhs ) const 
 {
-    assert( (mHash == rhs.mHash) == (mStr == rhs.mStr)) && "Hash Collision" );
+    ASSERT( (mHash == rhs.mHash) == (mStr == rhs.mStr)) && "Hash Collision" );
     return mHash >= rhs.mHash; 
 }
 
 bool StringHash32::operator< ( const StringHash32& rhs ) const 
 {
-    assert( (mHash == rhs.mHash) == (mStr == rhs.mStr)) && "Hash Collision" );
+    ASSERT( (mHash == rhs.mHash) == (mStr == rhs.mStr)) && "Hash Collision" );
     return mHash <  rhs.mHash; 
 }
 
 bool StringHash32::operator> ( const StringHash32& rhs ) const 
 {
-    assert( (mHash == rhs.mHash) == (mStr == rhs.mStr)) && "Hash Collision" );
+    ASSERT( (mHash == rhs.mHash) == (mStr == rhs.mStr)) && "Hash Collision" );
     return mHash >  rhs.mHash; 
 }
 
 StringHash32::operator bool() const 
 {
-    assert( (mHash == 0) == (mStr.Empty()) && "Hash Collision" );
+    ASSERT( (mHash == 0) == (mStr.Empty()) && "Hash Collision" );
     return mHash > 0; 
 }
 

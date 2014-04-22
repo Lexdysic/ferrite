@@ -308,7 +308,7 @@ bool Intersect (IntersectInfo3 & out, const Ray3 & r, const Sphere3 & s)
         return false;
 
 #ifdef RAY_SPHERE_HANDLE_START_INSIDE
-    //assert(bOutside);
+    //ASSERT(bOutside);
     const float32 sign = bOutside ? -1.0f : 1.0f;
     out.time = (-b + sign * Sqrt(discr)) / (2.0f * a);
 #else
@@ -331,7 +331,7 @@ bool Intersect (IntersectInfo3 & out, const Ray3 & r, const Sphere3 & s)
 //  const Point3 & p = r.origin;
 //  const Vector3 & d = r.direction;
 //
-//  //assert(Normalized(d));
+//  //ASSERT(Normalized(d));
 //
 //  const Vector3  m = p - s.center;
 //  const float32 b = Dot(m, d);
@@ -350,7 +350,7 @@ bool Intersect (IntersectInfo3 & out, const Ray3 & r, const Sphere3 & s)
 //      return false;
 //
 //#ifdef RAY_SPHERE_HANDLE_START_INSIDE
-//  //assert(bOutside);
+//  //ASSERT(bOutside);
 //  const float32 sign = bOutside ? -1.0f : 1.0f;
 //  out.time = -b + sign * Sqrt(discr);
 //#else

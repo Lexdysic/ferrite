@@ -387,7 +387,7 @@ bool IsPerpendicular (const Vector4 & a, const Vector4 & b) { return Equal(Dot(a
 //=============================================================================
 Vector2 Mirror (const Vector2 & v, const Vector2 & n) 
 { 
-    //assert(Equal(LengthSq(n), 1.0f));
+    //ASSERT(Equal(LengthSq(n), 1.0f));
     return v - 2.0f * n * Dot(v, n) / LengthSq(n); // if n is not normalized
     //return v - 2.0f * n * Dot(v, n);
 }

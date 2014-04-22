@@ -113,7 +113,7 @@ bool Flags<T>::Test(T flags) const
 template <typename T>
 bool Flags<T>::TestBit(uint bit) const
 {
-    assert(bit < NUM_BITS);
+    ASSERT(bit < NUM_BITS);
 
     return Test(1 << bit);
 }
