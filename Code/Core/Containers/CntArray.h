@@ -50,17 +50,14 @@ public:
     template <typename Y>
     friend bool operator<  (const TArray<Y> & lhs, const TArray<Y> & rhs);
 
+public:
+
+    const T * begin () const;
+    T * begin ();
+
+    const T * end () const;
+    T * end ();
+
 private:
     std::vector<T> m_array;
 };
-
-template <typename T>
-const T * begin (const TArray<T> & array) { return array.Ptr(); }
-template <typename T>
-T * begin (TArray<T> & array) { return array.Ptr(); }
-
-
-template <typename T>
-const T * end (const TArray<T> & array) { return array.Term(); }
-template <typename T>
-T * end (TArray<T> & array) { return array.Term(); }

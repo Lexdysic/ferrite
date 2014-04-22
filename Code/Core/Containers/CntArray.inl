@@ -227,6 +227,34 @@ T & TArray<T>::operator[] (uint index)
     return m_array[index];
 }
 
+//=============================================================================
+template <typename T>
+const T * TArray<T>::begin () const
+{
+    return Ptr();
+}
+
+//=============================================================================
+template <typename T>
+T * TArray<T>::begin ()
+{
+    return Ptr();
+}
+
+//=============================================================================
+template <typename T>
+const T * TArray<T>::end () const
+{
+    return Ptr() + Count();
+}
+
+//=============================================================================
+template <typename T>
+T * TArray<T>::end ()
+{
+    return Ptr() + Count();
+}
+
 
 //=============================================================================
 template <typename Y>
