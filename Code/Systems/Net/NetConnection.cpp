@@ -26,13 +26,19 @@ void CConnection::Update ()
 
         m_socket.Recv(buffer.Ptr(), buffer.Count());
 
-        m_readBuffer.Add(buffer);
+        m_readBuffer.AddBack(buffer);
     }
 
     // Send off waiting data
     if (m_sendBuffer.Count())
     {
-        m_socket.Send(m_sendBuffer.Ptr(), m_sendBuffer.Count());
+        // Need to copy to continuous memory before sending
+        TArray<byte> sendArray;
+        sendArray.Reserve(m_sendBuffer.Count());
+        std::copy(m_sendBuffer.begin(), m_sendBuffer.end(), sendArray.begin());
+
+        m_socket.Send(sendArray.Ptr(), sendArray.Count());
+
         m_sendBuffer.Clear();
     }
 }
@@ -40,15 +46,16 @@ void CConnection::Update ()
 //=============================================================================
 void CConnection::Send (const byte data[], const uint length)
 {
-    m_sendBuffer.Add(data, length);
+    m_sendBuffer.AddBack(data, length);
 }
 
 //=============================================================================
 void CConnection::Read (byte data[], const uint length)
 {
     ASSERT(length <= m_readBuffer.Count());
-    MemCopy(data, m_readBuffer.Ptr(), length);
-    m_readBuffer.RemoveOrdered(0, length);
+
+    std::copy(m_readBuffer.begin(), m_readBuffer.end(), data);
+    m_readBuffer.Remove(0, length);
 }
 
 //=============================================================================

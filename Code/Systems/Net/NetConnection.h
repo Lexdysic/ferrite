@@ -25,8 +25,8 @@ public: // Links --------------------------------------------------------------
 private: // -------------------------------------------------------------------
 
     Socket       m_socket;
-    TArray<byte> m_readBuffer; // TODO: change to a queue type
-    TArray<byte> m_sendBuffer; // TODO: change to a queue type
+    TQueue<byte> m_readBuffer;
+    TQueue<byte> m_sendBuffer;
 
 };
 
