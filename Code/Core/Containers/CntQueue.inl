@@ -96,7 +96,9 @@ void TQueue<T>::AddBack (const TArray<T> & arr)
 template <typename T>
 void TQueue<T>::AddBack (const T values[], uint count)
 {
-    for (const T * ptr = value, term = values + count; ptr < term; ++ptr)
+    const T * ptr = values;
+    const T * term = values + count;
+    for ( ; ptr < term; ++ptr)
         AddBack(*ptr);
 }
 
@@ -127,7 +129,7 @@ void TQueue<T>::Remove (uint first, uint term)
 {
     m_data.erase(
         std::next(m_data.begin(), first),
-        std::next(m_data.being(), term)
+        std::next(m_data.begin(), term)
     );
 }
 
