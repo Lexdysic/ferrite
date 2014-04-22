@@ -156,6 +156,10 @@ public:
 
     inline operator T () const;
 
+public:
+    static const Flags<T> All;
+    static const Flags<T> None;
+
 private:
     T mFlags;
 
