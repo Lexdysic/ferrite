@@ -13,10 +13,9 @@
 #endif
 #define CORE_H
 
-#include <cassert>
 #include <type_traits>
 #include <cstdint>
-#include <functional> // for std::function
+#include <functional>   // for std::function
 
 #include "CorePlatform.h"
 #include "CorePragma.h"

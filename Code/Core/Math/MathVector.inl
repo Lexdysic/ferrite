@@ -395,7 +395,7 @@ Vector2 Mirror (const Vector2 & v, const Vector2 & n)
 //=============================================================================
 Vector3 Mirror (const Vector3 & v, const Vector3 & n) 
 { 
-    assert(Equal(LengthSq(n), 1.0f));
+    ASSERT(Equal(LengthSq(n), 1.0f));
     //return v - 2.0f * n * Dot(v, n) / LengthSq(n); // if n is not normalized
     return v - 2.0f * n * Dot(v, n);
 }

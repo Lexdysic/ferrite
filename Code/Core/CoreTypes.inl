@@ -29,6 +29,10 @@ Flag<T>::Flag (T f) :
 //=============================================================================
 
 //=============================================================================
+template <typename T> const Flags<T> Flags<T>::All(T(-1ll));
+template <typename T> const Flags<T> Flags<T>::None(0);
+
+//=============================================================================
 template <typename T>
 Flags<T>::Flags() :
     mFlags((T)0)
@@ -53,7 +57,7 @@ void Flags<T>::Set(T flags)
 template <typename T>
 void Flags<T>::SetBit(uint bit)
 {
-    assert(bit < NUM_BITS);
+    //ASSERT(bit < NUM_BITS);
 
     Set(1 << bit);
 }
@@ -86,7 +90,7 @@ void Flags<T>::Clear(T flags)
 template <typename T>
 void Flags<T>::ClearBit(uint bit)
 {
-    assert(bit < NUM_BITS);
+    //ASSERT(bit < NUM_BITS);
 
     Clear(1 << bit);
 }

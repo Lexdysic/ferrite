@@ -31,8 +31,8 @@ Rect3::Rect3 (const Point3 & center, const Vector3 & unitX, const Vector3 & unit
     center(center),
     extent(extent)
 {
-    assert(Normalized(unitX));
-    assert(Normalized(unitY));
+    ASSERT(Normalized(unitX));
+    ASSERT(Normalized(unitY));
 
     u[0] = unitX;
     u[1] = unitY;

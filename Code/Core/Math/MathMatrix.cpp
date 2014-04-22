@@ -393,7 +393,7 @@ Matrix44::Matrix44 ()
 Matrix44::Matrix44 (const Matrix44 & m)
 {
     m;
-    assert( !"Not Implemented" );
+    ASSERT( !"Not Implemented" );
 }
 
 //=============================================================================

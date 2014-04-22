@@ -49,7 +49,7 @@ void BuildBasis(const Vector3 & x, Vector3 & u, Vector3 & v, Vector3 & w)
     //assert(Normalized(u));
     //assert(Normalized(v));
     //assert(Normalized(w));
-    assert(Dot(u, v) < 1e-6);
-    assert(Dot(v, w) < 1e-6);
-    assert(Dot(w, u) < 1e-6);
+    ASSERT(Dot(u, v) < 1e-6);
+    ASSERT(Dot(v, w) < 1e-6);
+    ASSERT(Dot(w, u) < 1e-6);
 }

@@ -121,9 +121,9 @@ Obb3::Obb3( const Point3 & center, const Vector3 & unitX, const Vector3 & unitY,
 : center(center)
 , extent(extent)
 {
-    assert( Normalized(unitX) );
-    assert( Normalized(unitY) );
-    assert( Normalized(unitZ) );
+    ASSERT(Normalized(unitX));
+    ASSERT(Normalized(unitY));
+    ASSERT(Normalized(unitZ));
     
     u[0] = unitX;
     u[1] = unitY;

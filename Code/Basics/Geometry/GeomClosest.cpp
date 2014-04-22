@@ -245,7 +245,7 @@ bool ClosestInfo( ClosestInfoSegmentSegment3 & out, const Segment3 & line1, cons
 //=============================================================================
 bool ClosestInfo( ClosestInfoSegmentSegment3 & out, const Ray3 & line1, const Ray3 & line2 )
 {
-    assert(!"Not Implemented");
+    ASSERT(!"Not Implemented");
 
     out;
     line1;

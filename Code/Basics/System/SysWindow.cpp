@@ -245,7 +245,7 @@ CWindow::CWindow (const CString & title, uint width, uint height) :
         windowClass.lpszClassName = className;
 
         const ATOM ret = RegisterClassExW(&windowClass);
-        assert(ret);
+        ASSERT(ret);
     }
 
     // Create Window
@@ -272,7 +272,7 @@ CWindow::CWindow (const CString & title, uint width, uint height) :
             null
         );
 
-        assert(mWindowHandle);
+        ASSERT(mWindowHandle);
     }
 
     SetWindowLongPtrW(mWindowHandle, GWLP_USERDATA, (LONG_PTR)this);

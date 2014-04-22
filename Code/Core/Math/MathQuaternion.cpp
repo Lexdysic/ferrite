@@ -152,7 +152,7 @@ Quaternion::Quaternion( const Matrix34 & m )
 Quaternion::Quaternion( const Matrix44 & m )
 {
     m;
-    assert( !"Not Implemented" );
+    ASSERT(!"Not Implemented");
 }
 
 

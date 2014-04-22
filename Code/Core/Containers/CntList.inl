@@ -248,7 +248,7 @@ void TList<T>::InsertTail (T * node) {
 //=============================================================================
 template<class T>
 void TList<T>::InsertBefore (T * node, T * before) {
-    assert(!((size_t) node & 1));
+    ASSERT(!((size_t) node & 1));
     GetLinkFromNode(node)->InsertBefore(
         node,
         before ? GetLinkFromNode(before) : &m_link
@@ -258,7 +258,7 @@ void TList<T>::InsertBefore (T * node, T * before) {
 //=============================================================================
 template<class T>
 void TList<T>::InsertAfter (T * node, T * after) {
-    assert(!((size_t) node & 1));
+    ASSERT(!((size_t) node & 1));
     GetLinkFromNode(node)->InsertAfter(
         node,
         after ? GetLinkFromNode(after) : &m_link
@@ -268,7 +268,7 @@ void TList<T>::InsertAfter (T * node, T * after) {
 //=============================================================================
 template<class T>
 TLink<T> * TList<T>::GetLinkFromNode (const T * node) const {
-    assert(m_offset != (size_t) -1);
+    ASSERT(m_offset != (size_t) -1);
     return (TLink<T> *) ((size_t) node + m_offset);
 }
 

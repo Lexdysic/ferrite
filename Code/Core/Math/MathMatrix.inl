@@ -9,18 +9,18 @@
 //==================================================================================================
 
 //=============================================================================
-const Vector2 & Matrix22::Row (uint32 r) const { assert(r < 2); return mv[r]; }
-const Vector3 & Matrix23::Row (uint32 r) const { assert(r < 2); return mv[r]; }
-const Vector3 & Matrix33::Row (uint32 r) const { assert(r < 3); return mv[r]; }
-const Vector4 & Matrix34::Row (uint32 r) const { assert(r < 3); return mv[r]; }
-const Vector4 & Matrix44::Row (uint32 r) const { assert(r < 4); return mv[r]; }
+const Vector2 & Matrix22::Row (uint32 r) const { ASSERT(r < 2); return mv[r]; }
+const Vector3 & Matrix23::Row (uint32 r) const { ASSERT(r < 2); return mv[r]; }
+const Vector3 & Matrix33::Row (uint32 r) const { ASSERT(r < 3); return mv[r]; }
+const Vector4 & Matrix34::Row (uint32 r) const { ASSERT(r < 3); return mv[r]; }
+const Vector4 & Matrix44::Row (uint32 r) const { ASSERT(r < 4); return mv[r]; }
 
 //=============================================================================
-Vector2 Matrix22::Column (uint32 c) const { assert(c < 2); return Vector2(mv[0][c], mv[1][c]); }
-Vector2 Matrix23::Column (uint32 c) const { assert(c < 3); return Vector2(mv[0][c], mv[1][c]); }
-Vector3 Matrix33::Column (uint32 c) const { assert(c < 3); return Vector3(mv[0][c], mv[1][c], mv[2][c]); }
-Vector3 Matrix34::Column (uint32 c) const { assert(c < 4); return Vector3(mv[0][c], mv[1][c], mv[2][c]); }
-Vector4 Matrix44::Column (uint32 c) const { assert(c < 4); return Vector4(mv[0][c], mv[1][c], mv[2][c], mv[3][c]); }
+Vector2 Matrix22::Column (uint32 c) const { ASSERT(c < 2); return Vector2(mv[0][c], mv[1][c]); }
+Vector2 Matrix23::Column (uint32 c) const { ASSERT(c < 3); return Vector2(mv[0][c], mv[1][c]); }
+Vector3 Matrix33::Column (uint32 c) const { ASSERT(c < 3); return Vector3(mv[0][c], mv[1][c], mv[2][c]); }
+Vector3 Matrix34::Column (uint32 c) const { ASSERT(c < 4); return Vector3(mv[0][c], mv[1][c], mv[2][c]); }
+Vector4 Matrix44::Column (uint32 c) const { ASSERT(c < 4); return Vector4(mv[0][c], mv[1][c], mv[2][c], mv[3][c]); }
 
 //=============================================================================
 Matrix22 operator+ (const Matrix22 & lhs, const Matrix22 & rhs) { return Matrix22(lhs.mv[0] + rhs.mv[0], lhs.mv[1] + rhs.mv[1]); }
@@ -132,7 +132,7 @@ bool operator!= (const Matrix44 & lhs, const Matrix44 & rhs) { return !(lhs == r
 //=============================================================================
 Matrix22 Transpose (const Matrix22 & m) { return Matrix22(m.Column(0), m.Column(1)); }
 Matrix33 Transpose (const Matrix33 & m) { return Matrix33(m.Column(0), m.Column(1), m.Column(2)); }
-Matrix34 Transpose (const Matrix34 & m) { m; assert(!"Not implemented"); }
+Matrix34 Transpose (const Matrix34 & m) { m; ASSERT(!"Not implemented"); }
 Matrix44 Transpose (const Matrix44 & m) { return Matrix44(m.Column(0), m.Column(1), m.Column(2), m.Column(3)); }
 
 //=============================================================================
@@ -194,7 +194,7 @@ Matrix22 Inverse (const Matrix22 & m)
 {
     const float32 det = Determinant(m);
 
-    assert(!Equal(det, 0.0f));
+    ASSERT(!Equal(det, 0.0f));
 
     Matrix22 out(
          m.m11, -m.m01,
@@ -209,7 +209,7 @@ Matrix23 Inverse (const Matrix23 & m)
 {
     const float32 det = Determinant(m);
 
-    assert(!Equal(det, 0.0f));
+    ASSERT(!Equal(det, 0.0f));
 
     Matrix23 out(
         (m.m11 * 1.0f - m.m12 * 0.0f),   (m.m02 * 0.0f - m.m01 * 1.0f),   (m.m01 * m.m12 - m.m02 * m.m11),
@@ -224,7 +224,7 @@ Matrix33 Inverse (const Matrix33 & m)
 {
     const float32 det = Determinant(m);
 
-    assert(!Equal(det, 0.0f));
+    ASSERT(!Equal(det, 0.0f));
 
     Matrix33 out(
         (m.m11 * m.m22 - m.m12 * m.m21),   (m.m02 * m.m21 - m.m01 * m.m22),   (m.m01 * m.m12 - m.m02 * m.m11),
@@ -239,9 +239,9 @@ Matrix34 Inverse(const Matrix34 & m)
 {
     const float32 det = Determinant(m);
 
-    assert(!Equal(det, 0.0f));
+    ASSERT(!Equal(det, 0.0f));
 
-    assert(!"Not implemented"); 
+    ASSERT(!"Not implemented"); 
     
     return Matrix34();
 }
@@ -251,9 +251,9 @@ Matrix44 Inverse (const Matrix44 & m)
 {
     const float32 det = Determinant(m);
 
-    assert(!Equal(det, 0.0f));
+    ASSERT(!Equal(det, 0.0f));
 
-    assert(!"Not implemented"); 
+    ASSERT(!"Not implemented"); 
     
     return Matrix44();
 }
