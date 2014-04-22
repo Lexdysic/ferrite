@@ -1,5 +1,4 @@
 
-#include <mutex>
 
 typedef uint32 ThreadId;
 
@@ -13,6 +12,7 @@ class CriticalSection;
 // Thread
 //
 //==================================================================================================
+
 class Thread
 {
 public:
@@ -45,10 +45,11 @@ public:
     bool TryEnter();
     void Enter();
     void Leave();
-
+    
     static const uint DATA_SIZE = 32;
 
 private:
+
     uint8 m_data[DATA_SIZE];
 };
 

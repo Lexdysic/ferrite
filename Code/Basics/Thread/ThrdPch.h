@@ -3,8 +3,10 @@
 #endif
 #define THRDPCH_H
 
+#include <windows.h>
+#include <mutex>
+
 #define USES_ENGINE_MATH
 #define USES_ENGINE_THREAD
 
-#include <windows.h>
 #include "EngineDeps.h"
