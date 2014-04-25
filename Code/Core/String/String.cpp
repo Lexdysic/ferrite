@@ -248,3 +248,29 @@ void Encode<EEncoding::Utf16> (CodePoint c, TArray<wchar> * data)
 }
 
 } // namespace String
+
+
+
+//=============================================================================
+CString CStringBuilder::GetString () const
+{
+    return CString(*this);
+}
+
+//=============================================================================
+template <String::EEncoding E>
+const CStringBuilder & CStringBuilder::operator+= (const TString<E> & str)
+{
+    for (auto codepoint : str)
+        m_data.AddBack(*codepoint);
+
+    return *this;
+}
+
+//=============================================================================
+const CStringBuilder & CStringBuilder::operator+= (String::CodePoint codepoint)
+{
+    m_data.AddBack(codepoint);
+
+    return *this;
+}

@@ -12,8 +12,9 @@ namespace String {
 
 namespace String {
     template <EEncoding E> struct CodeUnit;
-} // namespace String
+}
 
+class CStringBuilder;
 
 
 //=============================================================================
@@ -147,8 +148,6 @@ inline int StrPrintfV (C (& buffer)[N], const C format[], va_list args);
 inline int StrPrintfV (wchar buffer[], uint bufferCount, const wchar format[], va_list args);
 inline int StrPrintfV (char buffer[], uint bufferCount, const char format[], va_list args);
 
-bool StrConvertUtf16ToUtf8 (byte utf8[], uint utf8Bytes, const wchar utf16[], const uint utf16Count);
-
 
 
 //=============================================================================
@@ -179,6 +178,8 @@ public:
 
     template <String::EEncoding F>
     inline TString (const typename TString<F>::Iterator & begin, const typename TString<F>::Iterator & end); // Transcode range
+
+    inline TString (const CStringBuilder & builder);
 
     // Assignment
     inline TString<E> & operator= (const TString<E> & rhs);
@@ -247,13 +248,38 @@ private:
     TArray<Type> m_data;
 };
 
-
 typedef TString<String::EEncoding::Ascii>   CStringAscii;
 typedef TString<String::EEncoding::Utf8>    CStringUtf8;
 typedef TString<String::EEncoding::Utf16>   CStringUtf16;
 typedef TString<String::EEncoding::Utf32>   CStringUtf32;
 typedef TString<String::EEncoding::Ucs2>    CStringUcs2;
-//typedef TString<String::EEncoding::Ucs4>    CStringUsc4;
 typedef CStringUtf8 CString;
+
+
+
+//=============================================================================
+//
+// CStringBuilder
+//
+//=============================================================================
+
+class CStringBuilder
+{
+    template <String::EEncoding E>
+    friend class TString;
+
+public:
+
+    CString GetString () const;
+    
+    template <String::EEncoding E>
+    const CStringBuilder & operator+= (const TString<E> & str);
+    const CStringBuilder & operator+= (String::CodePoint codepoint);
+
+private:
+
+    TQueue<String::CodePoint> m_data;
+};
+
 
 #include "String.inl"

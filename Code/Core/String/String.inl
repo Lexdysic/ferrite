@@ -226,6 +226,17 @@ TString<E>::TString (const typename TString<F>::Iterator & begin, const typename
 
     while (begin < end)
         String::Encode<E>(*begin, &m_data);
+
+    m_data.Add(0);
+}
+
+//=============================================================================
+template <String::EEncoding E>
+inline TString<E>::TString (const CStringBuilder & builder)
+{
+    for (auto codepoint : builder.m_data)
+        m_data.Add(codepoint);
+
     m_data.Add(0);
 }
 
