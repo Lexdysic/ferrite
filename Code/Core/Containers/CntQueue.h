@@ -1,4 +1,4 @@
-#include <queue>
+#include <deque>
 
 template <typename T>
 class TQueue
@@ -39,6 +39,7 @@ public:
 public:
 
     typedef typename std::deque<T>::iterator CIterator;
+    typedef typename std::deque<T>::const_iterator CConstIterator;
 
 public:
 
@@ -51,10 +52,10 @@ public:
 public:
     
     CIterator begin ();
-    const CIterator begin () const;
+    CConstIterator begin () const;
 
     CIterator end ();
-    const CIterator end () const;
+    CConstIterator end () const;
 
 private:
 

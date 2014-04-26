@@ -1,6 +1,6 @@
 
-namespace Internal
-{
+namespace Containers {
+namespace Internal {
 
 
 //==================================================================================================
@@ -92,7 +92,7 @@ typename TDictionaryBase<K, V>::iterator TDictionaryBase<K, V>::end ()
     return m_map.end();
 }
 
-} // namespace Internal
+}} // namespace Containers::Internal
 
 
 
@@ -148,6 +148,17 @@ const V * TDictionary<K, V>::Find (const K & key) const
         return null;
 
     return &it->second;
+}
+
+//=============================================================================
+template <typename K, typename V>
+const V & TDictionary<K, V>::Find (const K & key, const V & defaultValue) const
+{
+    auto it = m_map.find(key);
+    if (it == m_map.end())
+        return defaultValue;
+
+    return it->second;
 }
 
 

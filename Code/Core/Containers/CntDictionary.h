@@ -1,6 +1,9 @@
 
 #include <map>
 
+namespace Containers
+{
+
 namespace Internal
 {
 
@@ -37,7 +40,7 @@ protected:
     std::map<K, V> m_map;
 };
 
-} // namespace Internal
+}} // namespace Containers::Internal
 
 
 
@@ -48,7 +51,7 @@ protected:
 //==================================================================================================
 template <typename K, typename V>
 class TDictionary :
-    public Internal::TDictionaryBase<K, V>
+    public Containers::Internal::TDictionaryBase<K, V>
 {
 public:
     TDictionary ();
@@ -58,6 +61,7 @@ public:
 
     V * Find (const K & key);
     const V * Find (const K & key) const;
+    const V & Find (const K & key, const V & defaultValue) const;
 };
 
 
@@ -69,7 +73,7 @@ public:
 //==================================================================================================
 template <typename K, typename V>
 class TDictionary<K, V *> :
-    public Internal::TDictionaryBase<K, V *>
+    public Containers::Internal::TDictionaryBase<K, V *>
 {
 public:
     TDictionary ();

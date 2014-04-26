@@ -195,7 +195,7 @@ T & TQueue<T>::operator[] (sint index)
 
 //=============================================================================
 template <typename T>
-const typename TQueue<T>::CIterator TQueue<T>::begin () const
+typename TQueue<T>::CConstIterator TQueue<T>::begin () const
 {
     return m_data.cbegin();
 }
@@ -209,7 +209,7 @@ typename TQueue<T>::CIterator TQueue<T>::begin ()
 
 //=============================================================================
 template <typename T>
-const typename TQueue<T>::CIterator TQueue<T>::end () const
+typename TQueue<T>::CConstIterator TQueue<T>::end () const
 {
     return m_data.cend();
 }
