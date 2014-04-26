@@ -151,6 +151,15 @@ Matrix23 Matrix23::CreateScale (float32 scale)
 }
 
 //=============================================================================
+Matrix23 Matrix23::CreateScale (const Vector2 & scale)
+{
+    return Matrix23(
+        scale.x, 0.0f, 0.0f,
+        0.0f, scale.y, 0.0f
+    );
+}
+
+//=============================================================================
 Matrix23 Matrix23::CreateTranslation (const Vector2 & v)
 {
     return Matrix23(

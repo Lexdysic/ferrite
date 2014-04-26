@@ -82,6 +82,7 @@ public: // Construction
 
     static Matrix23 CreateRotation (Radian angle);
     static Matrix23 CreateScale (float32 scale);
+    static Matrix23 CreateScale (const Vector2 & scale);
     static Matrix23 CreateTranslation (const Vector2 & v);
     static Matrix23 CreateTranslation (const Point2 & position);
     static Matrix23 CreateTransform (const Point2 & position, Radian rotation);
