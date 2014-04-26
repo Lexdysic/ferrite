@@ -72,6 +72,10 @@
 #   define USES_ENGINE_TIME
 #endif
 
+#ifdef USES_ENGINE_SERVICES_COMMAND_LINE
+#   define USES_ENGINE_UTILITY_JSON
+#endif
+
 #ifdef USES_ENGINE_MATH
 #   define USES_ENGINE_META
 #endif
@@ -128,7 +132,7 @@
 #   include "Utilities\Allocator\Allocator.h"
 #endif
 
-#ifdef USES_ENGINE_SERVICES_JSON
+#ifdef USES_ENGINE_UTILITY_JSON
 #   include "Utilities\Json\Json.h"
 #endif
 

@@ -2,20 +2,20 @@
 namespace CommandLine
 {
 
-enum class EType
+interface IManager
 {
-    Bool,
-    String,
-    Int,
-    Float
+    virtual void Initialize () pure;
+
+    virtual void Register (const CString & name, const Json::BoolType & defValue) pure;
+    virtual void Register (const CString & name, const Json::NumberType & defValue) pure;
+    virtual void Register (const CString & name, const Json::StringType & defValue) pure;
+    virtual void Register (const CString & name, const Json::ArrayType & defValue) pure;
+    virtual void Register (const CString & name, const Json::ObjectType & defValue) pure;
+
+    virtual bool            GetBool (const CString & name) pure;
+    virtual sint            GetInt (const CString & name) pure;
+    virtual float32         GetFloat (const CString & name) pure;
+    virtual const CString & GetString (const CString & name) pure;
 };
 
-void Initialize ();
-void Register (EType type, const CString & name);
-const CString & GetString (const CString & name);
-
-uint GetPositionalCount ();
-const CString & GetPositional (uint index);
-
-
-}
+} // namespace CommandLine
