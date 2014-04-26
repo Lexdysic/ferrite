@@ -43,8 +43,6 @@ typedef uint8           byte;
 
 
 
-
-
 //=============================================================================
 //
 // Simple conversion helper
@@ -62,49 +60,8 @@ union float32uint32
     uint32 i;
 };
 
-
 typedef decltype(nullptr) nullptr_t;
 
-#if 0
-//=============================================================================
-//
-// Bool
-//
-//=============================================================================
-template <typename T>
-class Bool {
-    static_assert(
-        std::numeric_limits<T>::is_integer && 
-        !std::numeric_limits<T>::is_signed
-    );
-
-public:
-    inline Bool();
-
-    template <typename U>
-    inline Bool(Bool<U> b);
-
-    template <typename U>
-    inline friend T operator==(Bool<U> l, Bool<U> r);
-
-    template <typename U>
-    inline friend T operator!=(Bool<U> l, Bool<U> r);
-
-    template <typename U>
-    inline T operator!() const;
-
-private:
-    T mValue;
-};
-
-typedef Bool<uint32> Bool32;
-typedef Bool<u16> Bool16;
-typedef Bool<u8>  Bool8;
-
-#undef bool
-#define bool Bool32
-
-#endif
 
 
 //=============================================================================
@@ -113,9 +70,14 @@ typedef Bool<u8>  Bool8;
 //
 //=============================================================================
 
-template <typename T = uint32>
+template <typename T>
 class Flag
 {
+    static_assert(
+        std::numeric_limits<T>::is_integer && 
+        !std::numeric_limits<T>::is_signed,
+        "Must be use unsigned integral type"
+    );
 public:
     explicit Flag (T f);
 
@@ -130,8 +92,9 @@ private:
 //
 //=============================================================================
 
-template <typename T = uint32>
-class Flags {
+template <typename T>
+class Flags
+{
     static_assert(
         std::numeric_limits<T>::is_integer && 
         !std::numeric_limits<T>::is_signed,
@@ -171,55 +134,16 @@ typedef Flags<uint32> Flags32;
 typedef Flags<uint16> Flags16;
 typedef Flags<uint8>  Flags8;
 
-template <typename T> Flags<T> operator | (Flag<T> lha, Flag<T> rhs);
-template <typename T> Flags<T> operator & (Flag<T> lha, Flag<T> rhs);
-template <typename T> Flags<T> operator ^ (Flag<T> lha, Flag<T> rhs);
-template <typename T> Flags<T> operator | (Flags<T> lha, Flag<T> rhs);
-template <typename T> Flags<T> operator & (Flags<T> lha, Flag<T> rhs);
-template <typename T> Flags<T> operator ^ (Flags<T> lha, Flag<T> rhs);
-template <typename T> Flags<T> operator | (Flag<T> lha, Flags<T> rhs);
-template <typename T> Flags<T> operator & (Flag<T> lha, Flags<T> rhs);
-template <typename T> Flags<T> operator ^ (Flag<T> lha, Flags<T> rhs);
+template <typename T> Flags<T> operator| (Flag<T> lha, Flag<T> rhs);
+template <typename T> Flags<T> operator& (Flag<T> lha, Flag<T> rhs);
+template <typename T> Flags<T> operator^ (Flag<T> lha, Flag<T> rhs);
+template <typename T> Flags<T> operator| (Flags<T> lha, Flag<T> rhs);
+template <typename T> Flags<T> operator& (Flags<T> lha, Flag<T> rhs);
+template <typename T> Flags<T> operator^ (Flags<T> lha, Flag<T> rhs);
+template <typename T> Flags<T> operator| (Flag<T> lha, Flags<T> rhs);
+template <typename T> Flags<T> operator& (Flag<T> lha, Flags<T> rhs);
+template <typename T> Flags<T> operator^ (Flag<T> lha, Flags<T> rhs);
 
-
-//=============================================================================
-//
-// TFloat
-//
-//=============================================================================
-
-template <typename T>
-class TFloat
-{
-public:
-
-    inline TFloat ();
-    inline TFloat (T t);
-
-private:
-
-    T m_value;
-};
-
-
-//=============================================================================
-//
-// TInt
-//
-//=============================================================================
-
-template <typename T>
-class TInt
-{
-public:
-
-    inline TInt ();
-    inline TInt (T t);
-    
-private:
-
-    T m_value;
-};
 
 
 //=============================================================================
