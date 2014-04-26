@@ -66,8 +66,9 @@ void CImageComponent::Render (IRenderTarget * renderTarget)
     IEntity * entity = GetOwner();
     if (auto * transform = entity->Get<CTransformComponent2>())
     {
-        const Matrix23 & transOffset = Matrix23::CreateTranslation(-0.5f * m_image->GetSize());
-        renderTarget->SetWorld(transform->GetMatrix() * transOffset);
+        const Matrix23 & offset = Matrix23::CreateTranslation(-0.5f * m_image->GetSize());
+        const Matrix23 & scale = Matrix23::CreateScale(m_size / m_image->GetSize());
+        renderTarget->SetWorld(transform->GetMatrix() * scale * offset);
     }
     else
     {
