@@ -248,7 +248,7 @@ CProxy * CContext::FindProxyUnderPos (const Point2 & pos)
         if (Contains(aabb, pos))
             return widget;
     }
-    return nullptr;
+    return null;
 }
 
 //=============================================================================
@@ -266,7 +266,7 @@ CProxy * CContext::FindProxyUnderPos (const Point2 & pos, FProxyPredicate pred)
             continue;
         return proxy;
     }
-    return nullptr;
+    return null;
 }
 
 //=============================================================================

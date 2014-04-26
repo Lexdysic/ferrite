@@ -22,7 +22,7 @@ inline void SafeRelease (T *& obj)
     if (!obj)
         return;
     obj->Release();
-    obj = nullptr;
+    obj = null;
 }
 
 //=============================================================================

@@ -21,7 +21,7 @@ CImage * CImage::Create (const CString & filename)
     );
     // NOTE: if no decoder is created, it is likely because of a bad filename
     if (!pDecoder)
-        return nullptr; 
+        return null; 
 
     CImage * image = new CImage(filename, pDecoder);
 
@@ -39,7 +39,7 @@ CImage * CImage::Create (const Vector2u & size)
 
 //=============================================================================
 CImage::CImage () :
-    m_pBitmap(nullptr)
+    m_pBitmap(null)
 {
 
 }
