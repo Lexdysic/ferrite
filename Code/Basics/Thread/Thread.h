@@ -9,21 +9,25 @@ class CriticalSection;
 
 //==================================================================================================
 //
-// Thread
+// CThread
 //
 //==================================================================================================
 
-class Thread
+class CThread
 {
 public:
-    virtual ~Thread();
+    virtual ~CThread();
     
-    void ThreadStart();
-    void ThreadStop();
+    void Start();
+    void Stop();
+    void Suspend();
+    void Resume();
+    bool IsRunning () const;
 
-    virtual void ThreadEnter() = 0;
+    virtual void ThreadEnter() pure;
 
 private:
+
     ThreadId mId;
     void *   mHandle;
 };

@@ -20,7 +20,7 @@ static_assert(CriticalSection::DATA_SIZE >= sizeof(CRITICAL_SECTION), "Not enoug
 //=============================================================================
 static DWORD WINAPI ThreadEntryPoint(LPVOID param)
 {
-    Thread * thread = (Thread *)param;
+    CThread * thread = (CThread *)param;
     ASSERT(thread);
 
     thread->ThreadEnter();
@@ -29,20 +29,41 @@ static DWORD WINAPI ThreadEntryPoint(LPVOID param)
 }
 
 //=============================================================================
-Thread::~Thread()
+CThread::~CThread()
 {
+    CloseHandle(mHandle);
 }
 
 //=============================================================================
-void Thread::ThreadStart()
+void CThread::Start()
 {
     mHandle = ::CreateThread(null, 0, ThreadEntryPoint, this, 0, (LPDWORD)&mId);
 }
 
 //=============================================================================
-void Thread::ThreadStop()
+void CThread::Stop()
 {
-    TerminateThread(mHandle, 0);
+    ::TerminateThread(mHandle, 0);
+}
+
+//=============================================================================
+void CThread::Suspend()
+{
+    ::SuspendThread(mHandle);
+}
+
+//=============================================================================
+void CThread::Resume()
+{
+    ::ResumeThread(mHandle);
+}
+
+//=============================================================================
+bool CThread::IsRunning() const
+{
+    DWORD exitCode = 0;
+    ::GetExitCodeThread(mHandle, &exitCode);
+    return exitCode == STILL_ACTIVE;
 }
 
 
