@@ -112,7 +112,7 @@ void CContext::Uninitialize ()
         pair.second->Release();
     }
 
-    m_pWindow = nullptr;
+    m_pWindow = null;
 
     CoUninitialize();
 }
@@ -202,7 +202,7 @@ IImage * CContext::ImageLoad (const CString & filename)
 
     CImage * pImage = CImage::Create(filename);
     if (!pImage)
-        return nullptr;
+        return null;
 
     m_images.push_back(pImage);
 
@@ -221,7 +221,7 @@ IImage * CContext::ImageCreate (const Vector2u & size)
     ASSERT(size.x && size.y);
     CImage * pImage = CImage::Create(size);
     if (!pImage)
-        return nullptr;
+        return null;
     m_images.push_back(pImage);
     return pImage;
 }
