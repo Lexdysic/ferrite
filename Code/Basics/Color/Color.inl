@@ -188,8 +188,13 @@ Color::Color () :
 }
 
 //=============================================================================
-Color::Color (const Color & rhs) :
-    TColorBase<float32>(rhs)
+Color::Color (const Color & color) :
+    TColorBase<float32>(color)
+{
+}
+
+Color::Color (const Color & color, float32 alpha) :
+    TColorBase<float32>(color.r, color.g, color.b, alpha)
 {
 }
 
