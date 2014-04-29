@@ -54,7 +54,7 @@
 
 #ifdef COMPILER_MSVC
 #  undef interface
-#  define interface __declspec(novtable) struct
+#  define interface struct __declspec(novtable)
 #else
 #   define interface struct
 #endif
