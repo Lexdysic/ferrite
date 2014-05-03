@@ -189,7 +189,7 @@ TString<E>::TString (const TString<E> & rhs) :
 //=============================================================================
 template <String::EEncoding E>
 TString<E>::TString (TString<E> && rhs) :
-    m_data(std::forward<TArray<TString<E>::Type>>(rhs.m_data))
+    m_data(std::forward<TArray<TString<E>::CodeUnit>>(rhs.m_data))
 {
 }
 
@@ -258,7 +258,7 @@ TString<E> & TString<E>::operator= (const TString<E> & rhs)
 template <String::EEncoding E>
 TString<E> & TString<E>::operator= (TString<E> && rhs)
 {
-    m_data = std::forward<TArray<TString<E>::Type>>(rhs.m_data);
+    m_data = std::forward<TArray<TString<E>::CodeUnit>>(rhs.m_data);
     return *this;
 }
 
@@ -281,7 +281,7 @@ TString<E> & TString<E>::operator= (const TString<F> & rhs)
 
 //=============================================================================
 template <String::EEncoding E>
-const typename TString<E>::Type * TString<E>::Ptr () const
+const typename TString<E>::CodeUnit * TString<E>::Ptr () const
 {
     return m_data.Ptr();
 }
@@ -298,7 +298,7 @@ const typename TString<E>::Iterator TString<E>::begin () const
 template <String::EEncoding E>
 const typename TString<E>::Iterator TString<E>::end () const
 {
-    return TString<E>::Iterator(null);
+    return TString<E>::Iterator(m_data.Ptr() + m_data.Count() - 1);
 }
 
 //=============================================================================
@@ -307,7 +307,7 @@ uint TString<E>::Length () const
 {
     uint len = 0;
 
-    const Type * ptr = Ptr();
+    const CodeUnit * ptr = Ptr();
     while (String::Decode<E>(&ptr) != 0)
         len++;
 
@@ -358,13 +358,13 @@ bool TString<E>::IsValid () const
 
 //=============================================================================
 template <String::EEncoding E>
-TString<E> TString<E>::FromData(const Type data[])
+TString<E> TString<E>::FromData(const CodeUnit data[])
 {
     if (!data)
         return TString<E>::Null;
 
     // TODO: check that the data is valid
-    const Type * dataEnd = data;
+    const CodeUnit * dataEnd = data;
     while (*dataEnd++ != 0);
     
     const uint len = dataEnd - data;
@@ -376,7 +376,7 @@ TString<E> TString<E>::FromData(const Type data[])
 
 //=============================================================================
 template <String::EEncoding E>
-TString<E> TString<E>::FromData(const TArray<Type> & data)
+TString<E> TString<E>::FromData(const TArray<CodeUnit> & data)
 {
     // TODO: check that the data is valid
     TString<E> out;
@@ -418,6 +418,19 @@ bool operator< (const TString<E> & lhs, const TString<E> & rhs)
     return lhs.m_data < rhs.m_data;
 }
 
+//=============================================================================
+template <String::EEncoding F>
+TString<F> operator+ (const TString<F> & lhs, const TString<F> & rhs)
+{
+    TArray<typename TString<F>::CodeUnit> data;
+
+    data.Add(lhs.m_data);
+    data.RemoveOrdered(data.Count() - 1);
+    data.Add(rhs.m_data);
+    data.Add(0);
+
+    return TString<F>::FromData(std::move(data));
+}
 
 
 //=============================================================================
@@ -428,7 +441,7 @@ bool operator< (const TString<E> & lhs, const TString<E> & rhs)
 
 //=============================================================================
 template <String::EEncoding E>
-TString<E>::Iterator::Iterator (const Type * ptr) :
+TString<E>::Iterator::Iterator (const CodeUnit * ptr) :
     m_curr(ptr)
 {
 }
@@ -445,7 +458,7 @@ const typename TString<E>::Iterator & TString<E>::Iterator::operator= (const Ite
 template <String::EEncoding E>
 const String::CodePoint TString<E>::Iterator::operator* () const
 {
-    const TString<E>::Type * curr = m_curr;
+    const TString<E>::CodeUnit * curr = m_curr;
     return String::Decode<E>(&curr);
 }
 
@@ -468,7 +481,39 @@ const typename TString<E>::Iterator TString<E>::Iterator::operator++ (int) const
 
 //=============================================================================
 template <String::EEncoding E>
-const typename TString<E>::Type * TString<E>::Iterator::Ptr() const
+bool TString<E>::Iterator::operator== (const Iterator & rhs) const
+{
+    return this->m_curr == rhs.m_curr;
+}
+
+//=============================================================================
+template <String::EEncoding E>
+bool TString<E>::Iterator::operator!= (const Iterator & rhs) const
+{
+    return !(*this == rhs);
+}
+
+//=============================================================================
+template <String::EEncoding E>
+const typename TString<E>::CodeUnit * TString<E>::Iterator::Ptr() const
 {
     return m_curr;
+}
+
+
+
+//=============================================================================
+//
+// CStringBuilder
+//
+//=============================================================================
+
+//=============================================================================
+template <String::EEncoding E>
+const CStringBuilder & CStringBuilder::operator+= (const TString<E> & str)
+{
+    for (auto codepoint : str)
+        m_data.AddBack(codepoint);
+
+    return *this;
 }

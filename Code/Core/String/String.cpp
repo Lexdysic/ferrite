@@ -252,19 +252,21 @@ void Encode<EEncoding::Utf16> (CodePoint c, TArray<wchar> * data)
 
 
 //=============================================================================
-CString CStringBuilder::GetString () const
+//
+// CStringBuilder
+//
+//=============================================================================
+
+//=============================================================================
+void CStringBuilder::Clear ()
 {
-    return CString(*this);
+    m_data.Clear();
 }
 
 //=============================================================================
-template <String::EEncoding E>
-const CStringBuilder & CStringBuilder::operator+= (const TString<E> & str)
+CString CStringBuilder::GetString () const
 {
-    for (auto codepoint : str)
-        m_data.AddBack(*codepoint);
-
-    return *this;
+    return CString(*this);
 }
 
 //=============================================================================

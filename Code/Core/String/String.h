@@ -162,7 +162,7 @@ class TString
 public:
 
     static const String::EEncoding ENCODING = E;
-    typedef typename String::CodeUnit<E>::Type Type;
+    typedef typename String::CodeUnit<E>::Type CodeUnit;
     class Iterator;
 
 public:
@@ -171,25 +171,28 @@ public:
     inline TString (const TString<E> & rhs);
     inline TString (TString<E> && rhs);
     inline TString (const char ascii[]);
-    inline ~TString ();
-
-    template <String::EEncoding F>
-    inline TString (const TString<F> & rhs); // Transcode
-
-    template <String::EEncoding F>
-    inline TString (const typename TString<F>::Iterator & begin, const typename TString<F>::Iterator & end); // Transcode range
-
     inline TString (const CStringBuilder & builder);
+    inline ~TString ();
+    // ... transcode
+    template <String::EEncoding F>
+    inline TString (const TString<F> & rhs);
+    // ... transcode range
+    template <String::EEncoding F>
+    inline TString (const typename TString<F>::Iterator & begin, const typename TString<F>::Iterator & end);
+
 
     // Assignment
+    // ... copy
     inline TString<E> & operator= (const TString<E> & rhs);
+    // ... move
     inline TString<E> & operator= (TString<E> && rhs);
-
+    // ... transcode
     template <String::EEncoding F>
-    inline TString<E> & operator= (const TString<F> & rhs); // Transcode
+    inline TString<E> & operator= (const TString<F> & rhs);
+
 
     // Data
-    inline const Type * Ptr () const;
+    inline const CodeUnit * Ptr () const;
     inline const Iterator begin () const;
     inline const Iterator end () const;
 
@@ -208,7 +211,7 @@ public:
     class Iterator
     {
         friend class TString<E>;
-        typedef typename TString<E>::Type Type;
+        typedef typename TString<E>::CodeUnit CodeUnit;
     public:
         Iterator () = default;
         Iterator (const Iterator &) = default;
@@ -218,20 +221,23 @@ public:
         const Iterator & operator++ () const;
         const Iterator operator++ (int) const;
 
-        const Type * Ptr() const;
+        bool operator== (const Iterator & rhs) const;
+        bool operator!= (const Iterator & rhs) const;
+
+        const CodeUnit * Ptr() const;
 
     private:
-        Iterator (const Type * ptr);
+        Iterator (const CodeUnit * ptr);
 
-        mutable const Type * m_curr;
+        mutable const CodeUnit * m_curr;
     };
 
 public:
 
     static const TString<E> Null;
     static const TString<E> Empty;
-    static TString<E> FromData(const Type data[]);
-    static TString<E> FromData(const TArray<Type> & data);
+    static TString<E> FromData(const CodeUnit data[]);
+    static TString<E> FromData(const TArray<CodeUnit> & data);
     static TString<E> FromData(const TArray<String::CodePoint> & data);
 
 public:
@@ -242,10 +248,12 @@ public:
     friend bool operator== (const TString<F> & lhs, const char rhs[]);
     template <String::EEncoding F>
     friend bool operator< (const TString<F> & lhs, const TString<F> & rhs);
+    template <String::EEncoding F>
+    friend TString<F> operator+ (const TString<F> & lhs, const TString<F> & rhs);
 
 private:
 
-    TArray<Type> m_data;
+    TArray<CodeUnit> m_data;
 };
 
 typedef TString<String::EEncoding::Ascii>   CStringAscii;
@@ -269,6 +277,8 @@ class CStringBuilder
     friend class TString;
 
 public:
+
+    void Clear ();
 
     CString GetString () const;
     
