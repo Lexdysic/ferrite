@@ -33,6 +33,29 @@ class CWriter;
 
 //=============================================================================
 //
+// CPath
+//
+//=============================================================================
+
+class CPath
+{
+public:
+
+    //CPath ();
+
+private:
+    CString m_path;
+};
+
+extern const String::CodePoint SEPARATOR;
+
+void SetCurrentDirectory(const CPath & path);
+CPath GetCurrentDirectory();
+
+
+
+//=============================================================================
+//
 // CFile
 //
 //=============================================================================
@@ -135,5 +158,54 @@ public:
 };
 
 
+
+
+//=============================================================================
+//
+// CDirectoryListing
+//
+//=============================================================================
+
+class CDirectoryListing
+{
+public:
+
+    CDirectoryListing (const CString & filepath);
+
+public:
+
+    class CIterator
+    {
+        friend class CDirectoryListing;
+    public:
+
+        CIterator ();
+        CIterator (const CIterator & rhs);
+        ~CIterator ();
+
+        CString operator* () const;
+        const CIterator & operator++ ();
+        CIterator operator++ (int);
+        bool operator< (const CIterator & rhs) const;
+        bool operator== (const CIterator & rhs) const;
+        bool operator!= (const CIterator & rhs) const;
+
+    private:
+
+        CIterator (const CString & filepath);
+        CIterator (void * handle);
+
+        void * m_handle;
+        CString m_filepath;
+    };
+
+    CIterator begin ();
+    CIterator end ();
+
+private:
+
+    CString m_filepath;
+    void *  m_handle;
+};
 
 } // namespace File

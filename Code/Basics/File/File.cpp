@@ -6,7 +6,7 @@
 #include <iostream>
 #include <sstream>
 #include <cstdio>
-
+#include <Windows.h>
 
 #include "EngineDeps.h"
 
@@ -14,12 +14,16 @@ namespace File
 {
 
 
+const String::CodePoint SEPARATOR = '\';
+
+
 //=============================================================================
 //
 // CFile
 //
 //=============================================================================
-
+    
+//=============================================================================
 Internal::CFile::CFile (const CString & filepath, EType type, EMode mode) :
     m_file(null)
 {
@@ -51,16 +55,19 @@ Internal::CFile::CFile (const CString & filepath, EType type, EMode mode) :
     Seek(0);
 }
 
+//=============================================================================
 Internal::CFile::~CFile ()
 {
     Close();
 }
 
+//=============================================================================
 bool Internal::CFile::IsOpen () const
 {
     return m_file != null;
 }
 
+//=============================================================================
 void Internal::CFile::Close ()
 {
     if (!m_file)
@@ -69,22 +76,26 @@ void Internal::CFile::Close ()
     m_file = null;
 }
 
+//=============================================================================
 uint Internal::CFile::Position () const
 {
     const uint pos = ftell((FILE *)m_file);
     return pos;
 }
 
+//=============================================================================
 uint Internal::CFile::Bytes () const
 {
     return m_bytes;
 }
 
+//=============================================================================
 void Internal::CFile::Seek (uint seek)
 {
     Seek(EPosition::Begin, seek);
 }
 
+//=============================================================================
 void Internal::CFile::Seek (EPosition position, sint offset)
 {
     int origin;
@@ -106,11 +117,13 @@ void Internal::CFile::Seek (EPosition position, sint offset)
 //
 //=============================================================================
 
+//=============================================================================
 Internal::CReader::CReader (const CString & filepath, EType type) :
     CFile(filepath, type, EMode::Read)
 {
 }
 
+//=============================================================================
 Internal::CReader::~CReader ()
 {
 }
@@ -123,16 +136,19 @@ Internal::CReader::~CReader ()
 //
 //=============================================================================
 
+//=============================================================================
 CTextReader::CTextReader (const CString & filepath) :
     CReader(filepath, Internal::EType::Text)
 {
     //m_encoding = StrEncoding()
 }
 
+//=============================================================================
 CTextReader::~CTextReader ()
 {
 }
 
+//=============================================================================
 CString CTextReader::ReadAll ()
 {
     const uint bytes = Bytes();
@@ -143,6 +159,7 @@ CString CTextReader::ReadAll ()
     return CString::FromData(data);
 }
 
+//=============================================================================
 CString CTextReader::ReadLine ()
 {
     const uint pos = Position();
@@ -151,6 +168,7 @@ CString CTextReader::ReadLine ()
     return out;
 }
 
+//=============================================================================
 TArray<CString> CTextReader::ReadLines ()
 {
     TArray<CString> out;
@@ -159,21 +177,25 @@ TArray<CString> CTextReader::ReadLines ()
 }
 
 
+
 //=============================================================================
 //
 // CBinaryReader
 //
 //=============================================================================
 
+//=============================================================================
 CBinaryReader::CBinaryReader (const CString & filepath) :
     CReader(filepath, Internal::EType::Binary)
 {
 }
 
+//=============================================================================
 CBinaryReader::~CBinaryReader ()
 {
 }
 
+//=============================================================================
 byte CBinaryReader::ReadByte ()
 {
     byte out;
@@ -181,6 +203,7 @@ byte CBinaryReader::ReadByte ()
     return out;
 }
 
+//=============================================================================
 TArray<byte> CBinaryReader::ReadAll ()
 {
     const uint bytes = CFile::Bytes();
@@ -192,6 +215,153 @@ TArray<byte> CBinaryReader::ReadAll ()
     fread((void *)out.Ptr(), 1, bytes, (FILE *)m_file);
 
     return out;
+}
+
+
+
+//=============================================================================
+//
+// CDirectoryListing
+//
+//=============================================================================
+
+//=============================================================================
+CDirectoryListing::CDirectoryListing (const CString & filepath) :
+    m_filepath(filepath)
+{
+}
+
+//=============================================================================
+CDirectoryListing::CIterator CDirectoryListing::begin ()
+{
+    return CIterator(m_filepath);
+}
+
+//=============================================================================
+CDirectoryListing::CIterator CDirectoryListing::end ()
+{
+    return CIterator((void *)INVALID_HANDLE_VALUE);
+}
+
+
+
+//=============================================================================
+//
+// CDirectoryListing::CIterator
+//
+//=============================================================================
+
+//=============================================================================
+CDirectoryListing::CIterator::CIterator () :
+    m_handle((void *)INVALID_HANDLE_VALUE)
+{
+}
+
+//=============================================================================
+CDirectoryListing::CIterator::CIterator (const CIterator & rhs) :
+    m_handle(rhs.m_handle)
+{
+}
+
+//=============================================================================
+CDirectoryListing::CIterator::CIterator (const CString & filepath)
+{
+    CStringUtf16 filepathUtf16 = filepath;
+
+    WIN32_FIND_DATAW findData;
+    HANDLE handle = ::FindFirstFileW(filepathUtf16.Ptr(), &findData);
+
+    if (handle != INVALID_HANDLE_VALUE)
+    {
+        BOOL rv = true;
+        while (rv && (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+        {
+            rv = ::FindNextFileW(handle, &findData);
+        }
+
+        if (!rv)
+            handle = INVALID_HANDLE_VALUE;
+    }
+
+    m_handle = (void *)handle;
+    if (handle != INVALID_HANDLE_VALUE)
+        m_filepath = CStringUtf16::FromData(findData.cFileName);
+}
+
+//=============================================================================
+CDirectoryListing::CIterator::CIterator (void * handle) :
+    m_handle(handle)
+{
+}
+
+//=============================================================================
+CDirectoryListing::CIterator::~CIterator ()
+{
+    ::FindClose((HANDLE)m_handle);
+}
+
+//=============================================================================
+CString CDirectoryListing::CIterator::operator* () const
+{
+    return m_filepath;
+}
+
+//=============================================================================
+const CDirectoryListing::CIterator & CDirectoryListing::CIterator::operator++ ()
+{
+    WIN32_FIND_DATAW findData;
+    BOOL rv = false;
+    do
+    {
+        rv = ::FindNextFileW((HANDLE)m_handle, &findData);
+    }
+    while (rv && findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
+
+    if (rv)
+        m_filepath = CStringUtf16::FromData(findData.cFileName);
+    else
+        m_handle = (void *)INVALID_HANDLE_VALUE;
+
+    return *this;
+}
+
+//=============================================================================
+CDirectoryListing::CIterator CDirectoryListing::CIterator::operator++ (int)
+{
+    CIterator ret = *this;
+
+    WIN32_FIND_DATAW findData;
+    BOOL rv = false;
+    do
+    {
+        rv = ::FindNextFileW((HANDLE)m_handle, &findData);
+    }
+    while (rv && findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
+
+    if (rv)
+        m_filepath = CStringUtf16::FromData(findData.cFileName);
+    else
+        m_handle = (void *)INVALID_HANDLE_VALUE;
+
+    return ret;
+}
+
+//=============================================================================
+bool CDirectoryListing::CIterator::operator< (const CIterator & rhs) const
+{
+    return this->m_handle < rhs.m_handle;
+}
+
+//=============================================================================
+bool CDirectoryListing::CIterator::operator== (const CIterator & rhs) const
+{
+    return this->m_handle == rhs.m_handle;
+}
+
+//=============================================================================
+bool CDirectoryListing::CIterator::operator!= (const CIterator & rhs) const
+{
+    return !(*this == rhs);
 }
 
 } // namespace File
