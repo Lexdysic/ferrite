@@ -25,13 +25,6 @@ interface CContextNotify;
 //
 //=============================================================================
 
-enum class EPixelFormat
-{
-    R8G8B8,
-    R8G8B8A8,
-    A8
-};
-
 enum class EDrawStyle
 {
     Filled,
