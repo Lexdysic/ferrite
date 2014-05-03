@@ -31,7 +31,8 @@
 //
 //=============================================================================
 
-#define CONCAT(a, b) a ## b
+#define CONCAT_(a, b) a ## b
+#define CONCAT(a, b) CONCAT_(a, b)
 
 
 
@@ -41,8 +42,8 @@
 //
 //=============================================================================
 
-#define UNIQUE_SYMBOL1(symbol, line) symbol ## line
-#define UNIQUE_SYMBOL(symbol) UNIQUE_SYMBOL1(symbol, __LINE__)
+#define UNIQUE_SYMBOL_(symbol, line) CONCAT(symbol, line)
+#define UNIQUE_SYMBOL(symbol) UNIQUE_SYMBOL_(symbol, __LINE__)
 
 
 
