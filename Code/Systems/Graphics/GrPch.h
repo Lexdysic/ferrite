@@ -3,7 +3,7 @@
 #include <wincodec.h>
 #include <dwrite.h>
 
-#define USES_ENGINE_SYSTEM
+#define USES_ENGINE_WINDOW
 #define USES_ENGINE_GRAPHICS
 #define USES_ENGINE_PHYSICS
 

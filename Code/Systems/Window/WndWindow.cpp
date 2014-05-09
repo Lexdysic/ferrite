@@ -1,5 +1,5 @@
 
-#include "Basics/System/SysPch.h"
+#include "WndPch.h"
 
 #ifdef _MSC_VER
 #pragma comment(lib, "kernel32.lib")

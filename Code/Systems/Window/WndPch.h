@@ -8,8 +8,8 @@
 #include <Windowsx.h>
 #include <GdiPlus.h>
 
-#define USES_ENGINE_SYSTEM
+#define USES_ENGINE_WINDOW
 
 #include "EngineDeps.h"
 
-#include "SysWindow.h"
+#include "WndWindow.h"

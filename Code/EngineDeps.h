@@ -24,6 +24,9 @@
 //
 //=============================================================================
 
+
+// Systems
+
 #ifdef USES_ENGINE_USER_INTERFACE
 #   define USES_ENGINE_INPUT
 #   define USES_ENGINE_TIME
@@ -35,25 +38,19 @@
 #   define USES_ENGINE_GEOMETRY
 #endif
 
-#ifdef USES_ENGINE_GEOMETRY
-#endif
-
 #ifdef USES_ENGINE_PHYSICS
 #   define USES_ENGINE_ENTITY
 #   define USES_ENGINE_GEOMETRY
 #   define USES_ENGINE_TIME
 #endif
 
-#ifdef USES_ENGINE_SYSTEM
-#   define USES_ENGINE_UTILITY_NOTIFIER
-#   define USES_ENGINE_INPUT
-#endif
-
-#ifdef USES_ENGINE_THREAD
-#endif
-
 #ifdef USES_ENGINE_PATHING
 #   define USES_ENGINE_UTILITY_NOTIFIER
+#endif
+
+#ifdef USES_ENGINE_WINDOW
+#   define USES_ENGINE_UTILITY_NOTIFIER
+#   define USES_ENGINE_INPUT
 #endif
 
 #ifdef USES_ENGINE_INPUT
@@ -72,13 +69,34 @@
 #   define USES_ENGINE_TIME
 #endif
 
+
+// Services
+
 #ifdef USES_ENGINE_SERVICES_COMMAND_LINE
 #   define USES_ENGINE_UTILITY_JSON
 #endif
 
+
+// Utility
+
+#ifdef USES_ENGINE_UTILITY_JSON
+#   define USES_ENGINE_PATH
+#endif
+
+
+// Basic
+
+#ifdef USES_ENGINE_FILE
+#   define USES_ENGINE_PATH
+#endif
+
+
+// Core
+
 #ifdef USES_ENGINE_MATH
 #   define USES_ENGINE_META
 #endif
+
 
 
 
@@ -117,6 +135,36 @@
 #endif
 
 
+// BASICS
+
+#ifdef USES_ENGINE_GEOMETRY
+#   include "Basics\Geometry\Geometry.h"
+#endif
+
+#ifdef USES_ENGINE_THREAD
+#   include "Basics\Thread\Thread.h"
+#endif
+
+#ifdef USES_ENGINE_TIME
+#   include "Basics\Time\Time.h"
+#endif
+
+#ifdef USES_ENGINE_COLOR
+#   include "Basics\Color\Color.h"
+#endif
+
+#ifdef USES_ENGINE_META
+#   include "Basics\Meta\Meta.h"
+#endif
+
+#ifdef USES_ENGINE_PATH
+#   include "Basics\Path\Path.h"
+#endif
+
+#ifdef USES_ENGINE_FILE
+#   include "Basics\File\File.h"
+#endif
+
 
 // UTILITIES
 
@@ -134,38 +182,6 @@
 
 #ifdef USES_ENGINE_UTILITY_JSON
 #   include "Utilities\Json\Json.h"
-#endif
-
-
-
-// BASICS
-
-#ifdef USES_ENGINE_GEOMETRY
-#   include "Basics\Geometry\Geometry.h"
-#endif
-
-#ifdef USES_ENGINE_THREAD
-#   include "Basics\Thread\Thread.h"
-#endif
-
-#ifdef USES_ENGINE_SYSTEM
-#   include "Basics\System\System.h"
-#endif
-
-#ifdef USES_ENGINE_TIME
-#   include "Basics\Time\Time.h"
-#endif
-
-#ifdef USES_ENGINE_COLOR
-#   include "Basics\Color\Color.h"
-#endif
-
-#ifdef USES_ENGINE_META
-#   include "Basics\Meta\Meta.h"
-#endif
-
-#ifdef USES_ENGINE_FILE
-#   include "Basics\File\File.h"
 #endif
 
 
@@ -206,6 +222,10 @@
 
 #ifdef USES_ENGINE_NET
 #   include "Systems\Net\Net.h"
+#endif
+
+#ifdef USES_ENGINE_WINDOW
+#   include "Systems\Window\Window.h"
 #endif
 
 

@@ -1,5 +1,5 @@
 
-#define USES_ENGINE_SYSTEM
+#define USES_ENGINE_WINDOW
 #define USES_ENGINE_INPUT
 
 #include <Windows.h>
