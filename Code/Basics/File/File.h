@@ -27,30 +27,7 @@ class CFile;
 class CReader;
 class CWriter;
 
-}
-
-
-
-//=============================================================================
-//
-// CPath
-//
-//=============================================================================
-
-class CPath
-{
-public:
-
-    //CPath ();
-
-private:
-    CString m_path;
-};
-
-extern const String::CodePoint SEPARATOR;
-
-void SetCurrentDirectory(const CPath & path);
-CPath GetCurrentDirectory();
+} // namespace Internal
 
 
 
@@ -63,7 +40,7 @@ CPath GetCurrentDirectory();
 class Internal::CFile
 {
 public:
-    CFile (const CString & filepath, EType type, EMode mode);
+    CFile (const CPath & filepath, EType type, EMode mode);
     ~CFile ();
     
     void Close ();
@@ -77,7 +54,7 @@ public:
 
 protected:
     void *  m_file;
-    CString m_filepath;
+    CPath   m_filepath;
     uint    m_bytes;
 };
 
@@ -92,7 +69,7 @@ protected:
 class Internal::CReader : public Internal::CFile
 {
 public:
-    CReader (const CString & filepath, EType type);
+    CReader (const CPath & filepath, EType type);
     ~CReader ();
 
 protected:
@@ -109,7 +86,7 @@ protected:
 class CTextReader : public Internal::CReader
 {
 public:
-    CTextReader (const CString & filepath);
+    CTextReader (const CPath & filepath);
     ~CTextReader ();
 
     String::EEncoding DetermineEncoding ();
@@ -132,7 +109,7 @@ private:
 
 class CBinaryReader : public Internal::CReader
 {
-    CBinaryReader (const CString & filepath);
+    CBinaryReader (const CPath & filepath);
     ~CBinaryReader ();
     
     byte ReadByte ();
@@ -153,59 +130,8 @@ class CBinaryReader : public Internal::CReader
 class Internal::CWriter : public Internal::CFile
 {
 public:
-    CWriter (const CString & filepath);
+    CWriter (const CPath & filepath);
     ~CWriter ();
-};
-
-
-
-
-//=============================================================================
-//
-// CDirectoryListing
-//
-//=============================================================================
-
-class CDirectoryListing
-{
-public:
-
-    CDirectoryListing (const CString & filepath);
-
-public:
-
-    class CIterator
-    {
-        friend class CDirectoryListing;
-    public:
-
-        CIterator ();
-        CIterator (const CIterator & rhs);
-        ~CIterator ();
-
-        CString operator* () const;
-        const CIterator & operator++ ();
-        CIterator operator++ (int);
-        bool operator< (const CIterator & rhs) const;
-        bool operator== (const CIterator & rhs) const;
-        bool operator!= (const CIterator & rhs) const;
-
-    private:
-
-        CIterator (const CString & filepath);
-        CIterator (void * handle);
-
-        void * m_handle;
-        CString m_filepath;
-    };
-
-    CIterator begin ();
-    CIterator end ();
-
-private:
-
-    CString m_filepath;
-    void *  m_handle;
 };
 
 } // namespace File
