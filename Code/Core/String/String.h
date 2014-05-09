@@ -42,6 +42,7 @@ struct Encoding
 {
     EEncoding   encoding;
     EEndian     endian;
+    uint        bomBytes;
 
     static const Encoding Unknown;
 };
@@ -60,7 +61,7 @@ Encoding GetEncoding (const byte data[]);
 namespace String
 {
 
-typedef uint32 CodePoint;
+typedef sint32 CodePoint; // TODO: can this be made into its own type so templates dont get messed up?
 
 const CodePoint CODE_POINT_INVALID = (CodePoint)~0;
 
@@ -83,7 +84,8 @@ void Encode (CodePoint code, TArray<typename CodeUnit<E>::Type> * data);
 //
 //=============================================================================
 
-namespace String {
+namespace String
+{
 
 template <EEncoding E>  struct CodeUnit                   { typedef void   Type; };
 template <>             struct CodeUnit<EEncoding::Ascii> { typedef char   Type; };
@@ -91,7 +93,7 @@ template <>             struct CodeUnit<EEncoding::Utf8>  { typedef uint8  Type;
 template <>             struct CodeUnit<EEncoding::Utf16> { typedef wchar  Type; };
 template <>             struct CodeUnit<EEncoding::Utf32> { typedef uint32 Type; };
 template <>             struct CodeUnit<EEncoding::Ucs2>  { typedef wchar  Type; };
-template <>             struct CodeUnit<EEncoding::Ucs4>  { typedef sint32 Type; };
+template <>             struct CodeUnit<EEncoding::Ucs4>  { typedef uint32 Type; };
 
 } // namespace String
 
@@ -102,7 +104,8 @@ template <>             struct CodeUnit<EEncoding::Ucs4>  { typedef sint32 Type;
 //
 //=============================================================================
 
-namespace String {
+namespace String
+{
 
 template <typename T> struct EncodingType         { static const EEncoding value = EEncoding::Unknown; };
 template <>           struct EncodingType<char>   { static const EEncoding value = EEncoding::Ascii; };
@@ -112,6 +115,7 @@ template <>           struct EncodingType<uint32> { static const EEncoding value
 template <>           struct EncodingType<uint16> { static const EEncoding value = EEncoding::Ucs2; };
 
 } // namespace String
+
 
 
 //=============================================================================
@@ -206,6 +210,9 @@ public:
     bool IsNullOrEmpty () const;
     bool IsValid () const;
 
+    bool StartsWith (const TString<E> & str) const;
+    bool EndsWith (const TString<E> & str) const;
+
 public:
 
     class Iterator
@@ -223,6 +230,7 @@ public:
 
         bool operator== (const Iterator & rhs) const;
         bool operator!= (const Iterator & rhs) const;
+        bool operator< (const Iterator & rhs) const;
 
         const CodeUnit * Ptr() const;
 
@@ -261,6 +269,8 @@ typedef TString<String::EEncoding::Utf8>    CStringUtf8;
 typedef TString<String::EEncoding::Utf16>   CStringUtf16;
 typedef TString<String::EEncoding::Utf32>   CStringUtf32;
 typedef TString<String::EEncoding::Ucs2>    CStringUcs2;
+typedef TString<String::EEncoding::Ucs4>    CStringUcs4;
+
 typedef CStringUtf8 CString;
 
 

@@ -67,7 +67,7 @@ static bool IsValidCodePoint (String::CodePoint codepoint)
 namespace String
 {
 
-const Encoding Encoding::Unknown = { String::EEncoding::Unknown, EEndian::Unknown };
+const Encoding Encoding::Unknown = { String::EEncoding::Unknown, EEndian::Unknown, 0 };
 
 //=============================================================================
 Encoding GetEncoding (const byte data[])
@@ -75,22 +75,21 @@ Encoding GetEncoding (const byte data[])
     struct Bom
     {
         Encoding encoding;
-        uint bytes;
         byte bom[4];
     };
 
     static const Bom s_boms[] = 
     {
-        { { EEncoding::Utf8,  EEndian::Unknown }, 3, { 0xff, 0xbb, 0xbf } },
-        { { EEncoding::Utf16, EEndian::Little },  2, { 0xff, 0xfe } },
-        { { EEncoding::Utf16, EEndian::Big },     2, { 0xfe, 0xff } },
-        { { EEncoding::Utf32, EEndian::Little },  4, { 0xff, 0xfe, 0x00, 0x00 } },
-        { { EEncoding::Utf32, EEndian::Big },     4, { 0x00, 0x00, 0xfe, 0xff } },
+        { { EEncoding::Utf8,  EEndian::Unknown, 3 }, { 0xef, 0xbb, 0xbf } },
+        { { EEncoding::Utf16, EEndian::Little,  2 }, { 0xff, 0xfe } },
+        { { EEncoding::Utf16, EEndian::Big,     2 }, { 0xfe, 0xff } },
+        { { EEncoding::Utf32, EEndian::Little,  4 }, { 0xff, 0xfe, 0x00, 0x00 } },
+        { { EEncoding::Utf32, EEndian::Big,     4 }, { 0x00, 0x00, 0xfe, 0xff } },
     };
 
     for (const auto & bom : s_boms)
     {
-        if (!MemEqual(data, bom.bom, bom.bytes))
+        if (!MemEqual(data, bom.bom, bom.encoding.bomBytes))
             continue;
 
         return bom.encoding;
@@ -196,6 +195,22 @@ CodePoint Decode<String::EEncoding::Utf16> (const wchar * data[])
 
 //=============================================================================
 template <>
+void Encode<EEncoding::Ascii> (CodePoint code, TArray<CodeUnit<EEncoding::Ascii>::Type> * data)
+{
+    ASSERT(IsValidCodePoint(code));
+
+    if (code < 0x80)
+    {
+        data->Add((char)code);
+    }
+    else
+    {
+        FATAL_EXIT("Encountered code unit that is out of range for ascii encoding.");
+    }
+}
+
+//=============================================================================
+template <>
 void Encode<EEncoding::Utf8> (CodePoint code, TArray<byte> * data)
 {
     ASSERT(IsValidCodePoint(code));
@@ -224,7 +239,7 @@ void Encode<EEncoding::Utf8> (CodePoint code, TArray<byte> * data)
     }
     else
     {
-        ASSERT(false); // ERROR: out of range
+        FATAL_EXIT("Encountered code unit that is out of range for utf8 encoding.");
     }
 }
 
