@@ -1,7 +1,6 @@
 namespace Json
 {
 
-
 //=============================================================================
 //
 // Constants
@@ -18,6 +17,14 @@ enum class EType
     Object
 };
 
+
+
+//=============================================================================
+//
+// Forwards / Typedefs
+//
+//=============================================================================
+
 class CValue;
 class CReader;
 class CWriter;
@@ -29,18 +36,6 @@ typedef CString                         StringType;
 typedef TArray<CValue>                  ArrayType;
 typedef TDictionary<CString, CValue>    ObjectType;
 
-
-
-namespace Internal
-{
-
-template <typename T> struct MapObjectType             { static const EType value = EType::Null; };
-template <>           struct MapObjectType<BoolType>   { static const EType value = EType::Bool; };
-template <>           struct MapObjectType<NumberType> { static const EType value = EType::Number; };
-template <>           struct MapObjectType<StringType> { static const EType value = EType::String; };
-template <>           struct MapObjectType<ArrayType>  { static const EType value = EType::Array; };
-template <>           struct MapObjectType<ObjectType> { static const EType value = EType::Object; };
-}
 
 
 //=============================================================================
@@ -124,52 +119,53 @@ private:
 };
 
 
+
+//=============================================================================
+//
+// CDocument
+//
+//=============================================================================
+
+class CDocument
+{
+public:
+    CDocument ();
+
+
+    void Open (const CString & filepath);
+    void Parse (const CPath & string);
+
+    enum class ECode
+    {
+        Unknown,
+        Ok,
+        Error,
+    };
+
+    struct Error
+    {
+        ECode code;
+        uint  line;
+        uint  column;
+    };
+
+private:
+
+    CValue m_object;
+    Error  m_error;
+
+};
+
+//=============================================================================
+//
+// Parsing functions
+//
+//=============================================================================
+
 CValue Parse (const CString & string);
-CValue ParseFile (const CString & filepath);
+CValue Parse (const CPath & filepath);
 
-
-
-//=============================================================================
-//
-// CReader
-//
-//=============================================================================
-
-class CReader
-{
-};
-
-
-
-//=============================================================================
-//
-// CWriter
-//
-//=============================================================================
-
-class CWriter
-{
-};
-
-
-
-
-template <typename T>
-inline T * CValue::As ()
-{
-    if (Internal::MapObjectType<T>::value == m_type                            )
-        return (T *)m_data;
-    else
-        return null;
-}
-
-template <typename T>
-inline const T * CValue::As () const
-{
-    if (Internal::MapObjectType<T>::value == m_type)
-        return (T *)m_data;
-    else
-        return null;
-}
 
 } // namespace Json
+
+#include "Json.inl"

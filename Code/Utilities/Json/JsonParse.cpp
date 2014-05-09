@@ -2,7 +2,9 @@
 
 namespace Json
 {
-    
+
+using Math::IsInRange;
+
 //=============================================================================
 bool IsInSet (String::CodePoint code, const char set[])
 {
@@ -28,11 +30,29 @@ bool IsInSet (String::CodePoint ch, Ts... setRest)
 }
 
 //=============================================================================
+bool IsHexDigit (String::CodePoint ch)
+{
+    return IsInRange<String::CodePoint>(ch, '0', '9')
+        || IsInRange<String::CodePoint>(CharToLower(ch), 'a', 'f');
+}
+
+//=============================================================================
+uint ConvertHexDigit (String::CodePoint ch)
+{
+    ASSERT(IsHexDigit(ch));
+    if (IsInRange<String::CodePoint>(ch, '0', '9'))
+        return ch - '0';
+
+    return CharToLower(ch) - 'a' + 0xa;
+}
+
+//=============================================================================
 bool Error (const CString::Iterator * read, const CString::Iterator readStart)
 {
     *read = readStart;
     return false;
 }
+
 
 
 //=============================================================================
@@ -72,6 +92,12 @@ void ParseWhitespace (const CString::Iterator * read)
 {
     while (**read != L'\0' && CharIsWhitespace(**read))
         (*read)++;
+}
+
+//=============================================================================
+bool ParseComment (const CString::Iterator * read)
+{
+    return true;
 }
 
 //=============================================================================
@@ -235,9 +261,16 @@ bool ParseString (const CString::Iterator * read, StringType * out)
                     break;
 
                     case 'u':
-                        ASSERT(false);
-                        // TODO: parse unicode character
-                        return false;
+                        chOut = 0;
+                        for (uint i = 0; i < 4; ++i)
+                        {
+                            const String::CodePoint ch = *(*read)++;
+                            if (!IsHexDigit(ch))
+                                return Error(read, readStart);
+
+                            chOut = (chOut << 4) | ConvertHexDigit(ch);
+                        }
+                    break;
 
                     default:
                         chOut = ch;
@@ -393,7 +426,7 @@ bool ParseValue (const CString::Iterator * read, CValue * out)
 CValue Parse (const CString & string)
 {
     CString::Iterator read = string.begin();
-
+    
     ObjectType object;
     if (ParseObject(&read, &object))
         return CValue(std::move(object));
@@ -402,7 +435,7 @@ CValue Parse (const CString & string)
 }
 
 //=============================================================================
-CValue ParseFile (const CString & filepath)
+CValue Parse (const CPath & filepath)
 {
     File::CTextReader reader(filepath);
     CString text = reader.ReadAll();
