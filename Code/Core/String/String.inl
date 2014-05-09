@@ -298,6 +298,8 @@ const typename TString<E>::Iterator TString<E>::begin () const
 template <String::EEncoding E>
 const typename TString<E>::Iterator TString<E>::end () const
 {
+    if (IsNull())
+        return TString<E>::Iterator(null);
     return TString<E>::Iterator(m_data.Ptr() + m_data.Count() - 1);
 }
 
@@ -354,6 +356,67 @@ template <String::EEncoding E>
 bool TString<E>::IsValid () const
 {
     return !IsNullOrEmpty();
+}
+
+//=============================================================================
+template <String::EEncoding E>
+bool TString<E>::StartsWith (const TString<E> & str) const
+{
+    if (this->IsNullOrEmpty())
+        return false;
+    if (str.IsNullOrEmpty())
+        return false;
+    if (str.Count() > this->Count())
+        return false;
+
+    auto lhs = this->begin();
+    auto lhsEnd = this->end();
+
+    auto rhs = str.begin();
+    auto rhsEnd = this->end();
+
+    while (lhs != lhsEnd && rhs != rhsEnd)
+    {
+        if (*lhs != *rhs)
+            return false;
+
+        ++lhs;
+        ++rhs;
+    }
+
+    return true;
+}
+
+//=============================================================================
+template <String::EEncoding E>
+bool TString<E>::EndsWith (const TString<E> & str) const
+{
+    if (this->IsNullOrEmpty())
+        return false;
+    if (str.IsNullOrEmpty())
+        return false;
+    if (str.Count() > this->Count())
+        return false;
+
+    auto lhs = this->begin();
+    auto lhsEnd = this->end();
+
+    for (uint i = 0, n = this->Count() - str.Count(); i < n; ++i)
+        ++lhs;
+
+    auto rhs = str.begin();
+    auto rhsEnd = this->end();
+
+    while (lhs != lhsEnd && rhs != rhsEnd)
+    {
+        if (*lhs != *rhs)
+            return false;
+
+        ++lhs;
+        ++rhs;
+    }
+
+    return true;
 }
 
 //=============================================================================
@@ -491,6 +554,13 @@ template <String::EEncoding E>
 bool TString<E>::Iterator::operator!= (const Iterator & rhs) const
 {
     return !(*this == rhs);
+}
+
+//=============================================================================
+template <String::EEncoding E>
+bool TString<E>::Iterator::operator< (const Iterator & rhs) const
+{
+    return this->m_curr < rhs.m_curr;
 }
 
 //=============================================================================
