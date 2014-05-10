@@ -3,8 +3,6 @@
 namespace Json
 {
 
-using Math::IsInRange;
-
 //=============================================================================
 bool IsInSet (String::CodePoint code, const char set[])
 {
@@ -14,19 +12,6 @@ bool IsInSet (String::CodePoint code, const char set[])
             return true;
     }
     return false;
-}
-
-//=============================================================================
-bool IsInSet (String::CodePoint ch, char set)
-{
-    return ch == set;
-}
-
-//=============================================================================
-template <typename... Ts>
-bool IsInSet (String::CodePoint ch, Ts... setRest)
-{
-    return IsInSet(ch, set0) || IsInSet(ch, setRest...);
 }
 
 //=============================================================================
@@ -197,7 +182,7 @@ bool ParseNumber (const CString::Iterator * read, NumberType * out)
     if (state == EState::Error)
         return Error(read, readStart);
 
-    // Note: it is safe to assime the utf8 we just scanned is ascii
+    // Note: it is safe to assume the utf8 we just scanned is ascii
     const int ret = sscanf((const char *)readStart.Ptr(), "%lf", out);
     if (ret != 1)
         return Error(read, readStart);

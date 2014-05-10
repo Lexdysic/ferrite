@@ -69,8 +69,12 @@ void CManager::Initialize ()
 
     const CString command = builder;
 
-    m_data = Parse(command);
-    ASSERT(m_data.GetType() == EType::Object);
+    CDocument doc;
+    doc.Parse(command);
+
+    ASSERT(doc.IsValid());
+
+    m_data = doc.GetValue();
 }
 
 //=============================================================================

@@ -129,17 +129,18 @@ private:
 class CDocument
 {
 public:
+
     CDocument ();
 
-
-    void Open (const CString & filepath);
-    void Parse (const CPath & string);
+    void Parse (const CPath & filepath);
+    void Parse (const CString & string);
 
     enum class ECode
     {
-        Unknown,
         Ok,
-        Error,
+        BadFile,
+        Syntax,
+        Unknown,
     };
 
     struct Error
@@ -147,14 +148,45 @@ public:
         ECode code;
         uint  line;
         uint  column;
+        const CString & message;
     };
 
+    bool IsValid () const { return m_code == ECode::Ok; }
+    Error GetError () const { return {m_code, m_line, m_column, m_message}; }
+    const CValue & GetValue () const { return m_object; }
+
 private:
+    enum EOption
+    {
+        None              = 0,
+        ConsumeWhitespace = (1 << 0),
+        Optional          = (1 << 1),
+        OptionalConsume   = ConsumeWhitespace | Optional,
+    };
 
-    CValue m_object;
-    Error  m_error;
+    bool ParseLiteral (const char literal[], Flags32 options = EOption::ConsumeWhitespace);
+    void ParseWhitespace ();
+    void ParseComment ();
+    bool ParseNumber (NumberType * out);
+    bool ParseString (StringType * out);
+    bool ParseArray (ArrayType * out);
+    bool ParseObject (ObjectType * out);
+    bool ParseValue (CValue * out);
 
+    bool PostError (ECode code, const char message[], ...);
+    bool Backtrace (const CString::Iterator readStart);
+
+    String::CodePoint Read ();
+
+    CValue              m_object;
+    CString::Iterator   m_read;
+    ECode               m_code;
+    uint                m_line;
+    uint                m_column;
+    CString             m_message;
 };
+
+
 
 //=============================================================================
 //
@@ -162,8 +194,8 @@ private:
 //
 //=============================================================================
 
-CValue Parse (const CString & string);
-CValue Parse (const CPath & filepath);
+//CValue Parse (const CString & string);
+//CValue Parse (const CPath & filepath);
 
 
 } // namespace Json
