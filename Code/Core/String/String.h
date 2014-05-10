@@ -215,7 +215,7 @@ public:
 
 public:
 
-    class Iterator
+    class Iterator : public std::iterator<std::forward_iterator_tag, String::CodePoint>
     {
         friend class TString<E>;
         typedef typename TString<E>::CodeUnit CodeUnit;
