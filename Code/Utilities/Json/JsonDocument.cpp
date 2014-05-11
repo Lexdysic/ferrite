@@ -1,5 +1,4 @@
 
-//#include <varargs.h>
 #include "JsonPch.h"
 
 using String::CodePoint;
@@ -20,7 +19,7 @@ void CDocument::Parse (const CPath & filepath)
     File::CTextReader reader(filepath);
     if (!reader.IsOpen())
     {
-        m_code = ECode::BadFile;
+        PostError(ECode::BadFile, "File was missing or unreadable");
         return;
     }
 
@@ -37,21 +36,17 @@ void CDocument::Parse (const CString & string)
     ParseWhitespace();
     if (*m_read != '{')
     {
-        m_code = ECode::Syntax;
+        PostError(ECode::Syntax, "Root must be object type");
         return;
     }
+    
+    // Reset
+    m_object.Clear();
+    m_code = ECode::Unknown;
 
     // Read the base object
-    ObjectType object;
-    if (ParseObject(&object))
-    {
-        m_object = std::move(object);
+    if (ParseObject(&m_object))
         m_code = ECode::Ok;
-    }
-    else
-    {
-        m_object = null;
-    }
 }
 
 

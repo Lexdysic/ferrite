@@ -153,7 +153,7 @@ public:
 
     bool IsValid () const { return m_code == ECode::Ok; }
     Error GetError () const { return {m_code, m_line, m_column, m_message}; }
-    const CValue & GetValue () const { return m_object; }
+    const ObjectType & GetValue () const { return m_object; }
 
 private:
     enum EOption
@@ -178,7 +178,7 @@ private:
 
     String::CodePoint Read ();
 
-    CValue              m_object;
+    ObjectType          m_object;
     CString::Iterator   m_read;
     ECode               m_code;
     uint                m_line;
