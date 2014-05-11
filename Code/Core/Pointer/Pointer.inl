@@ -1,77 +1,77 @@
 
 //=============================================================================
 //
-// SmartPtrBase
+// TSmartPtrBase
 //
 //=============================================================================
 
-namespace Private
-{
+namespace Pointer {
+namespace Private {
 
 //=============================================================================
 template <typename T>
-SmartPtrBase<T>::SmartPtrBase () :
-    m_data(null)
+TSmartPtrBase<T>::TSmartPtrBase () :
+    m_ptr(null)
 {
 }
 
 //=============================================================================
 template <typename T>
-SmartPtrBase<T>::SmartPtrBase (T * data) :
-    m_data(data)
+TSmartPtrBase<T>::TSmartPtrBase (T * data) :
+    m_ptr(data)
 {
 }
 
 //=============================================================================
 template <typename T>
-SmartPtrBase<T>::~SmartPtrBase ()
+TSmartPtrBase<T>::~TSmartPtrBase ()
 {
-    // TODO: assert that m_data == null
+    // TODO: assert that m_ptr == null
 }
 
 //=============================================================================
 template <typename T>
-T & SmartPtrBase<T>::operator* ()
+T & TSmartPtrBase<T>::operator* ()
 {
-    return *m_data;
+    return *m_ptr;
 }
 
 //=============================================================================
 template <typename T>
-T * SmartPtrBase<T>::operator-> ()
+T * TSmartPtrBase<T>::operator-> ()
 {
-    return m_data;
+    return m_ptr;
 }
 
 //=============================================================================
 template <typename T>
-SmartPtrBase<T>::operator bool ()
+TSmartPtrBase<T>::operator bool ()
 {
-    return m_data != null;
+    return m_ptr != null;
 }
 
 //=============================================================================
 template <typename T>
-SmartPtrBase<T>::operator T * ()
+TSmartPtrBase<T>::operator T * ()
 {
-    return m_data;
+    return m_ptr;
 }
 
 //=============================================================================
 template <typename T>
-SmartPtrBase<T>::operator const T * ()
+TSmartPtrBase<T>::operator const T * ()
 {
-    return m_data;
+    return m_ptr;
 }
 
 //=============================================================================
 template <typename T>
-SmartPtrBase<T>::operator const T * () const
+TSmartPtrBase<T>::operator const T * () const
 {
-    return m_data;
+    return m_ptr;
 }
 
-} // namespace Private
+}} // namespace Pointer::Private
 
 
 
@@ -83,40 +83,41 @@ SmartPtrBase<T>::operator const T * () const
 
 //=============================================================================
 template <typename T>
-StrongPtr<T>::StrongPtr ()
+TStrongPtr<T>::TStrongPtr () :
+    m_ptr(null)
 {
 }
 
 //=============================================================================
 template <typename T>
-StrongPtr<T>::StrongPtr (T * rhs) :
-    Private::SmartPtrBase<T>(rhs)
+TStrongPtr<T>::TStrongPtr (T * rhs) :
+    Pointer::Private::SmartPtrBase<T>(rhs)
 {
     IncRef();
 }
 
 //=============================================================================
 template <typename T>
-StrongPtr<T>::StrongPtr (const StrongPtr<T> & rhs) :
-    Private::SmartPtrBase<T>(rhs.m_data)
+TStrongPtr<T>::TStrongPtr (const TStrongPtr<T> & rhs) :
+    Pointer::Private::SmartPtrBase<T>(rhs.m_ptr)
 {
     IncRef();
 }
 
 //=============================================================================
 template <typename T>
-StrongPtr<T>::~StrongPtr ()
+TStrongPtr<T>::~TStrongPtr ()
 {
     DecRef();
 }
 
 //=============================================================================
 template <typename T>
-const StrongPtr<T> & StrongPtr<T>::operator= (const StrongPtr<T> & rhs)
+const TStrongPtr<T> & TStrongPtr<T>::operator= (const TStrongPtr<T> & rhs)
 {
     DecRef();
 
-    m_data = rhs.m_data;
+    m_ptr = rhs.m_ptr;
 
     IncRef();
 
@@ -125,86 +126,86 @@ const StrongPtr<T> & StrongPtr<T>::operator= (const StrongPtr<T> & rhs)
 
 //=============================================================================
 template <typename T>
-const StrongPtr<T> & StrongPtr<T>::operator= (const nullptr_t & rhs)
+const TStrongPtr<T> & TStrongPtr<T>::operator= (const nullptr_t & rhs)
 {
     DecRef();
 
-    m_data = null;
+    m_ptr = null;
 
     return *this;
 }
 
 //=============================================================================
 template <typename T>
-void StrongPtr<T>::IncRef ()
+void TStrongPtr<T>::IncRef ()
 {
-    if (m_data)
-        m_data->GetRefCountData()->IncRef();
+    if (m_ptr)
+        m_ptr->_SmartPtrGetData()->IncRef();
 }
 
 //=============================================================================
 template <typename T>
-void StrongPtr<T>::DecRef ()
+void TStrongPtr<T>::DecRef ()
 {
-    if (m_data)
-    {
-        const uint refCount = m_data->GetRefCountData()->DecRef();
-        if (!refCount)
-            delete m_data;
-    }
+    if (!m_ptr)
+        return;
+
+    const uint refCount = m_ptr->_SmartPtrGetData()->DecRef();
+    if (!refCount)
+        m_ptr->_SmartPtrDestroy();
 }
 
 
 
 //=============================================================================
 //
-// WeakPtr
+// TWeakPtr
 //
 //=============================================================================
 
 //=============================================================================
 template <typename T>
-WeakPtr<T>::WeakPtr ()
+TWeakPtr<T>::TWeakPtr ()
 {
 }
 
 //=============================================================================
 template <typename T>
-WeakPtr<T>::WeakPtr (const WeakPtr<T> & rhs) :
-    Private::SmartPtrBase<T>(rhs.m_data)
+TWeakPtr<T>::TWeakPtr (const TWeakPtr<T> & rhs) :
+    Pointer::Private::TSmartPtrBase<T>(rhs.m_ptr)
 {
-    if (m_data)
-        m_data->GetRefCountData()->m_weak.InsertTail(this);
+    if (m_ptr)
+        m_ptr->_SmartPtrGetData()->AddWeak(this);
 }
 
 //=============================================================================
 template <typename T>
-WeakPtr<T>::WeakPtr (T * data) :
-    Private::SmartPtrBase<T>(data)
+TWeakPtr<T>::TWeakPtr (T * data) :
+    Pointer::Private::TSmartPtrBase<T>(data)
 {
-    if (m_data)
-        m_data->GetRefCountData()->m_weak.InsertTail(this);
+    if (m_ptr)
+        m_ptr->_SmartPtrGetData()->AddWeak(this);
 }
 
 //=============================================================================
 template <typename T>
-WeakPtr<T> & WeakPtr<T>::operator= (const WeakPtr<T> & rhs)
+TWeakPtr<T> & TWeakPtr<T>::operator= (const TWeakPtr<T> & rhs)
 {
     m_link.Unlink();
 
-    m_data = rhs.m_data;
+    m_ptr = rhs.m_ptr;
 
-    if (m_data)
-        m_data->GetRefCountData()->m_weak.InsertTail(this);
+    if (m_ptr)
+        m_ptr->_SmartPtrGetData()->AddWeak(this);
 
     return *this;
 }
 
 //=============================================================================
 template <typename T>
-void WeakPtr<T>::OnDestroy ()
+void TWeakPtr<T>::OnObjectDestroyed ()
 {
-    m_data = null;
+    m_ptr = null;
 }
 
 
@@ -213,24 +214,24 @@ void WeakPtr<T>::OnDestroy ()
 
 //=============================================================================
 //
-// SmartPtrData
+// TSmartPtrData
 //
 //=============================================================================
 
 //=============================================================================
 template <typename T>
-SmartPtrData<T>::SmartPtrData () :
+TSmartPtrData<T>::TSmartPtrData () :
     m_refCount(0)
 {
 }
 
 //=============================================================================
 template <typename T>
-SmartPtrData<T>::~SmartPtrData ()
+TSmartPtrData<T>::~TSmartPtrData ()
 {
-    for (auto weak : m_weak)
+    for (auto weak : m_weaklist)
     {
-        weak->OnDestroy();
+        weak->OnObjectDestroyed();
     }
 
     ASSERT(m_refCount == 0);
@@ -238,17 +239,24 @@ SmartPtrData<T>::~SmartPtrData ()
 
 //=============================================================================
 template <typename T>
-void SmartPtrData<T>::IncRef ()
+void TSmartPtrData<T>::IncRef ()
 {
     m_refCount++;
 }
 
 //=============================================================================
 template <typename T>
-uint SmartPtrData<T>::DecRef ()
+uint TSmartPtrData<T>::DecRef ()
 {
     ASSERT(m_refCount != 0);
     return --m_refCount;
+}
+
+//=============================================================================
+template <typename T>
+void TSmartPtrData<T>::AddWeak (TWeakPtr<T> * weak)
+{
+    m_weaklist.InsertTail(weak);
 }
 
 
@@ -257,47 +265,34 @@ uint SmartPtrData<T>::DecRef ()
 
 //=============================================================================
 //
-// CRefCounted
+// TRefCounted
 //
 //=============================================================================
 
 //=============================================================================
 template <typename T>
-CRefCounted<T>::CRefCounted () :
-    m_refCount(0)
+TRefCounted<T>::TRefCounted ()
 {
 }
 
 //=============================================================================
 template <typename T>
-CRefCounted<T>::~CRefCounted ()
+TRefCounted<T>::~TRefCounted ()
 {
-    for (auto weak : m_weak)
-    {
-        weak->OnDestroy();
-    }
 
-    ASSERT(m_refCount == 0);
 }
 
 //=============================================================================
 template <typename T>
-void CRefCounted<T>::IncRef ()
+TSmartPtrData<T> * TRefCounted<T>::_SmartPtrGetData ()
 {
-    m_refCount++;
+    return &m_data;
 }
+
 
 //=============================================================================
 template <typename T>
-uint CRefCounted<T>::DecRef ()
+void TRefCounted<T>::_SmartPtrDestroy ()
 {
-    ASSERT(m_refCount != 0);
-    return --m_refCount;
-}
-
-//=============================================================================
-template <typename T>
-CRefCounted<T> * CRefCounted<T>::GetRefCountData ()
-{
-    return this;
+    delete this;
 }

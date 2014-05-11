@@ -59,8 +59,8 @@ private: // -------------------------------------------------------------------
     MapWidgetToProxy    m_proxyLookup;
     ListLayout          m_needsLayout;
 
-    WeakPtr<CProxy>     m_mouseFocus;
-    WeakPtr<CProxy>     m_mouseDown;
+    CProxy::Ref     m_mouseFocus;
+    CProxy::Ref     m_mouseDown;
 
     // Helpers
     CProxy * FindProxyUnderPos (const Point2 & pos);

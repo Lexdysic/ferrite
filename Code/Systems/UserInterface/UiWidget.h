@@ -3,14 +3,14 @@ namespace UserInterface
 {
 
 class CProxy :
-    public CRefCounted<CProxy>
+    public TRefCounted<CProxy>
 {
     friend class CContext;
     friend class CWidget;
 
 public:
 
-    typedef WeakPtr<CProxy> Ref;
+    typedef TWeakPtr<CProxy> Ref;
 
 public:
     CProxy (CWidget * widget, CWidget * parent);

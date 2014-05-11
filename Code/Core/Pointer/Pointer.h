@@ -5,34 +5,35 @@
 //
 //=============================================================================
 
-template <typename T> class WeakPtr;
-template <typename T> class StrongPtr;
-template <typename T> struct IRefCounted;
-template <typename T> class CRefCounted;
+template <typename T> class     TWeakPtr;
+template <typename T> class     TStrongPtr;
+template <typename T> interface IRefCounted;
+template <typename T> class     TRefCounted;
 
-namespace Private
-{
-    template <typename T> class SmartPtrBase;
-}
+namespace Pointer {
+namespace Private {
+    template <typename T> class TSmartPtrBase;
+}} // namespace Pointer::Private
+
 
 
 //=============================================================================
 //
-// SmartPtrBase
+// TSmartPtrBase
 //
 //=============================================================================
 
-namespace Private
-{
+namespace Pointer {
+namespace Private {
 
 template <typename T>
-class SmartPtrBase
+class TSmartPtrBase
 {
 public:
 
-    SmartPtrBase ();
-    SmartPtrBase (T * data);
-    ~SmartPtrBase ();
+    TSmartPtrBase ();
+    TSmartPtrBase (T * data);
+    ~TSmartPtrBase ();
 
     T & operator* ();
     T * operator-> ();
@@ -44,32 +45,32 @@ public:
 
 protected:
 
-    T * m_data;
+    T * m_ptr;
 };
 
-} // namespace Private
+}} // namespace Pointer::Private
 
 
 
 //=============================================================================
 //
-// StrongPtr
+// TStrongPtr
 //
 //=============================================================================
 
 template <typename T>
-class StrongPtr :
-    public Private::SmartPtrBase<T>
+class TStrongPtr :
+    public Pointer::Private::TSmartPtrBase<T>
 {
 public:
 
-    StrongPtr ();
-    StrongPtr (T * rhs);
-    StrongPtr (const StrongPtr<T> & rhs);
-    ~StrongPtr ();
+    TStrongPtr ();
+    TStrongPtr (T * rhs);
+    TStrongPtr (const TStrongPtr<T> & rhs);
+    ~TStrongPtr ();
 
-    const StrongPtr<T> & operator= (const StrongPtr<T> & rhs);
-    const StrongPtr<T> & operator= (const nullptr_t & rhs);
+    const TStrongPtr<T> & operator= (const TStrongPtr<T> & rhs);
+    const TStrongPtr<T> & operator= (const nullptr_t & rhs);
 
 private:
 
@@ -81,57 +82,58 @@ private:
 
 //=============================================================================
 //
-// WeakPtr
+// TWeakPtr
 //
 //=============================================================================
 
 template <typename T>
-class WeakPtr :
-    public Private::SmartPtrBase<T>
+class TWeakPtr :
+    public Pointer::Private::TSmartPtrBase<T>
 {
     template <typename T>
-    friend class CRefCounted;
+    friend class TSmartPtrData;
 public:
 
-    WeakPtr ();
-    WeakPtr (const WeakPtr & rhs);
-    WeakPtr (T * data);
+    TWeakPtr ();
+    TWeakPtr (const TWeakPtr & rhs);
+    TWeakPtr (T * data);
 
-    WeakPtr<T> & operator= (const WeakPtr<T> & rhs);
+    TWeakPtr<T> & operator= (const TWeakPtr<T> & rhs);
 
 private:
-    void OnDestroy ();
+    void OnObjectDestroyed ();
 
-    TLink<WeakPtr<T>> m_link;
+    TLink<TWeakPtr<T>> m_link;
 };
 
 
 
 //=============================================================================
 //
-// SmartPtrData
+// TSmartPtrData
 //
 //=============================================================================
 
 template <typename T>
-class SmartPtrData
+class TSmartPtrData
 {
     template <typename T>
-    friend class WeakPtr;
+    friend class TRefCounted;
 public:
 
-    SmartPtrData ();
-    ~SmartPtrData ();
+    TSmartPtrData ();
+    ~TSmartPtrData ();
 
     void IncRef ();
     uint DecRef ();
+    void AddWeak (TWeakPtr<T> * weak);
 
 private:
     // Types
-    typedef LIST_DECLARE(WeakPtr<T>, m_link) WeakList;
+    typedef LIST_DECLARE(TWeakPtr<T>, m_link) WeakList;
 
     // Data
-    WeakList m_weak;
+    WeakList m_weaklist;
     uint     m_refCount;
 };
 
@@ -144,44 +146,50 @@ private:
 //=============================================================================
 
 template <typename T>
-struct IRefCounted
+interface IRefCounted
 {
-    //virtual CRefCounted<T> * GetRefCountData () = null;
+    virtual TSmartPtrData<T> * _SmartPtrGetData () pure;
+    virtual void _SmartPtrDestroy () pure;
 };
 
 
 
 //=============================================================================
 //
-// CRefCounted
+// TRefCounted
 //
 //=============================================================================
 
 template <typename T>
-class CRefCounted
+class TRefCounted
 {
-    template <typename T> friend class WeakPtr;
+    template <typename T> friend class TWeakPtr;
     template <typename T> friend class StrongPtr;
 
 public:
-    CRefCounted ();
-    ~CRefCounted ();
+    TRefCounted ();
+    ~TRefCounted ();
 
-    void IncRef ();
-    uint DecRef ();
+protected: // IRefCounted<T>
 
-private: // IRefCounted<T>
-
-    CRefCounted<T> * GetRefCountData ();
+    TSmartPtrData<T> * _SmartPtrGetData ();
+    void _SmartPtrDestroy ();
 
 private:
-    // Types
-    typedef LIST_DECLARE(WeakPtr<T>, m_link) WeakList;
-
-    // Data
-    WeakList m_weak;
-    uint     m_refCount;
+    TSmartPtrData<T> m_data;
 };
 
+
+//=============================================================================
+#define REFCOUNTED_ADAPTER(interface)                           \                                                    \
+    TSmartPtrData<interface> * _SmartPtrGetData () override     \
+    {                                                           \
+        return TRefCounted<interface>::_SmartPtrGetData();      \
+    }                                                           \
+                                                                \
+    void _SmartPtrDestroy () override                           \
+    {                                                           \
+        TRefCounted<interface>::_SmartPtrDestroy();             \
+    }
 
 #include "Pointer.inl"
