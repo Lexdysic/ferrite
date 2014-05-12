@@ -32,9 +32,12 @@ public:
 public:
 
     typedef typename std::map<K, V>::iterator iterator;
+    typedef typename std::map<K, V>::const_iterator const_iterator;
 
     iterator begin ();
     iterator end ();
+    const_iterator begin () const;
+    const_iterator end () const;
 
 protected:
     std::map<K, V> m_map;

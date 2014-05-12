@@ -92,6 +92,20 @@ typename TDictionaryBase<K, V>::iterator TDictionaryBase<K, V>::end ()
     return m_map.end();
 }
 
+//=============================================================================
+template <typename K, typename V>
+typename TDictionaryBase<K, V>::const_iterator TDictionaryBase<K, V>::begin () const
+{
+    return m_map.begin();
+}
+
+//=============================================================================
+template <typename K, typename V>
+typename TDictionaryBase<K, V>::const_iterator TDictionaryBase<K, V>::end () const
+{
+    return m_map.end();
+}
+
 }} // namespace Containers::Internal
 
 
