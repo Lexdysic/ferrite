@@ -43,7 +43,7 @@ IEntityContext * EntityGetContext ();
 //
 //=============================================================================
 
-interface IEntity
+interface IEntity : IRefCounted<IEntity>
 {
     virtual EntityId GetId () const pure;
 
@@ -56,6 +56,9 @@ interface IEntity
 
     virtual uint         GetComponentCount () const  pure;
     virtual CComponent * EnumComponent (uint i) pure;
+
+    typedef TStrongPtr<IEntity> Ptr;
+    typedef TWeakPtr<IEntity>   Ref;
 };
 
 
