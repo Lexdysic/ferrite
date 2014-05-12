@@ -91,7 +91,7 @@ TStrongPtr<T>::TStrongPtr () :
 //=============================================================================
 template <typename T>
 TStrongPtr<T>::TStrongPtr (T * rhs) :
-    Pointer::Private::SmartPtrBase<T>(rhs)
+    Pointer::Private::TSmartPtrBase<T>(rhs)
 {
     IncRef();
 }
@@ -99,7 +99,7 @@ TStrongPtr<T>::TStrongPtr (T * rhs) :
 //=============================================================================
 template <typename T>
 TStrongPtr<T>::TStrongPtr (const TStrongPtr<T> & rhs) :
-    Pointer::Private::SmartPtrBase<T>(rhs.m_ptr)
+    Pointer::Private::TSmartPtrBase<T>(rhs.m_ptr)
 {
     IncRef();
 }
