@@ -15,6 +15,25 @@
 
 namespace Physics
 {
+    
+//=============================================================================
+//
+// Forwards
+//
+//=============================================================================
+
+interface IContext;
+interface IContextNotify;
+interface IColliderComponent;
+interface IRigidBodyComponent;
+
+
+
+//=============================================================================
+//
+// Constants
+//
+//=============================================================================
 
 enum class EMaterial
 {
@@ -26,7 +45,7 @@ enum class EMaterial
 
 //=============================================================================
 //
-// Context
+// IContext
 //
 //=============================================================================
 
@@ -36,6 +55,9 @@ interface IContext
     virtual void Uninitialize () pure;
     virtual void Update (Time::Delta deltaTime) pure;
 
+    virtual void NotifyRegister (IContextNotify * notify) pure;
+    virtual void NotifyUnregister (IContextNotify * notify) pure;
+
     virtual void SetGravity (const Vector2 & gravity) pure;
     virtual Vector2 GetGravity () const pure;
 
@@ -44,6 +66,20 @@ interface IContext
 };
 
 IContext * GetContext ();
+
+
+
+//=============================================================================
+//
+// IContextNotify
+//
+//=============================================================================
+
+interface IContextNotify : TNotifyTarget<IContextNotify>
+{
+    virtual void OnPhysicsPreTick () {};
+    virtual void OnPhysicsPostTick () {};
+};
 
 
 

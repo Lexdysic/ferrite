@@ -49,6 +49,18 @@ void CContext::Uninitialize ()
 }
 
 //=============================================================================
+void CContext::NotifyRegister (IContextNotify * notify)
+{
+    m_notifier.Add(notify);
+}
+
+//=============================================================================
+void CContext::NotifyUnregister (IContextNotify * notify)
+{
+    m_notifier.Remove(notify);
+}
+
+//=============================================================================
 void CContext::DebugToggleRigidBody ()
 {
     m_debugDrawRigidBody = !m_debugDrawRigidBody;
@@ -69,11 +81,13 @@ void CContext::Update (Time::Delta deltaTime)
     m_timeAccumulator += deltaTime;
     while (m_timeAccumulator >= TIME_STEP)
     {
-        counter++;
+        m_notifier.Call(&IContextNotify::OnPhysicsPreTick);
 
         m_timeAccumulator -= TIME_STEP;
-
+        counter++;
         Tick();
+
+        m_notifier.Call(&IContextNotify::OnPhysicsPostTick);
     }
 
     Cleanup();

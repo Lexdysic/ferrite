@@ -24,6 +24,9 @@ public: // IContext -----------------------------------------------------------
     void Uninitialize () override;
     void Update (Time::Delta deltaTime) override;
 
+    void NotifyRegister (IContextNotify * notify) override;
+    void NotifyUnregister (IContextNotify * notify) override;
+
     void SetGravity (const Vector2 & gravity) override { m_gravity = gravity; }
     Vector2 GetGravity () const override { return m_gravity; }
 
@@ -39,8 +42,10 @@ private:
     typedef LIST_DECLARE(CRigidBodyComponent, m_linkAll)     RigidBodyList;
     typedef LIST_DECLARE(CColliderComponent, m_linkAll)      ColliderAllList;
     typedef LIST_DECLARE(CColliderComponent, m_linkMaterial) ColliderMaterialList;
+    typedef TNotifier<IContextNotify>                        CNotify;
 
     // Data
+    CNotify                 m_notifier;
     RigidBodyList           m_rigidBodyList;
     ColliderAllList         m_colliderList;
     ColliderMaterialList    m_solidList;
