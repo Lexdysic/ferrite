@@ -33,7 +33,7 @@ public: // IEntity-------------------------------------------------------------
 public: // IRefCounted --------------------------------------------------------
 
     TSmartPtrData<IEntity> * _SmartPtrGetData () override { return TRefCounted::_SmartPtrGetData(); }
-    void _SmartPtrDestroy () override { TRefCounted::_SmartPtrDestroy(); }
+    void _SmartPtrDestroy () override { delete this; }
 
 public: // Links --------------------------------------------------------------
 

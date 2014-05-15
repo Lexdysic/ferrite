@@ -14,7 +14,7 @@ CComponent::CComponent () :
     m_id(CContext::Get()->GetComponentIdManager().New()),
     m_owner(null)
 {
-
+    
 }
 
 //=============================================================================
@@ -81,7 +81,7 @@ CTransformComponent2::CTransformComponent2 () :
     m_positionLocal(Point2::Zero),
     m_rotationLocal(0.0)
 {
-
+    CContext::Get()->OnCreate(this);
 }
 
 //=============================================================================
@@ -94,9 +94,7 @@ CTransformComponent2::~CTransformComponent2 ()
 CTransformComponent2 * CTransformComponent2::Attach (IEntity * entity)
 {
     CTransformComponent2 * comp = new CTransformComponent2();
-
-    CContext::Get()->OnCreate(comp);
-
+    
     entity->Attach(comp);
 
     return comp;

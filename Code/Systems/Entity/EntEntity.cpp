@@ -19,6 +19,8 @@ CEntity::~CEntity ()
     {
         delete it.second;
     }
+
+    CContext::Get()->OnDestroy(this);
 }
 
 //=============================================================================

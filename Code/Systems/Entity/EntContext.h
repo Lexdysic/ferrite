@@ -21,6 +21,7 @@ public: // Internal -----------------------------------------------------------
     ComponentIdManager & GetComponentIdManager () { return m_componentIdManager; }
 
     void OnCreate (CTransformComponent2 * comp);
+    void OnDestroy (CEntity * entity);
 
 public: // Context ------------------------------------------------------------
 

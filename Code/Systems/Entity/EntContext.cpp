@@ -20,8 +20,9 @@ CContext::CContext () :
 //=============================================================================
 CContext::~CContext ()
 {
-    for (auto entityPair : m_entities)
-        delete entityPair.second;
+    while (m_entities.Count())
+        delete m_entities.begin()->second;
+
     m_entities.Clear();
 }
 
@@ -29,6 +30,16 @@ CContext::~CContext ()
 void CContext::OnCreate (CTransformComponent2 * comp)
 {
     m_transforms.InsertTail(comp);
+}
+
+//=============================================================================
+void CContext::OnDestroy (CEntity * entity)
+{
+    ASSERT(entity);
+
+    EntityId id = entity->GetId();
+    m_entityIdManager.Delete(id);
+    m_entities.Delete(id);
 }
 
 //=============================================================================
@@ -48,10 +59,7 @@ void CContext::DestroyEntity (IEntity * entity)
     if (!entity)
         return;
 
-    EntityId id = entity->GetId();
     delete CEntity::From(entity);
-    m_entityIdManager.Delete(id);
-    m_entities.Delete(id);
 }
 
 //=============================================================================
