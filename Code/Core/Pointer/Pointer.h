@@ -62,6 +62,8 @@ template <typename T>
 class TStrongPtr :
     public Pointer::Private::TSmartPtrBase<T>
 {
+    template <typename T>
+    friend class TWeakPtr;
 public:
 
     TStrongPtr ();
@@ -95,8 +97,10 @@ class TWeakPtr :
 public:
 
     TWeakPtr ();
-    TWeakPtr (const TWeakPtr & rhs);
+    TWeakPtr (const TWeakPtr<T> & rhs);
+    TWeakPtr (const TStrongPtr<T> & rhs);
     TWeakPtr (T * data);
+    ~TWeakPtr ();
 
     TWeakPtr<T> & operator= (const TWeakPtr<T> & rhs);
 

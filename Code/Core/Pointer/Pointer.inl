@@ -26,7 +26,7 @@ TSmartPtrBase<T>::TSmartPtrBase (T * data) :
 template <typename T>
 TSmartPtrBase<T>::~TSmartPtrBase ()
 {
-    // TODO: assert that m_ptr == null
+    ASSERT(m_ptr == null);
 }
 
 //=============================================================================
@@ -77,7 +77,7 @@ TSmartPtrBase<T>::operator const T * () const
 
 //=============================================================================
 //
-// StrongPtr
+// TStrongPtr
 //
 //=============================================================================
 
@@ -109,6 +109,7 @@ template <typename T>
 TStrongPtr<T>::~TStrongPtr ()
 {
     DecRef();
+    m_ptr = null;
 }
 
 //=============================================================================
@@ -152,7 +153,10 @@ void TStrongPtr<T>::DecRef ()
 
     const uint refCount = m_ptr->_SmartPtrGetData()->DecRef();
     if (!refCount)
+    {
         m_ptr->_SmartPtrDestroy();
+        m_ptr = null;
+    }
 }
 
 
@@ -180,11 +184,27 @@ TWeakPtr<T>::TWeakPtr (const TWeakPtr<T> & rhs) :
 
 //=============================================================================
 template <typename T>
+TWeakPtr<T>::TWeakPtr (const TStrongPtr<T> & rhs) :
+    Pointer::Private::TSmartPtrBase<T>(rhs.m_ptr)
+{
+    if (m_ptr)
+        m_ptr->_SmartPtrGetData()->AddWeak(this);
+}
+
+//=============================================================================
+template <typename T>
 TWeakPtr<T>::TWeakPtr (T * data) :
     Pointer::Private::TSmartPtrBase<T>(data)
 {
     if (m_ptr)
         m_ptr->_SmartPtrGetData()->AddWeak(this);
+}
+
+//=============================================================================
+template <typename T>
+TWeakPtr<T>::~TWeakPtr ()
+{
+    m_ptr = null;
 }
 
 //=============================================================================
