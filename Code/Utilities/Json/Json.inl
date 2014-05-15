@@ -47,5 +47,19 @@ inline const T * CValue::As () const
         return null;
 }
 
+//=============================================================================
+template <typename T>
+inline bool CValue::Is () const
+{
+    return Internal::MapObjectType<T>::value == m_type;
+}
+
+//=============================================================================
+CValue::operator bool () const
+{
+    return m_type != EType::Null;
+}
+
+
 
 } // namespace Json

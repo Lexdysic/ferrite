@@ -75,6 +75,7 @@ public:
     CValue & operator= (ArrayType && rhs);
     CValue & operator= (ObjectType && rhs);
     
+    // Type conversions
     inline EType GetType () const { return m_type; }
 
     template <typename T>
@@ -83,6 +84,10 @@ public:
     template <typename T>
     inline const T * As () const;
 
+    template <typename T>
+    inline bool Is () const;
+
+    // Indexing
     CValue & operator[] (const CString & name);
     const CValue & operator[] (const CString & name) const;
 
@@ -91,7 +96,7 @@ public:
 
     uint Count () const;
 
-    //bool operator! () const { return m_type != EType::Null; }
+    inline operator bool () const;
 
     friend bool operator== (const CValue & lhs, const CValue & rhs);
     friend bool operator!= (const CValue & lhs, const CValue & rhs);
