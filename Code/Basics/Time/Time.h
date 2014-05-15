@@ -68,6 +68,7 @@ private:
 
 
 
+
 //==================================================================================================
 //
 // Seconds
@@ -143,6 +144,8 @@ bool operator >= (const Delta & a, const Delta & b);
 bool operator == (const Delta & a, const Delta & b);
 bool operator != (const Delta & a, const Delta & b);
 
+Delta Min (Delta a, Delta b);
+Delta Max (Delta a, Delta b);
 
 
 //==================================================================================================
@@ -166,6 +169,7 @@ float32 GetGameScale ();
 void    SetGameScale (float32 scale);
 Delta   GetGameDelta ();
 bool    IsGamePaused ();
+void    SetGamePaused (bool paused);
 
 } // namespace Time
 

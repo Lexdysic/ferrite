@@ -14,8 +14,9 @@ namespace Time
 //
 //==================================================================================================
 
-const float SECONDS_PER_MINUTE = 60.0f;
-const float SECONDS_PER_MILLI = 1.0f / 1000.0f;
+const float32 SECONDS_PER_MINUTE = 60.0f;
+const float32 SECONDS_PER_MILLI = 1.0f / 1000.0f;
+const Delta   MAX_FRAME_TIME(1.0 / 30.0);
 
 
 
@@ -33,6 +34,7 @@ static Delta    s_frameDelta;
 static Point    s_gamePoint;
 static Delta    s_gameDelta;
 static float32  s_gameScale = 1.0f;
+static bool     s_gameIsPause = false;
 
 //struct CManager
 //{
@@ -329,6 +331,17 @@ bool operator != (const Delta & a, const Delta & b)
     return a.GetRaw() != b.GetRaw();
 }
 
+//=============================================================================
+Delta Min (Delta a, Delta b)
+{
+    return Delta(::Min(a.GetRaw(), b.GetRaw()));
+}
+
+//=============================================================================
+Delta Max (Delta a, Delta b)
+{
+ return Delta(::Max(a.GetRaw(), b.GetRaw()));
+}
 
 
 //==================================================================================================
@@ -355,12 +368,11 @@ void Uninitialize ()
 //=============================================================================
 void Update ()
 {
-
     Point lastPoint = s_framePoint;
     s_framePoint = GetRealTime();
     s_frameDelta = s_framePoint - lastPoint;
 
-    s_gameDelta = s_frameDelta * s_gameScale;
+    s_gameDelta = Min(s_frameDelta, MAX_FRAME_TIME) * (s_gameIsPause ? 0.0f : s_gameScale);
     s_gamePoint += s_gameDelta;
 }
 
@@ -408,13 +420,19 @@ Delta GetGameDelta ()
 //=============================================================================
 void SetGameScale (float32 scale)
 {
-    s_gameScale = Max(scale, 0.0f);
+    s_gameScale = ::Max(scale, 0.0f);
 }
 
 //=============================================================================
 bool IsGamePaused ()
 {
-    return s_gameScale == 0.0f;
+    return s_gameIsPause;
+}
+
+//=============================================================================
+void SetGamePaused (bool paused)
+{
+    s_gameIsPause = paused;
 }
 
 } // namespace Time
