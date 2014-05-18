@@ -62,7 +62,7 @@ bool CPath::IsDirectory () const
 //=============================================================================
 bool CPath::IsFile () const
 {
-    return !IsDirectory();
+    return !IsDirectory() && m_path.IsValid();
 }
 
 //=============================================================================
