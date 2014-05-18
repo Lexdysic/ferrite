@@ -8,7 +8,7 @@ namespace Json
 
 //=============================================================================
 CDocument::CDocument () :
-    m_line(1),
+    m_line(0),
     m_column(1)
 {
 }
@@ -240,8 +240,8 @@ bool CDocument::ParseString (StringType * out)
         const CodePoint ch = Read();
         switch (ch)
         {
-            //case '\0':
-            //    return PostError(ECode::Syntax, "newline found in string");
+            case '\0':
+                return PostError(ECode::Syntax, "newline found in string");// Bug: is this really an error?
 
             case '"':
                 keepgoing = false;
@@ -271,9 +271,7 @@ bool CDocument::ParseString (StringType * out)
 
                             chOut = (chOut << 4) | ConvertHexDigit(ch);
                         }
-                    break;                    
-                    case '\0':
-                        return PostError(ECode::Syntax, "newline found in string"); // Bug: is this really an error?
+                    break;
                 }
 
                 str.Add(chOut);
@@ -316,8 +314,11 @@ bool CDocument::ParseArray (ArrayType * out)
             return true;
     }
 
-    if (!ParseLiteral("]"))
+    if (!ParseLiteral("]", EOption::OptionalConsume))
+    {
+        PostError(ECode::Syntax, "Unexpected token found when trying to read \"]\", forgot comma?");
         return false;
+    }
 
     return true;
 }
@@ -353,8 +354,11 @@ bool CDocument::ParseObject (ObjectType * out)
             return true;
     }
 
-    if (!ParseLiteral("}"))
+    if (!ParseLiteral("}", EOption::OptionalConsume))
+    {
+        PostError(ECode::Syntax, "Unexpected token found when trying to read \"}\", forgot comma?");
         return false;
+    }
 
     return true;
 }
@@ -443,7 +447,6 @@ bool CDocument::PostError (ECode code, const char message[], ...)
         va_end(args);
     }
 
-    m_column--; // Note: we discovered the error after having read the character
     m_code    = code;
     m_message = buffer;
     return false;
@@ -452,7 +455,7 @@ bool CDocument::PostError (ECode code, const char message[], ...)
 //=============================================================================
 bool CDocument::Backtrace (const CString::Iterator readStart)
 {
-    const uint dist = std::distance(readStart, m_read) - 1;
+    const uint dist = std::distance(readStart, m_read)-1;
     ASSERT(m_column - dist > 0);
 
     m_column -= dist;
