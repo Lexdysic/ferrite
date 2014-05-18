@@ -84,7 +84,7 @@ TSmartPtrBase<T>::operator const T * () const
 //=============================================================================
 template <typename T>
 TStrongPtr<T>::TStrongPtr () :
-    m_ptr(null)
+    Pointer::Private::TSmartPtrBase<T>(null)
 {
 }
 
