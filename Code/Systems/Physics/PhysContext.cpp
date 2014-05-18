@@ -121,7 +121,7 @@ void CContext::Detection ()
         {
             if (colliderA == colliderB)
                 continue;
-
+            
             const Polygon2 & polygonB = colliderB->GetPolygon();
 
             const Polygon2 & clipped = Polygon2::Clip(polygonA, polygonB);

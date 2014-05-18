@@ -151,7 +151,24 @@ Polygon2 CColliderComponent::GetPolygon () const
     switch (m_type)
     {
         case EType::Circle:
-            ASSERT(false); // What do?
+        {
+            const float32 LINEAR_SPACE = 2.0f;
+            const float32 circumference = Math::Tau * m_circle.radius;
+            const uint numPoints = Max(FloatToUint(circumference / LINEAR_SPACE + 0.5f), 3u);
+            const Radian spacing(Math::Tau / numPoints);
+            
+            TArray<Point2> points;
+            points.Reserve(numPoints);
+
+            Radian angle(0);
+            for (uint i = 0; i < numPoints; ++i, angle+=spacing)
+            {
+                const Point2 p(Cos(angle), Sin(angle));
+                points.Add(matrix * p);
+            }
+
+            return Polygon2(points);
+        }
         break;
 
         case EType::Box:
