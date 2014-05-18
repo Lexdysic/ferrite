@@ -36,6 +36,7 @@
 #   define USES_ENGINE_ENTITY
 #   define USES_ENGINE_COLOR
 #   define USES_ENGINE_GEOMETRY
+#   define USES_ENGINE_PATH
 #endif
 
 #ifdef USES_ENGINE_PHYSICS

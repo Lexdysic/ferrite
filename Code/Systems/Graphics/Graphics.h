@@ -63,7 +63,7 @@ interface IImage
     // Properties
     virtual Vector2 GetSize () const pure;
     virtual Vector2u GetDims () const pure;
-    virtual const CString & GetFilename () const pure;
+    virtual const CPath & GetFilename () const pure;
 };
 
 
@@ -82,7 +82,8 @@ interface IRenderCommands
 
 
     virtual void Rectangle(const Point2 & a, const Point2 & b, const Color & color, EDrawStyle style = EDrawStyle::Filled) pure;
-    virtual void Arrow (const Point2 & a, const Point2 & b, const Color & color, float32 width = 1.0f) pure;
+    virtual void Arrow (const Point2 & from, const Point2 & to, const Color & color, float32 width = 1.0f) pure;
+    virtual void Arrow (const Point2 & p, const Vector2 & v, const Color & color, float32 width = 1.0f) pure;
     virtual void Circle(const Point2 & p, float32 r, const Color & color, EDrawStyle style = EDrawStyle::Filled) pure;
 
     // Images
@@ -150,7 +151,7 @@ interface IContext
     virtual Vector2 DebugTextMeasure (const CString & text, const Vector2 & size) pure;
 
     // Images
-    virtual IImage * ImageLoad (const CString & filename) pure;
+    virtual IImage * ImageLoad (const CPath & filename) pure;
     virtual IImage * ImageCreate (uint width, uint height) pure;
     virtual IImage * ImageCreate (const Vector2u & size) pure;
     virtual void     ImageDestroy (IImage * image) pure;
@@ -218,7 +219,7 @@ private: // Links
 interface IImageComponent : IComponent
 {
     static const ComponentType TYPE;
-    static IImageComponent * Attach (IEntity * entity, const CString & filename, const Vector2 & size);
+    static IImageComponent * Attach (IEntity * entity, const CPath & filename, const Vector2 & size);
 };
 
 

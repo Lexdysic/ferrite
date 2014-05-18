@@ -48,7 +48,7 @@ public: // IContext -----------------------------------------------------------
     Vector2 DebugTextMeasure (const CString & text, const Vector2 & size) override;
 
     // Images
-    IImage * ImageLoad (const CString & filename) override;
+    IImage * ImageLoad (const CPath & filename) override;
     IImage * ImageCreate (uint width, uint height) override;
     IImage * ImageCreate (const Vector2u & size) override;
     void     ImageDestroy (IImage * image) override;

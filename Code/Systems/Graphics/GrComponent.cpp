@@ -48,7 +48,7 @@ CRenderComponent::~CRenderComponent ()
 //=============================================================================
 
 //=============================================================================
-CImageComponent::CImageComponent (const CString & filename, const Vector2 & size) :
+CImageComponent::CImageComponent (const CPath & filename, const Vector2 & size) :
     m_size(size)
 {
     m_image = CContext::Get()->ImageLoad(filename);
@@ -90,7 +90,7 @@ void CImageComponent::Render (IRenderTarget * renderTarget)
 const ComponentType IImageComponent::TYPE('P','r','i','m','a','t','i','v','e');
 
 //=============================================================================
-IImageComponent * IImageComponent::Attach (IEntity * entity, const CString & filename, const Vector2 & size)
+IImageComponent * IImageComponent::Attach (IEntity * entity, const CPath & filename, const Vector2 & size)
 {
     CImageComponent * comp = new CImageComponent(filename, size);
 

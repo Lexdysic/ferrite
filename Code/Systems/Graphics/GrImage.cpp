@@ -4,11 +4,11 @@ namespace Graphics
 {
 
 //=============================================================================
-CImage * CImage::Create (const CString & filename)
+CImage * CImage::Create (const CPath & filename)
 {
     IWICImagingFactory * pWicFactory = CContext::Get()->GetWicFactory();
 
-    CStringUtf16 filenameUtf16 = filename;
+    CStringUtf16 filenameUtf16 = filename.GetString();
 
     // Decoder
     IWICBitmapDecoder *pDecoder = null;
@@ -45,7 +45,7 @@ CImage::CImage () :
 }
 
 //=============================================================================
-CImage::CImage (const CString & filename, IWICBitmapDecoder *pDecoder) :
+CImage::CImage (const CPath & filename, IWICBitmapDecoder *pDecoder) :
     m_filename(filename)
 {
     // Frame

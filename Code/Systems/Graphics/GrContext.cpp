@@ -196,9 +196,9 @@ void CContext::OnWindowSize (const Vector2u & size)
 }
 
 //=============================================================================
-IImage * CContext::ImageLoad (const CString & filename)
+IImage * CContext::ImageLoad (const CPath & filename)
 {
-    ASSERT(!filename.IsNullOrEmpty());
+    ASSERT(filename.IsFile());
 
     CImage * pImage = CImage::Create(filename);
     if (!pImage)

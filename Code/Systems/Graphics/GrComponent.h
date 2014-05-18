@@ -15,7 +15,7 @@ class CImageComponent :
 {
 public:
 
-    CImageComponent (const CString & filename, const Vector2 & size);
+    CImageComponent (const CPath & filename, const Vector2 & size);
     ~CImageComponent ();
 
 private: // CRenderComponent

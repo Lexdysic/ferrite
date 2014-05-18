@@ -12,6 +12,7 @@ namespace Graphics
 class CImage :
     public IImage
 {
+    CLASS_CONVERSION(CImage, IImage);
 public: // Internal
 
     CImage ();
@@ -22,27 +23,25 @@ public: // Internal
 
 public: // Static
 
-    static CImage * Create (const CString & filename);
+    static CImage * Create (const CPath & filename);
     static CImage * Create (const Vector2u & size);
 
-    static CImage * From (IImage * ptr) { return (CImage *)ptr; }
-    static const CImage * From (const IImage * ptr) { return (const CImage *)ptr; }
 
 public: // IImage
 
     Vector2 GetSize () const override;
     Vector2u GetDims () const override;
-    const CString & GetFilename () const override { return m_filename; }
+    const CPath & GetFilename () const override { return m_filename; }
 
 private: //
 
-    CImage (const CString & filename, IWICBitmapDecoder *pDecoder);
+    CImage (const CPath & filename, IWICBitmapDecoder *pDecoder);
     CImage (const Vector2u & size);
     CImage (ID2D1Bitmap * bitmap);
 
     // Data
     ID2D1Bitmap * m_pBitmap;
-    CString       m_filename;
+    CPath         m_filename;
 };
 
 } // namespace Graphics

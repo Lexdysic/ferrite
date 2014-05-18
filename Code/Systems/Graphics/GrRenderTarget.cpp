@@ -116,6 +116,9 @@ void CRenderTarget::Line (
     float32 width,
     ELoop loop
 ) {
+    if (points.Count() < 2)
+        return;
+
     ID2D1SolidColorBrush * brush = CContext::Get()->GetColorBrush();
     brush->SetColor(ToColorF(color));
 
@@ -184,6 +187,16 @@ void CRenderTarget::Arrow (
     Line(b, headLeft, color, width);
     Line(b, headRight, color, width);
     Line(headLeft, headRight, color, width);
+}
+
+//=============================================================================
+void CRenderTarget::Arrow (
+    const Point2 &  p,
+    const Vector2 & v,
+    const Color &   color,
+    float32         width
+) {
+    Arrow(p, p+v, color, width);
 }
 
 //=============================================================================
