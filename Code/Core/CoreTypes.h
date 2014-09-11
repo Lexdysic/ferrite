@@ -64,6 +64,45 @@ typedef decltype(nullptr) nullptr_t;
 
 
 
+
+//=============================================================================
+//
+// SIMPLE_TYPE_*
+//
+//=============================================================================
+
+#define SIMPLE_TYPE_DATA(VarType, VarName) \
+    private: \
+    VarType _SimpleTypeGetData() const { return VarName; } \
+    VarType VarName
+
+#define SIMPLE_TYPE_EQUATABLE(T) \
+    friend bool operator== (const T & lhs, const T & rhs) { return lhs._SimpleTypeGetData() == rhs._SimpleTypeGetData(); } \
+    friend bool operator!= (const T & lhs, const T & rhs) { return lhs._SimpleTypeGetData() == rhs._SimpleTypeGetData(); }
+
+#define SIMPLE_TYPE_EQUATABLE_TO(T, U) \
+    friend bool operator== (const T & lhs, const U & rhs) { return lhs._SimpleTypeGetData() == rhs; } \
+    friend bool operator!= (const T & lhs, const U & rhs) { return lhs._SimpleTypeGetData() == rhs; } \
+    friend bool operator== (const U & lhs, const T & rhs) { return lhs == rhs._SimpleTypeGetData(); } \
+    friend bool operator!= (const U & lhs, const T & rhs) { return lhs == rhs._SimpleTypeGetData(); }
+
+#define SIMPLE_TYPE_COMPARABLE(T) \
+    friend bool operator<  (const T & lhs, const T & rhs) { return lhs._SimpleTypeGetData() <  rhs._SimpleTypeGetData(); } \
+    friend bool operator<= (const T & lhs, const T & rhs) { return lhs._SimpleTypeGetData() <= rhs._SimpleTypeGetData(); } \
+    friend bool operator>  (const T & lhs, const T & rhs) { return lhs._SimpleTypeGetData() >  rhs._SimpleTypeGetData(); } \
+    friend bool operator>= (const T & lhs, const T & rhs) { return lhs._SimpleTypeGetData() >= rhs._SimpleTypeGetData(); }
+
+#define SIMPLE_TYPE_COMPARABLE_TO(T, U) \
+    friend bool operator<  (const T & lhs, const U & rhs) { return lhs._SimpleTypeGetData() <  (decltype(lhs._SimpleTypeGetData()))rhs; } \
+    friend bool operator<= (const T & lhs, const U & rhs) { return lhs._SimpleTypeGetData() <= (decltype(lhs._SimpleTypeGetData()))rhs; } \
+    friend bool operator>  (const T & lhs, const U & rhs) { return lhs._SimpleTypeGetData() >  (decltype(lhs._SimpleTypeGetData()))rhs; } \
+    friend bool operator>= (const T & lhs, const U & rhs) { return lhs._SimpleTypeGetData() >= (decltype(lhs._SimpleTypeGetData()))rhs; } \
+    friend bool operator<  (const U & lhs, const T & rhs) { return (decltype(rhs._SimpleTypeGetData()))lhs <  rhs._SimpleTypeGetData(); } \
+    friend bool operator<= (const U & lhs, const T & rhs) { return (decltype(rhs._SimpleTypeGetData()))lhs <= rhs._SimpleTypeGetData(); } \
+    friend bool operator>  (const U & lhs, const T & rhs) { return (decltype(rhs._SimpleTypeGetData()))lhs >  rhs._SimpleTypeGetData(); } \
+    friend bool operator>= (const U & lhs, const T & rhs) { return (decltype(rhs._SimpleTypeGetData()))lhs >= rhs._SimpleTypeGetData(); }
+
+
 //=============================================================================
 //
 // Flag
