@@ -31,6 +31,7 @@ void MemCopy (void * destination, const void * source, uint bytes)
 template <typename T>
 void MemCopy (T & destination, const T & source)
 {
+    static_assert(std::is_pod<T>::value, "must be POD type");
     MemCopy(&destination, source, sizeof(source));
 }
 
@@ -38,6 +39,7 @@ void MemCopy (T & destination, const T & source)
 template <typename T>
 void MemCopy (T *& destination, const T *& source)
 {
+    static_assert(std::is_pod<T>::value, "must be POD type");
     MemCopy(destination, source, sizeof(T));
 }
 //
@@ -80,6 +82,7 @@ void MemZero (void * ptr, uint bytes)
 template <typename T>
 void MemZero (T & pod)
 {
+    static_assert(std::is_pod<T>::value, "must be POD type");
     MemZero(&pod, sizeof(T));
 }
 
@@ -87,6 +90,7 @@ void MemZero (T & pod)
 template <typename T>
 void MemZero (T *& pod)
 {
+    static_assert(std::is_pod<T>::value, "must be POD type");
     MemZero(pod, sizeof(T));
 }
 
@@ -94,5 +98,6 @@ void MemZero (T *& pod)
 template <typename T, uint N>
 void MemZero (T (& arr)[N])
 {
+    static_assert(std::is_pod<T>::value, "must be POD type");
     MemZero(arr, sizeof(arr));
 }
