@@ -40,7 +40,7 @@ CPath::CPath (const CString & rawPath)
     for (auto codepoint : rawPath)
     {
         if (codepoint == '\\')
-            codepoint = '/';
+            codepoint = String::CodePoint('/');
         builder += codepoint;
     }
 
