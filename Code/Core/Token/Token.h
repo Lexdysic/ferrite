@@ -31,12 +31,14 @@ public:
 
     inline Token (const Token & token);
 
-    friend bool operator<  (Token, Token);
-    friend bool operator<= (Token, Token);
-    friend bool operator>  (Token, Token);
-    friend bool operator>= (Token, Token);
-    friend bool operator== (Token, Token);
-    friend bool operator!= (Token, Token);
+    //friend bool operator<  (Token, Token);
+    //friend bool operator<= (Token, Token);
+    //friend bool operator>  (Token, Token);
+    //friend bool operator>= (Token, Token);
+    //friend bool operator== (Token, Token);
+    //friend bool operator!= (Token, Token);
+
+
 
     inline bool IsNull () const;
 
@@ -51,7 +53,9 @@ public:
 
 private:
 
-    uint64 m_value;
+    SIMPLE_TYPE_DATA(uint64, m_value);
+    SIMPLE_TYPE_EQUATABLE(Token);
+    SIMPLE_TYPE_COMPARABLE(Token);
 };
 
 
@@ -61,11 +65,11 @@ private:
 //
 //==================================================================================================
 
-inline bool operator<  (Token lhs, Token rhs);
-inline bool operator<= (Token lhs, Token rhs);
-inline bool operator>  (Token lhs, Token rhs);
-inline bool operator>= (Token lhs, Token rhs);
-inline bool operator== (Token lhs, Token rhs);
-inline bool operator!= (Token lhs, Token rhs);
+//inline bool operator<  (Token lhs, Token rhs);
+//inline bool operator<= (Token lhs, Token rhs);
+//inline bool operator>  (Token lhs, Token rhs);
+//inline bool operator>= (Token lhs, Token rhs);
+//inline bool operator== (Token lhs, Token rhs);
+//inline bool operator!= (Token lhs, Token rhs);
 
 #include "Token.inl"

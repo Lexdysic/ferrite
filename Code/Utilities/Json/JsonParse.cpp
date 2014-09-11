@@ -2,6 +2,12 @@
 
 namespace Json
 {
+    
+//=============================================================================
+bool IsInRange(String::CodePoint code, char low, char high)
+{
+    return Math::IsInRange(uint32(code), uint32(low), uint32(high));
+}
 
 //=============================================================================
 bool IsInSet (String::CodePoint code, const char set[])
@@ -17,18 +23,18 @@ bool IsInSet (String::CodePoint code, const char set[])
 //=============================================================================
 bool IsHexDigit (String::CodePoint ch)
 {
-    return IsInRange<String::CodePoint>(ch, '0', '9')
-        || IsInRange<String::CodePoint>(CharToLower(ch), 'a', 'f');
+    return IsInRange(ch, '0', '9')
+        || IsInRange(CharToLower(ch), 'a', 'f');
 }
 
 //=============================================================================
 uint ConvertHexDigit (String::CodePoint ch)
 {
     ASSERT(IsHexDigit(ch));
-    if (IsInRange<String::CodePoint>(ch, '0', '9'))
-        return ch - '0';
+    if (IsInRange(ch, '0', '9'))
+        return uint32(ch) - '0';
 
-    return CharToLower(ch) - 'a' + 0xa;
+    return uint32(CharToLower(ch)) - 'a' + 0xa;
 }
 
 //=============================================================================
@@ -193,6 +199,8 @@ bool ParseNumber (const CString::Iterator * read, NumberType * out)
 //=============================================================================
 bool ParseString (const CString::Iterator * read, StringType * out)
 {
+    using namespace String;
+
     const CString::Iterator readStart = *read;
 
     ParseWhitespace(read);
@@ -200,13 +208,13 @@ bool ParseString (const CString::Iterator * read, StringType * out)
     if (!ParseLiteral(read, "\"", EOption::None))
         return Error(read, readStart);
 
-    TArray<String::CodePoint> str;
+    TArray<CodePoint> str;
     str.Reserve(16);
 
     for (bool keepgoing = true; keepgoing; )
     {
         const String::CodePoint ch = *(*read)++;
-        switch (ch)
+        switch (uint32(ch))
         {
             case '\0':
                 return Error(read, readStart);
@@ -217,44 +225,48 @@ bool ParseString (const CString::Iterator * read, StringType * out)
 
             case '\\':
             {
-                String::CodePoint chOut;
+                CodePoint chOut;
 
-                const String::CodePoint ch = *(*read)++;
-                switch (ch)
+                const CodePoint ch = *(*read)++;
+                switch (uint32(ch))
                 {
                     case '\0':
                         return Error(read, readStart);
 
                     case 'b':
-                        chOut = '\b';
+                        chOut = CodePoint('\b');
                     break;
 
                     case 'f':
-                        chOut = '\f';
+                        chOut = CodePoint('\f');
                     break;
 
                     case 'n':
-                        chOut = '\n';
+                        chOut = CodePoint('\n');
                     break;
 
                     case 'r':
-                        chOut = '\r';
+                        chOut = CodePoint('\r');
                     break;
 
                     case 't':
-                        chOut = '\t';
+                        chOut = CodePoint('\t');
                     break;
 
                     case 'u':
-                        chOut = 0;
+                    {
+                        uint32 code = 0;
                         for (uint i = 0; i < 4; ++i)
                         {
                             const String::CodePoint ch = *(*read)++;
                             if (!IsHexDigit(ch))
                                 return Error(read, readStart);
 
-                            chOut = (chOut << 4) | ConvertHexDigit(ch);
+                            code = (code << 4) | ConvertHexDigit(ch);
                         }
+
+                        chOut = String::CodePoint(code);
+                    }
                     break;
 
                     default:
@@ -272,7 +284,7 @@ bool ParseString (const CString::Iterator * read, StringType * out)
         }
     }
 
-    str.Add(0);
+    str.Add(CodePoint::Null);
     *out = CString::FromData(str);
 
     return true;

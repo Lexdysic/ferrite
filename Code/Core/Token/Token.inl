@@ -72,13 +72,13 @@ Token::Token (const Token & token) :
 //=============================================================================
 bool Token::IsValid (char ch)
 {
-    return CharIsUpper(ch) || CharIsLower(ch);
+    return CharIsUpper(String::CodePoint(ch)) || CharIsLower(String::CodePoint(ch));
 }
 
 //=============================================================================
 uint64 Token::Eval (char ch)
 {
-    return IsValid(ch) ? (CharToUpper(ch) - 'A') : 0;
+    return IsValid(ch) ? (uint32(CharToUpper(String::CodePoint(ch))) - 'A') : 0;
 }
 
 //=============================================================================
@@ -86,16 +86,3 @@ bool Token::IsNull () const
 {
     return m_value == 0;
 }
-
-//==================================================================================================
-//
-// Operations
-//
-//==================================================================================================
-
-bool operator<  (Token lhs, Token rhs) { return lhs.m_value <  rhs.m_value; }
-bool operator<= (Token lhs, Token rhs) { return lhs.m_value <= rhs.m_value; }
-bool operator>  (Token lhs, Token rhs) { return lhs.m_value >  rhs.m_value; }
-bool operator>= (Token lhs, Token rhs) { return lhs.m_value <= rhs.m_value; }
-bool operator== (Token lhs, Token rhs) { return lhs.m_value == rhs.m_value; }
-bool operator!= (Token lhs, Token rhs) { return lhs.m_value != rhs.m_value; }

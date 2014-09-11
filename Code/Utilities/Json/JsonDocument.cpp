@@ -238,7 +238,7 @@ bool CDocument::ParseString (StringType * out)
     for (bool keepgoing = true; keepgoing; )
     {
         const CodePoint ch = Read();
-        switch (ch)
+        switch (sint32(ch))
         {
             case '\0':
                 return PostError(ECode::Syntax, "newline found in string");// Bug: is this really an error?
@@ -252,16 +252,17 @@ bool CDocument::ParseString (StringType * out)
                 CodePoint chOut;
 
                 const CodePoint ch = Read();
-                switch (ch)
+                switch (sint32(ch))
                 {
                     default:  chOut = ch;   break;
-                    case 'b': chOut = '\b'; break;
-                    case 'f': chOut = '\f'; break;
-                    case 'n': chOut = '\n'; break;
-                    case 'r': chOut = '\r'; break;
-                    case 't': chOut = '\t'; break;
+                    case 'b': chOut = CodePoint('\b'); break;
+                    case 'f': chOut = CodePoint('\f'); break;
+                    case 'n': chOut = CodePoint('\n'); break;
+                    case 'r': chOut = CodePoint('\r'); break;
+                    case 't': chOut = CodePoint('\t'); break;
                     case 'u':
-                        chOut = 0;
+                    {
+                        sint32 code = 0;
                         for (uint i = 0; i < 4; ++i)
                         {
                             const CodePoint ch = Read();
@@ -269,8 +270,11 @@ bool CDocument::ParseString (StringType * out)
                             if (!IsHexDigit(ch))
                                 return PostError(ECode::Syntax, "bad character hex digit '%c'", ch);
 
-                            chOut = (chOut << 4) | ConvertHexDigit(ch);
+                            code = (code << 4) | ConvertHexDigit(ch);
                         }
+
+                        chOut = String::CodePoint(code);
+                    }
                     break;
                 }
 
@@ -284,7 +288,7 @@ bool CDocument::ParseString (StringType * out)
         }
     }
 
-    str.Add(0);
+    str.Add(CodePoint::Null);
     *out = CString::FromData(str);
 
     return true;
@@ -393,7 +397,7 @@ bool CDocument::ParseValue (CValue * out)
         }
     }
     // Number
-    else if (IsInSet(ch, '-', '+') || IsInRange<CodePoint>(ch, '0', '9'))
+    else if (IsInSet(ch, '-', '+') || IsInRange(ch, '0', '9'))
     {
         NumberType number;
         if (ParseNumber(&number))

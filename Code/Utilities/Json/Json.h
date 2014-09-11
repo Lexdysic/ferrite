@@ -107,7 +107,7 @@ public:
 
 private:
 
-    static const uint DATA_BYTES = 28;
+    static const uint DATA_BYTES = 24;
 
     void Copy (const CValue & rhs);
     void Move (CValue && rhs);
@@ -116,10 +116,10 @@ private:
     EType m_type;
     byte  m_data[DATA_BYTES];
 
-    static_assert(DATA_BYTES >= sizeof(BoolType), "Json::CValue::m_data is not big enough");
+    static_assert(DATA_BYTES >= sizeof(BoolType),   "Json::CValue::m_data is not big enough");
     static_assert(DATA_BYTES >= sizeof(NumberType), "Json::CValue::m_data is not big enough");
     static_assert(DATA_BYTES >= sizeof(StringType), "Json::CValue::m_data is not big enough");
-    static_assert(DATA_BYTES >= sizeof(ArrayType), "Json::CValue::m_data is not big enough");
+    static_assert(DATA_BYTES >= sizeof(ArrayType),  "Json::CValue::m_data is not big enough");
     static_assert(DATA_BYTES >= sizeof(ObjectType), "Json::CValue::m_data is not big enough");
 };
 
@@ -190,18 +190,6 @@ private:
     uint                m_column;
     CString             m_message;
 };
-
-
-
-//=============================================================================
-//
-// Parsing functions
-//
-//=============================================================================
-
-//CValue Parse (const CString & string);
-//CValue Parse (const CPath & filepath);
-
 
 } // namespace Json
 

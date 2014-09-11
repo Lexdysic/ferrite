@@ -16,13 +16,13 @@ bool CharIsLower (String::CodePoint code)
 //=============================================================================
 String::CodePoint CharToUpper (String::CodePoint code)
 {
-    return CharIsLower(code) ? (code + ('A' - 'a')) : code; // TODO: others
+    return CharIsLower(code) ? String::CodePoint(uint32(code) + ('A' - 'a')) : code; // TODO: others
 }
 
 //=============================================================================
 String::CodePoint CharToLower (String::CodePoint code)
 {
-    return CharIsUpper(code) ? (code + ('a' - 'A')) : code; // TODO: others
+    return CharIsUpper(code) ? String::CodePoint(uint32(code) + ('a' - 'A')) : code; // TODO: others
 }
 
 //=============================================================================
@@ -51,15 +51,15 @@ bool CharIsWhitespace (String::CodePoint ch)
         return true;
 
     // space, carriage return, nbsp, Ogham space
-    if (StrFind(L" \r\u00a0\u1680", ch) != null)
+    if (StrFind(L" \r\u00a0\u1680", uint32(ch)) != null)
         return true;
 
     // explicit width space (em-space, en-space, etc...)
-    if (0x2000 <= ch && ch <= 0x200a)
+    if (String::CodePoint(0x2000) <= ch && ch <= String::CodePoint(0x200a))
         return true;
 
     // line separator, para separator, narrow nbsp, math space, ideographic space
-    if (StrFind(L"\u2028\u2029\u202f\u205f\u3000", ch) != null)
+    if (StrFind(L"\u2028\u2029\u202f\u205f\u3000", uint32(ch)) != null)
         return true;
 
     return false;
@@ -235,7 +235,9 @@ template <String::EEncoding E>
 inline TString<E>::TString (const CStringBuilder & builder)
 {
     for (auto codepoint : builder.m_data)
-        m_data.Add(codepoint);
+        String::Encode<E>(codepoint, &m_data);
+        //m_data.Add(codepoint);
+    
 
     m_data.Add(0);
 }

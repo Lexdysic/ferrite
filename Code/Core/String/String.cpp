@@ -11,8 +11,8 @@ const uint16            UTF16_LEAD_MIN  = 0xd800;
 const uint16            UTF16_LEAD_MAX  = 0xdbff;
 const uint16            UTF16_TAIL_MIN  = 0xdc00;
 const uint16            UTF16_TAIL_MAX  = 0xdfff;
-const String::CodePoint UTF16_RANGE_MIN = 0x0000;
-const String::CodePoint UTF16_RANGE_MAX = 0x10ffff;
+const String::CodePoint UTF16_RANGE_MIN(0x0000);
+const String::CodePoint UTF16_RANGE_MAX(0x10ffff);
 
 const uint32 UTF16_LEAD_OFFSET      = UTF16_LEAD_MIN - (0x10000 >> 10);
 const uint32 UTF16_SURROGATE_OFFSET = 0x10000 - (UTF16_LEAD_MIN << 10) - UTF16_TAIL_MIN;
@@ -25,7 +25,7 @@ const byte B11111000 = 0xf8;
 const byte B11111100 = 0xfc;
 const byte B11111110 = 0xfe;
 
-const String::CodePoint CODE_POINT_MAX = 0x10ffff;
+const String::CodePoint CODE_POINT_MAX(0x10ffff);
 
 
 //=============================================================================
@@ -36,7 +36,7 @@ const String::CodePoint CODE_POINT_MAX = 0x10ffff;
 
 static bool NeedsUtf16Surrogate(String::CodePoint codepoint)
 {
-    return codepoint > 0xffff;
+    return codepoint > String::CodePoint(0xffff);
 }
 
 //=============================================================================
@@ -54,7 +54,7 @@ static bool IsUtf16TailSurrogate (uint16 codeunit)
 //=============================================================================
 static bool IsValidCodePoint (String::CodePoint codepoint)
 {
-    return Math::IsInRange(codepoint, (String::CodePoint)0, CODE_POINT_MAX);
+    return Math::IsInRange(uint32(codepoint), uint32(0), uint32(String::CodePoint::Max));
 }
 
 
@@ -111,19 +111,23 @@ Encoding GetEncoding (const byte data[])
 namespace String
 {
 
+const CodePoint CodePoint::Invalid(0xffffffff);
+const CodePoint CodePoint::Null(0x0);
+const CodePoint CodePoint::Max(0x10ffff);
+
 //=============================================================================
 template <>
 CodePoint Decode<String::EEncoding::Ascii> (const char * data[])
 {
     ASSERT(((**data) & 0x80) == 0);
-    return *(*data)++;
+    return CodePoint(*(*data)++);
 }
 
 //=============================================================================
 template <>
 CodePoint Decode<String::EEncoding::Utf8> (const byte * data[])
 {
-    CodePoint code;
+    uint32 code;
     
     uint len = 0;
     const byte lead = *(*data)++;
@@ -159,18 +163,18 @@ CodePoint Decode<String::EEncoding::Utf8> (const byte * data[])
     }
     else
     {
-        return CODE_POINT_INVALID;
+        return CodePoint::Invalid;
     }
 
     for (uint i = 1; i < len; ++i)
     {
         const byte value = *(*data)++;
         if ((value & B11000000) != B10000000)
-            return CODE_POINT_INVALID;
+            return CodePoint::Invalid;
         code = (code << 6) | (value & ~B11000000);
     }
 
-    return code;
+    return String::CodePoint(code);
 }
 
 //=============================================================================
@@ -185,7 +189,7 @@ CodePoint Decode<String::EEncoding::Utf16> (const wchar * data[])
     const uint16 tail = *(*data)++;
 
     if (!IsUtf16TailSurrogate(tail))
-        return CODE_POINT_INVALID;
+        return CodePoint::Invalid;
 
     const uint32 x = (lead & ((1 << 6) - 1)) << 10 | tail & ((1 << 10) - 1);
     const uint32 w = ((tail >> 6) & ((1 << 5) - 1)) + 1;
@@ -199,9 +203,9 @@ void Encode<EEncoding::Ascii> (CodePoint code, TArray<CodeUnit<EEncoding::Ascii>
 {
     ASSERT(IsValidCodePoint(code));
 
-    if (code < 0x80)
+    if (code < CodePoint(0x80))
     {
-        data->Add((char)code);
+        data->Add(char(uint32(code)));
     }
     else
     {
@@ -211,9 +215,11 @@ void Encode<EEncoding::Ascii> (CodePoint code, TArray<CodeUnit<EEncoding::Ascii>
 
 //=============================================================================
 template <>
-void Encode<EEncoding::Utf8> (CodePoint code, TArray<byte> * data)
+void Encode<EEncoding::Utf8> (CodePoint codepoint, TArray<byte> * data)
 {
-    ASSERT(IsValidCodePoint(code));
+    ASSERT(IsValidCodePoint(codepoint));
+
+    uint32 code = uint32(codepoint);
 
     if (code < 0x80)
     {
@@ -245,20 +251,21 @@ void Encode<EEncoding::Utf8> (CodePoint code, TArray<byte> * data)
 
 //=============================================================================
 template <>
-void Encode<EEncoding::Utf16> (CodePoint c, TArray<wchar> * data)
+void Encode<EEncoding::Utf16> (CodePoint codepoint, TArray<wchar> * data)
 {
-    ASSERT(IsValidCodePoint(c));
+    ASSERT(IsValidCodePoint(codepoint));
 
-    if (NeedsUtf16Surrogate(c))
+    if (NeedsUtf16Surrogate(codepoint))
     {
-        const uint16 lead = (c >> 10) + 0xd7c0;
-        const uint16 trail = (c & 0x3ff) | UTF16_TAIL_MIN;
+        const uint32 code = uint32(codepoint);
+        const uint16 lead = (code >> 10) + 0xd7c0;
+        const uint16 trail = (code & 0x3ff) | UTF16_TAIL_MIN;
         data->Add(lead);
         data->Add(trail);
     }
     else
     {
-        data->Add(uint16(c));
+        data->Add(uint16(uint32(codepoint)));
     }
 }
 
@@ -290,4 +297,10 @@ const CStringBuilder & CStringBuilder::operator+= (String::CodePoint codepoint)
     m_data.AddBack(codepoint);
 
     return *this;
+}
+
+//=============================================================================
+const CStringBuilder & CStringBuilder::operator+= (char ch)
+{
+    return *this += String::CodePoint(ch);
 }

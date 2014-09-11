@@ -52,6 +52,7 @@ Encoding GetEncoding (const byte data[]);
 } // namespace String
 
 
+
 //=============================================================================
 //
 // CodePoints
@@ -61,9 +62,30 @@ Encoding GetEncoding (const byte data[]);
 namespace String
 {
 
-typedef sint32 CodePoint; // TODO: can this be made into its own type so templates dont get messed up?
+struct CodePoint
+{
+public: // Construction
 
-const CodePoint CODE_POINT_INVALID = (CodePoint)~0;
+    CodePoint () : m_code(Invalid) {}
+    explicit CodePoint (uint32 code) : m_code(code) {}
+
+    explicit operator uint32 () const { return m_code; }
+
+public: // Statics
+
+    static const CodePoint Invalid;
+    static const CodePoint Null;
+    static const CodePoint Max;
+
+private:
+
+    SIMPLE_TYPE_DATA(uint32, m_code);
+    SIMPLE_TYPE_EQUATABLE(CodePoint);
+    SIMPLE_TYPE_EQUATABLE_TO(CodePoint, char);
+    SIMPLE_TYPE_COMPARABLE(CodePoint);
+    SIMPLE_TYPE_COMPARABLE_TO(CodePoint, char);
+
+};
 
 template <EEncoding E>
 CodePoint Decode (const typename CodeUnit<E>::Type * data[]);
@@ -295,6 +317,7 @@ public:
     template <String::EEncoding E>
     const CStringBuilder & operator+= (const TString<E> & str);
     const CStringBuilder & operator+= (String::CodePoint codepoint);
+    const CStringBuilder & operator+= (char ch);
 
 private:
 

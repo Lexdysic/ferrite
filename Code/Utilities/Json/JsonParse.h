@@ -20,7 +20,7 @@ bool ParseValue (const CString::Iterator  * read, CValue * out);
 
 
 //=============================================================================
-using Math::IsInRange;
+bool IsInRange(String::CodePoint code, char low, char high);
 bool IsInSet (String::CodePoint code, const char set[]);
 inline bool IsInSet (String::CodePoint ch, char set);
 template <typename... Ts>
