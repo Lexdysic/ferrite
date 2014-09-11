@@ -116,7 +116,9 @@ class CBinaryReader : public Internal::CReader
     TArray<byte> ReadAll ();
 
     template <typename T>
-    T * Read ();
+    T Read ();
+    template <typename T>
+    void Read (T * out);
 };
 
 
@@ -135,3 +137,5 @@ public:
 };
 
 } // namespace File
+
+#include "File.inl"

@@ -227,7 +227,7 @@ CBinaryReader::~CBinaryReader ()
 byte CBinaryReader::ReadByte ()
 {
     byte out;
-    fread((void *)&out, 1, 1, (FILE *)m_file);
+    Read(&out);
     return out;
 }
 
