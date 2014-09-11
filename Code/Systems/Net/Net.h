@@ -9,6 +9,8 @@ typedef uint32 IpAddress;
 typedef uint16 Port;
 
 
+const IpAddress NET_IP_ADDRESS_INVALID = 0xffffffff;
+
 //=============================================================================
 //
 // Setup

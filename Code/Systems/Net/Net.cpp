@@ -1,4 +1,5 @@
 #include <winsock2.h>
+#include <ws2tcpip.h>
 
 #define USES_ENGINE_NET
 
@@ -22,8 +23,16 @@ void NetUninitialize ()
 //=============================================================================
 IpAddress NetGetAddress (const char name[])
 {
-    hostent * host = gethostbyname(name);
-    return *(IpAddress *)host->h_addr;
+    addrinfo * info = null;
+
+    if (::getaddrinfo(name, null, null, &info) != 0)
+        return NET_IP_ADDRESS_INVALID;
+
+    IpAddress ip = reinterpret_cast<sockaddr_in *>(info->ai_addr)->sin_addr.S_un.S_addr;
+
+    ::freeaddrinfo(info);
+
+    return ip;
 }
 
 
