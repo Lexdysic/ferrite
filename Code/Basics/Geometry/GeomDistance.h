@@ -1,13 +1,3 @@
-//=================================================================================================
-//
-// File:    GeomDistance.cpp
-// Author:  Jason Jackson
-// Date:    June 5, 2009
-//
-// Computes the shortest distance between objects
-//
-//=================================================================================================
-
 #ifdef GEOMDISTANCE_H
 #  error "Cannot include header more than once."
 #endif

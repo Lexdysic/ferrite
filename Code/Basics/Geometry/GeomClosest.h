@@ -1,23 +1,27 @@
-//==================================================================================================
-//
-// File:    GeomClosest.h
-// Author:  Jason Jackson
-// Date:    October 5th, 2008
-//
-// Defines function which find the closest point(s) between two objects
-//
-//=================================================================================================
-
 #ifdef GEOMCLOSEST_H
 #  error "Cannot include header more than once."
 #endif
 #define GEOMCLOSEST_H
+
+//*****************************************************************************
+//
+// ClosestInfoLineLine3
+//
+//*****************************************************************************
 
 struct ClosestInfoLineLine3
 {
     float32 time1;      //!< The time of the closest point on the first line
     float32 time2;      //!< The time of the closest point on the second line
 };
+
+
+
+//*****************************************************************************
+//
+// ClosestInfoSegmentSegment3
+//
+//*****************************************************************************
 
 struct ClosestInfoSegmentSegment3
 {
@@ -28,6 +32,14 @@ struct ClosestInfoSegmentSegment3
     float32 distSq;     //!< The squared distance of the closest points on the lines
 };
 
+
+
+//*****************************************************************************
+//
+// ClosestInfoRayRay3
+//
+//*****************************************************************************
+
 struct ClosestInfoRayRay3
 {
     float32 time1;      //!< The time of the closest point on the first line
@@ -37,6 +49,13 @@ struct ClosestInfoRayRay3
     float32 distSq;     //!< The squared distance of the closest points on the lines
 };
 
+
+
+//*****************************************************************************
+//
+// Functions
+//
+//*****************************************************************************
 
 inline Point3 Closest (const Point3 & p,  const Plane3 & plane);
 inline Point3 Closest (const Point3 & p,  const Line3 & line);

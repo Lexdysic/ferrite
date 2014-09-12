@@ -1,13 +1,3 @@
-//==================================================================================================
-//
-// File:    GeomTest.inl
-// Author:  Jason Jackson
-// Date:    December 5th, 2008
-//
-// Tests the positiong of one object compared to a second
-//
-//=================================================================================================
-
 namespace Geometry
 {
 

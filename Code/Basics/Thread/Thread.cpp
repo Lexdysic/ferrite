@@ -1,5 +1,22 @@
-
 #include "ThrdPch.h"
+
+
+//*****************************************************************************
+//
+// Validation
+//
+//*****************************************************************************
+
+//=============================================================================
+static_assert(CriticalSection::DATA_SIZE >= sizeof(CRITICAL_SECTION), "Not enough space to old critical section data");
+
+
+
+//*****************************************************************************
+//
+// Helpers
+//
+//*****************************************************************************
 
 //=============================================================================
 inline CRITICAL_SECTION * Convert (uint8 * data)
@@ -8,17 +25,7 @@ inline CRITICAL_SECTION * Convert (uint8 * data)
 }
 
 //=============================================================================
-static_assert(CriticalSection::DATA_SIZE >= sizeof(CRITICAL_SECTION), "Not enough space to old critical section data");
-
-
-//=================================================================================================
-//
-// Thread
-//
-//=================================================================================================
-
-//=============================================================================
-static DWORD WINAPI ThreadEntryPoint(LPVOID param)
+static DWORD WINAPI ThreadEntryPoint (LPVOID param)
 {
     CThread * thread = (CThread *)param;
     ASSERT(thread);
@@ -28,78 +35,86 @@ static DWORD WINAPI ThreadEntryPoint(LPVOID param)
     return 0;
 }
 
+
+
+//*****************************************************************************
+//
+// Thread
+//
+//*****************************************************************************
+
 //=============================================================================
-CThread::~CThread()
+CThread::~CThread ()
 {
-    CloseHandle(mHandle);
+    CloseHandle(m_handle);
 }
 
 //=============================================================================
 void CThread::Start()
 {
-    mHandle = ::CreateThread(null, 0, ThreadEntryPoint, this, 0, (LPDWORD)&mId);
+    m_handle = ::CreateThread(null, 0, ThreadEntryPoint, this, 0, (LPDWORD)&m_id);
 }
 
 //=============================================================================
 void CThread::Stop()
 {
-    ::TerminateThread(mHandle, 0);
+    ::TerminateThread(m_handle, 0);
 }
 
 //=============================================================================
 void CThread::Suspend()
 {
-    ::SuspendThread(mHandle);
+    ::SuspendThread(m_handle);
 }
 
 //=============================================================================
 void CThread::Resume()
 {
-    ::ResumeThread(mHandle);
+    ::ResumeThread(m_handle);
 }
 
 //=============================================================================
 bool CThread::IsRunning() const
 {
     DWORD exitCode = 0;
-    ::GetExitCodeThread(mHandle, &exitCode);
+    ::GetExitCodeThread(m_handle, &exitCode);
     return exitCode == STILL_ACTIVE;
 }
 
 
 
-//=================================================================================================
+//*****************************************************************************
 //
-// Critical Section
+// CriticalSection
 //
-//=================================================================================================
+//*****************************************************************************
 
 //=============================================================================
-CriticalSection::CriticalSection()
+CriticalSection::CriticalSection ()
 {
     ::InitializeCriticalSection(Convert(m_data));
 }
 
 //=============================================================================
-CriticalSection::~CriticalSection()
+CriticalSection::~CriticalSection ()
 {
     ::DeleteCriticalSection(Convert(m_data));
 }
 
 //=============================================================================
-bool CriticalSection::TryEnter() 
+bool CriticalSection::TryEnter () 
 {
     return ::TryEnterCriticalSection(Convert(m_data)) != 0;
 }
 
 //=============================================================================
-void CriticalSection::Enter()
+void CriticalSection::Enter ()
 {
     ::EnterCriticalSection(Convert(m_data));
 }
 
 //=============================================================================
-void CriticalSection::Leave()
+void CriticalSection::Leave ()
 {
     ::LeaveCriticalSection(Convert(m_data));
 }
@@ -107,11 +122,11 @@ void CriticalSection::Leave()
 
 
 
-//=================================================================================================
+//*****************************************************************************
 //
 // Lockable
 //
-//=================================================================================================
+//*****************************************************************************
 
 ////=============================================================================
 //void Lockable::Lock () const
@@ -133,11 +148,11 @@ void CriticalSection::Leave()
 
 
 
-//=================================================================================================
+//*****************************************************************************
 //
-// Exported Functions
+// Functions
 //
-//=================================================================================================
+//*****************************************************************************
 
 //=============================================================================
 uint ThreadLogicalProcessorCount ()

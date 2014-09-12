@@ -1,13 +1,3 @@
-//=================================================================================================
-//
-// File:    Geom.h
-// Author:  Jason Jackson
-// Date:    June 5, 2009
-//
-// Exported interface of the geometry library
-//
-//=================================================================================================
-
 #ifdef GEOM_H
 # error "Cannot include header more than once"
 #endif

@@ -1,35 +1,39 @@
-//==================================================================================================
-//
-// File:    GeomSphere.h
-// Author:  Jason Jackson
-// Date:    December 5th, 2008
-//
-// A sphere representation in 3-space
-//
-//=================================================================================================
-
 #ifdef GEOMSPHERE_H
 #  error "Cannot include header more than once."
 #endif
 #define GEOMSPHERE_H
+
+//*****************************************************************************
+//
+// Forwards
+//
+//*****************************************************************************
 
 class Sphere2;
 class Sphere3;
 
 typedef Sphere2 Circle;
 
-//=============================================================================
+
+
+//*****************************************************************************
 //
-// A sphere in 2-space defined by the center and the radius of the sphere
+// Sphere2
 //
-//=============================================================================
+//*****************************************************************************
+
 class Sphere2
 {
-public:
-    Sphere2();
-    Sphere2( const Point2 & c, float32 r );
+public: // Construction
+
+    Sphere2 ();
+    Sphere2 (const Point2 & c, float32 r);
+
+public: // Constants
 
     static const Sphere2 Unit;
+
+public: // Data
 
     union
     {
@@ -38,22 +42,30 @@ public:
     };
 };
 
-//=============================================================================
+
+
+//*****************************************************************************
 //
-// A sphere in 3-space defined by the center and the radius of the sphere
+// Sphere3
 //
-//=============================================================================
+//*****************************************************************************
+
 class Sphere3
 {
-public:
-    Sphere3();
-    Sphere3( const Point3 & c, float32 r );
+public: // Construction
+
+    Sphere3 ();
+    Sphere3 (const Point3 & c, float32 r);
+
+public: // Constants
 
     static const Sphere3 Unit;
 
+public: // Data
+
     union
     {
-        struct{ Point3 center;  float32 radius; };
-        struct{ float32 x, y, z, r; };
+        struct { Point3 center;  float32 radius; };
+        struct { float32 x, y, z, r; };
     };
 };

@@ -1,13 +1,3 @@
-//==================================================================================================
-//
-// File:    GeomOverlap.h
-// Author:  Jason Jackson
-// Date:    September 21, 2008
-//
-// Provides a way to test if two shapes are overlapping
-//
-//==================================================================================================
-
 #ifdef GEOMOVERLAP_H
 #  error "Cannot include header more than once."
 #endif

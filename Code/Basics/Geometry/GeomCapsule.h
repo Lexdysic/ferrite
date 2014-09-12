@@ -1,17 +1,13 @@
-//==================================================================================================
-//
-// File:    GeomCapsule.h
-// Author:  Jason Jackson
-// Date:    December 5th, 2008
-//
-// Shape which defines a cylindercal objective with spherical endcaps
-//
-//=================================================================================================
-
 #ifdef GEOMCAPSULE_H
 #  error "Cannot include header more than once."
 #endif
 #define GEOMCAPSULE_H
+
+//*****************************************************************************
+//
+// Capsule3
+//
+//*****************************************************************************
 
 class Capsule3
 {

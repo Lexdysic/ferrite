@@ -1,30 +1,22 @@
-//==================================================================================================
-//
-// File:    GeomPlane.h
-// Author:  Jason Jackson
-// Date:    December 5th, 2008
-//
-// A plane represented in the ax + by + cz + d = 0 implicit form
-//
-//=================================================================================================
-
 #ifdef GEOMPLANE_H
 #  error "Cannot include header more than once."
 #endif
 #define GEOMPLANE_H
 
-//=============================================================================
+
+//*****************************************************************************
 //
-// Represents a plane in 2-space by the ax + by + d = 0 implicit form
+// Plane2
 //
-//=============================================================================
+//*****************************************************************************
+
 class Plane2
 {
 public:
-    Plane2();
-    Plane2( const Point2 & point, const Vector2 & normal );
-    Plane2( const Point2 & a, const Point2 & b );
-    Plane2( float32 a, float32 b, float32 d );
+    Plane2 ();
+    Plane2 (const Point2 & point, const Vector2 & normal);
+    Plane2 (const Point2 & a, const Point2 & b);
+    Plane2 (float32 a, float32 b, float32 d);
 
     static const Plane2 X;
     static const Plane2 Y;
@@ -36,18 +28,20 @@ public:
     };
 };
 
-//=============================================================================
+
+
+//*****************************************************************************
 //
-// Represents a plane in 3-space by the ax + by + cz + d = 0 implicit form
+// Plane3
 //
-//=============================================================================
+//*****************************************************************************
 class Plane3
 {
 public:
-    Plane3();
-    Plane3( const Point3 & point, const Vector3 & normal );
-    Plane3( const Point3 & a, const Point3 & b, const Point3 & c );
-    Plane3( float32 a, float32 b, float32 c, float32 d );
+    Plane3 ();
+    Plane3 (const Point3 & point, const Vector3 & normal);
+    Plane3 (const Point3 & a, const Point3 & b, const Point3 & c);
+    Plane3 (float32 a, float32 b, float32 c, float32 d);
 
     static const Plane3 YZ;
     static const Plane3 XZ;

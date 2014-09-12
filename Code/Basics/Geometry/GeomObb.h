@@ -1,23 +1,14 @@
-//==================================================================================================
-//
-// File:    GeomObb.h
-// Author:  Jason Jackson
-// Date:    December 5th, 2008
-//
-// An oriented bounding box which does not align to any native axis
-//
-//=================================================================================================
-
 #ifdef GEOMOBB_H
 #  error "Cannot include header more than once."
 #endif
 #define GEOMOBB_H
 
-//=============================================================================
+//*****************************************************************************
 //
 // Obb2
 //
-//=============================================================================
+//*****************************************************************************
+
 class Obb2
 {
 public:
@@ -36,17 +27,18 @@ public:
 
 
 
-//=============================================================================
+//*****************************************************************************
 //
 // Obb3
 //
-//=============================================================================
+//*****************************************************************************
+
 class Obb3
 {
 public:
-    Obb3();
-    Obb3( const Point3 & center, const Vector3 & x, const Vector3 & y, const Vector3 & z );
-    Obb3( const Point3 & center, const Vector3 & unitX, const Vector3 & unitY, const Vector3 & unitZ, const Vector3 & extent );
+    Obb3 ();
+    Obb3 (const Point3 & center, const Vector3 & x, const Vector3 & y, const Vector3 & z);
+    Obb3 (const Point3 & center, const Vector3 & unitX, const Vector3 & unitY, const Vector3 & unitZ, const Vector3 & extent);
 
     inline float32 ProjectedRadiusAlongVector( const Vector3 & v ) const;
 

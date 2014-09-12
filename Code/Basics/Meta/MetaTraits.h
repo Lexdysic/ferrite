@@ -1,12 +1,24 @@
 namespace Meta
 {
 
-//=============================================================================
+//*****************************************************************************
+//
+// IsFloat
+//
+//*****************************************************************************
+
 template <typename T> struct IsFloat          { static const bool value = false; };
 template <>           struct IsFloat<float32> { static const bool value = true; };
 template <>           struct IsFloat<float64> { static const bool value = true; };
 
-//=============================================================================
+
+
+//*****************************************************************************
+//
+// IsInteger
+//
+//*****************************************************************************
+
 template <typename T> struct IsInteger          { static const bool value = false; };
 template <>           struct IsInteger<sint8>   { static const bool value = true; };
 template <>           struct IsInteger<sint16>  { static const bool value = true; };
@@ -17,7 +29,14 @@ template <>           struct IsInteger<uint16>  { static const bool value = true
 template <>           struct IsInteger<uint32>  { static const bool value = true; };
 template <>           struct IsInteger<uint64>  { static const bool value = true; };
 
-//=============================================================================
+
+
+//*****************************************************************************
+//
+// IsSigned
+//
+//*****************************************************************************
+
 template <typename T> struct IsSigned          { static const bool value = false; };
 template <>           struct IsSigned<float32> { static const bool value = true; };
 template <>           struct IsSigned<float64> { static const bool value = true; };
@@ -26,7 +45,14 @@ template <>           struct IsSigned<sint16>  { static const bool value = true;
 template <>           struct IsSigned<sint32>  { static const bool value = true; };
 template <>           struct IsSigned<sint64>  { static const bool value = true; };
 
-//=============================================================================
+
+
+//*****************************************************************************
+//
+// IsBuiltin
+//
+//*****************************************************************************
+
 template <typename T> struct IsBuiltin          { static const bool value = false; };
 template <>           struct IsBuiltin<float32> { static const bool value = true; };
 template <>           struct IsBuiltin<float64> { static const bool value = true; };
@@ -40,7 +66,14 @@ template <>           struct IsBuiltin<uint32>  { static const bool value = true
 template <>           struct IsBuiltin<uint64>  { static const bool value = true; };
 template <>           struct IsBuiltin<bool>    { static const bool value = true; };
 
-//=============================================================================
+
+
+//*****************************************************************************
+//
+// IsNumeric
+//
+//*****************************************************************************
+
 template <typename T> struct IsNumeric          { static const bool value = false; };
 template <>           struct IsNumeric<float32> { static const bool value = true; };
 template <>           struct IsNumeric<float64> { static const bool value = true; };
