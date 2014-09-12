@@ -1,28 +1,19 @@
-//==================================================================================================
-//
-// File:    MathMatrix.h
-// Author:  Jason Jackson
-// Date:    September 20, 2008
-//
-// Defines square matrices of different sizes
-//
-//==================================================================================================
-
 #ifdef MATHMATRIX_H
 #  error "Cannot include header more than once."
 #endif
 #define MATHMATRIX_H
 
 
-//=============================================================================
+//*****************************************************************************
 //
 // Matrix22
 //
-//=============================================================================
+//*****************************************************************************
 
 class Matrix22
 {
-public:
+public: // construction
+
     Matrix22 ();
     Matrix22 (const Matrix22 & m);
     Matrix22 (
@@ -37,14 +28,20 @@ public:
     static Matrix22 CreateRotation (Radian angle);
     static Matrix22 CreateScale (float32 scale);
 
-    const float32 &         operator() (uint32 r, uint32 c) const;
-          float32 &         operator() (uint32 r, uint32 c);
+public: // Accessors
+
+    const float32 & operator() (uint32 r, uint32 c) const;
+          float32 & operator() (uint32 r, uint32 c);
 
     inline const Vector2 & Row (uint32 r) const;
     inline Vector2         Column (uint32 c) const;
 
+public: // Constants
+
     static const Matrix22 Identity;
     static const Matrix22 Zero;
+
+public: // Data
 
     union
     {
@@ -60,15 +57,16 @@ public:
 
 
 
-//=============================================================================
+//*****************************************************************************
 //
 // Matrix23 - The3rd row is implictly [0, 0, 1].
 //
-//=============================================================================
+//*****************************************************************************
 
 class Matrix23
 {
 public: // Construction
+
     Matrix23 ();
     Matrix23 (const Matrix23 & m);
     Matrix23 (
@@ -87,18 +85,21 @@ public: // Construction
     static Matrix23 CreateTranslation (const Point2 & position);
     static Matrix23 CreateTransform (const Point2 & position, Radian rotation);
 
-    // Accessors
+public: // Accessors
+
     const float32 &         operator() (uint32 r, uint32 c) const;
           float32 &         operator() (uint32 r, uint32 c);
 
     inline const Vector3 & Row (uint32 r) const;
     inline Vector2         Column (uint32 c) const;
 
+public: // Constants
 
     static const Matrix23 Identity;
     static const Matrix23 Zero;
 
 
+public: // Data
 
     union
     {
@@ -114,15 +115,16 @@ public: // Construction
 
 
 
-//=============================================================================
+//*****************************************************************************
 //
 // Matrix33
 //
-//=============================================================================
+//*****************************************************************************
 
 class Matrix33
 {
-public:
+public: // Construction
+
     Matrix33 ();
     Matrix33 (const Matrix33 & m);
     Matrix33 (
@@ -137,14 +139,20 @@ public:
     );
     Matrix33 (const Quaternion & q);
 
-    const float32 &         operator() (uint32 r, uint32 c) const;
-          float32 &         operator() (uint32 r, uint32 c);
+public: // Accessors
+
+    const float32 & operator() (uint32 r, uint32 c) const;
+          float32 & operator() (uint32 r, uint32 c);
 
     inline const Vector3 & Row (uint32 r) const;
     inline Vector3         Column (uint32 c) const;
 
+public: // Constants
+
     static const Matrix33 Identity;
     static const Matrix33 Zero;
+
+public: // Data
 
     union
     {
@@ -160,15 +168,18 @@ public:
 
 };
 
-//=============================================================================
+
+
+//*****************************************************************************
 //
 // Matrix34 - The 4th row is implictly [0, 0, 0, 1].
 //
-//=============================================================================
+//*****************************************************************************
 
 class Matrix34
 {
-public:
+public: // Construction
+
     Matrix34 ();
     Matrix34 (const Matrix34 & m);
     Matrix34 (
@@ -185,15 +196,20 @@ public:
     Matrix34 (const Quaternion & q);
     Matrix34 (const Quaternion & q, const Vector3 & t);
 
-    const float32 &         operator() (uint32 r, uint32 c) const;
-          float32 &         operator() (uint32 r, uint32 c);
+public: // Accessorys
+
+    const float32 & operator() (uint32 r, uint32 c) const;
+          float32 & operator() (uint32 r, uint32 c);
 
     inline const Vector4 & Row (uint32 r) const;
     inline Vector3         Column (uint32 c) const;
 
+public: // Constants
 
     static const Matrix34 Identity;
     static const Matrix34 Zero;
+
+public: // Data
 
     union
     {
@@ -210,15 +226,16 @@ public:
 
 
 
-//=============================================================================
+//*****************************************************************************
 //
 // Matrix44
 //
-//=============================================================================
+//*****************************************************************************
 
 class Matrix44
 {
-public:
+public: // Construction
+
     Matrix44 ();
     Matrix44 (const Matrix44 & m);
     Matrix44 (
@@ -236,6 +253,7 @@ public:
     Matrix44 (const Quaternion & q);
     Matrix44 (const Quaternion & q, const Vector3 & t);
 
+public: // Accessors
 
     const float32 & operator() (uint32 r, uint32 c) const;
           float32 & operator() (uint32 r, uint32 c);
@@ -243,9 +261,12 @@ public:
     inline const Vector4 & Row (uint32 r) const;
     inline Vector4         Column (uint32 c) const;
 
+public: // Constants
 
     static const Matrix44 Identity;
     static const Matrix44 Zero;
+
+public: // Data
 
     union
     {
@@ -263,11 +284,11 @@ public:
 
 
 
-//=============================================================================
+//*****************************************************************************
 //
 // Operators
 //
-//=============================================================================
+//*****************************************************************************
 
 inline Matrix22 operator+ (const Matrix22 & lhs, const Matrix22 & rhs);
 inline Matrix33 operator+ (const Matrix33 & lhs, const Matrix33 & rhs);
@@ -320,29 +341,29 @@ inline bool operator!= (const Matrix33 & lhs, const Matrix33 & rhs);
 inline bool operator!= (const Matrix34 & lhs, const Matrix34 & rhs);
 inline bool operator!= (const Matrix44 & lhs, const Matrix44 & rhs);
 
-inline Matrix22     Transpose (const Matrix22 & m);
-inline Matrix33     Transpose (const Matrix33 & m);
-inline Matrix34     Transpose (const Matrix34 & m);
-inline Matrix44     Transpose (const Matrix44 & m);
+inline Matrix22 Transpose (const Matrix22 & m);
+inline Matrix33 Transpose (const Matrix33 & m);
+inline Matrix34 Transpose (const Matrix34 & m);
+inline Matrix44 Transpose (const Matrix44 & m);
 
-inline float32      Trace (const Matrix22 & m);
-inline float32      Trace (const Matrix33 & m);
-inline float32      Trace (const Matrix34 & m);
-inline float32      Trace (const Matrix44 & m);
+inline float32 Trace (const Matrix22 & m);
+inline float32 Trace (const Matrix33 & m);
+inline float32 Trace (const Matrix34 & m);
+inline float32 Trace (const Matrix44 & m);
 
-inline float32      Determinant (const Matrix22 & m);
-inline float32      Determinant (const Matrix23 & m);
-inline float32      Determinant (const Matrix33 & m);
-inline float32      Determinant (const Matrix34 & m);
-inline float32      Determinant (const Matrix44 & m);
+inline float32 Determinant (const Matrix22 & m);
+inline float32 Determinant (const Matrix23 & m);
+inline float32 Determinant (const Matrix33 & m);
+inline float32 Determinant (const Matrix34 & m);
+inline float32 Determinant (const Matrix44 & m);
 
-inline Matrix22     Inverse (const Matrix22 & m);
-inline Matrix23     Inverse (const Matrix23 & m);
-inline Matrix33     Inverse (const Matrix33 & m);
-inline Matrix34     Inverse (const Matrix34 & m);
-inline Matrix44     Inverse (const Matrix44 & m);
+inline Matrix22 Inverse (const Matrix22 & m);
+inline Matrix23 Inverse (const Matrix23 & m);
+inline Matrix33 Inverse (const Matrix33 & m);
+inline Matrix34 Inverse (const Matrix34 & m);
+inline Matrix44 Inverse (const Matrix44 & m);
 
-inline bool         Equal (const Matrix22 & lhs, const Matrix22 & rhs, sint32 maxUlps = Math::MaxUlps);
-inline bool         Equal (const Matrix33 & lhs, const Matrix33 & rhs, sint32 maxUlps = Math::MaxUlps);
-inline bool         Equal (const Matrix34 & lhs, const Matrix34 & rhs, sint32 maxUlps = Math::MaxUlps);
-inline bool         Equal (const Matrix44 & lhs, const Matrix44 & rhs, sint32 maxUlps = Math::MaxUlps);
+inline bool Equal (const Matrix22 & lhs, const Matrix22 & rhs, sint32 maxUlps = Math::MaxUlps);
+inline bool Equal (const Matrix33 & lhs, const Matrix33 & rhs, sint32 maxUlps = Math::MaxUlps);
+inline bool Equal (const Matrix34 & lhs, const Matrix34 & rhs, sint32 maxUlps = Math::MaxUlps);
+inline bool Equal (const Matrix44 & lhs, const Matrix44 & rhs, sint32 maxUlps = Math::MaxUlps);

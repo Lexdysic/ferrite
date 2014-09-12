@@ -1,20 +1,12 @@
-//==================================================================================================
-//
-// File:    MathMatrix.cpp
-// Author:  Jason Jackson
-// Date:    September 20, 2008
-//
-// Defines square matrices of different sizes
-//
-//==================================================================================================
 
 #include "MathPch.h"
 
-//=============================================================================
+
+//*****************************************************************************
 //
 // Matrix22
 //
-//=============================================================================
+//*****************************************************************************
 
 //=============================================================================
 const Matrix22 Matrix22::Identity(
@@ -51,7 +43,7 @@ Matrix22::Matrix22 (
 }
 
 //=============================================================================
-Matrix22::Matrix22( 
+Matrix22::Matrix22 ( 
     float32 m00, float32 m01, 
     float32 m10, float32 m11
 ) :
@@ -82,26 +74,27 @@ Matrix22 Matrix22::CreateScale (float32 scale)
 }
 
 
-//=============================================================================
+
+//*****************************************************************************
 //
 // Matrix23
 //
-//=============================================================================
+//*****************************************************************************
 
 //=============================================================================
-const Matrix23 Matrix23::Identity(
+const Matrix23 Matrix23::Identity (
     1.0f, 0.0f, 0.0f,
     0.0f, 1.0f, 0.0f
 );
 
 //=============================================================================
-const Matrix23 Matrix23::Zero(
+const Matrix23 Matrix23::Zero (
     Vector3::Zero,
     Vector3::Zero
 );
 
 //=============================================================================
-Matrix23::Matrix23()
+Matrix23::Matrix23 ()
 {
 }
 
@@ -120,7 +113,7 @@ Matrix23::Matrix23 (const Vector3 & row0, const Vector3 & row1) :
 }
 
 //=============================================================================
-Matrix23::Matrix23( 
+Matrix23::Matrix23 ( 
     float32 m00, float32 m01, float32 m02,
     float32 m10, float32 m11, float32 m12
 ) :
@@ -185,15 +178,17 @@ Matrix23 Matrix23::CreateTransform (const Point2 & position, Radian rotation)
 
     return Matrix23(
         cos, -sin, position.x,
-        sin, cos, position.y
+        sin,  cos, position.y
     );
 }
 
-//=============================================================================
+
+
+//*****************************************************************************
 //
 // Matrix33
 //
-//=============================================================================
+//*****************************************************************************
 
 //=============================================================================
 const Matrix33 Matrix33::Identity(
@@ -235,7 +230,7 @@ Matrix33::Matrix33 (
 }
 
 //=============================================================================
-Matrix33::Matrix33( 
+Matrix33::Matrix33 ( 
     float32 m00, float32 m01, float32 m02,
     float32 m10, float32 m11, float32 m12,
     float32 m20, float32 m21, float32 m22
@@ -247,7 +242,7 @@ Matrix33::Matrix33(
 }
 
 //=============================================================================
-Matrix33::Matrix33( const Quaternion & q )
+Matrix33::Matrix33 (const Quaternion & q)
 {
     const float32 xx = 2.0f * q.v.x * q.v.x;
     const float32 yy = 2.0f * q.v.y * q.v.y;
@@ -260,17 +255,18 @@ Matrix33::Matrix33( const Quaternion & q )
     const float32 yw = 2.0f * q.v.y * q.a;
     const float32 zw = 2.0f * q.v.z * q.a;
 
-    mv[0] = Vector3( 1.0f - yy - zz,           xy - zw,            xz + yw );
-    mv[1] = Vector3(        xy + zw,    1.0f - xx - zz,            yz - xw );
-    mv[2] = Vector3(        xz - yw,           yz + xw,     1.0f - xx - yy );
+    mv[0] = Vector3(1.0f - yy - zz,        xy - zw,        xz + yw);
+    mv[1] = Vector3(       xy + zw, 1.0f - xx - zz,        yz - xw);
+    mv[2] = Vector3(       xz - yw,        yz + xw, 1.0f - xx - yy);
 }
 
 
-//=============================================================================
+
+//*****************************************************************************
 //
 // Matrix34
 //
-//=============================================================================
+//*****************************************************************************
 
 //=============================================================================
 const Matrix34 Matrix34::Identity(
@@ -312,7 +308,7 @@ Matrix34::Matrix34 (
 }
 
 //=============================================================================
-Matrix34::Matrix34(
+Matrix34::Matrix34 (
     float32 m00, float32 m01, float32 m02, float32 m03,
     float32 m10, float32 m11, float32 m12, float32 m13,
     float32 m20, float32 m21, float32 m22, float32 m23
@@ -345,9 +341,9 @@ Matrix34::Matrix34 (const Quaternion & q)
     const float32 yw = 2.0f * q.v.y * q.a;
     const float32 zw = 2.0f * q.v.z * q.a;
 
-    mv[0] = Vector4( 1.0f - yy - zz,           xy - zw,            xz + yw,     0.0f );
-    mv[1] = Vector4(        xy + zw,    1.0f - xx - zz,            yz - xw,     0.0f );
-    mv[2] = Vector4(        xz - yw,           yz + xw,     1.0f - xx - yy,     0.0f );
+    mv[0] = Vector4(1.0f - yy - zz,           xy - zw,            xz + yw,     0.0f);
+    mv[1] = Vector4(       xy + zw,    1.0f - xx - zz,            yz - xw,     0.0f);
+    mv[2] = Vector4(       xz - yw,           yz + xw,     1.0f - xx - yy,     0.0f);
 }
 
 //=============================================================================
@@ -364,18 +360,18 @@ Matrix34::Matrix34 (const Quaternion & q, const Vector3 & t)
     const float32 yw = 2.0f * q.v.y * q.a;
     const float32 zw = 2.0f * q.v.z * q.a;
 
-    mv[0] = Vector4( 1.0f - yy - zz,           xy - zw,            xz + yw,     t.x );
-    mv[1] = Vector4(        xy + zw,    1.0f - xx - zz,            yz - xw,     t.y );
-    mv[2] = Vector4(        xz - yw,           yz + xw,     1.0f - xx - yy,     t.z );  
+    mv[0] = Vector4(1.0f - yy - zz,           xy - zw,            xz + yw,     t.x);
+    mv[1] = Vector4(       xy + zw,    1.0f - xx - zz,            yz - xw,     t.y);
+    mv[2] = Vector4(       xz - yw,           yz + xw,     1.0f - xx - yy,     t.z);  
 }
 
-//----------------------------------------------------------------------------------------------------//
 
-//=============================================================================
+
+//*****************************************************************************
 //
 // Matrix44
 //
-//=============================================================================
+//*****************************************************************************
 
 //=============================================================================
 const Matrix44 Matrix44::Identity(
@@ -448,10 +444,10 @@ Matrix44::Matrix44 (const Quaternion & q)
     const float32 yw = 2.0f * q.v.y * q.a;
     const float32 zw = 2.0f * q.v.z * q.a;
 
-    mv[0] = Vector4( 1.0f - yy - zz,           xy - zw,            xz + yw,     0.0f );
-    mv[1] = Vector4(        xy + zw,    1.0f - xx - zz,            yz - xw,     0.0f);
-    mv[2] = Vector4(        xz - yw,           yz + xw,     1.0f - xx - yy,     0.0f ); 
-    mv[3] = Vector4(           0.0f,              0.0f,               0.0f,     1.0f );
+    mv[0] = Vector4(1.0f - yy - zz,        xy - zw,        xz + yw, 0.0f);
+    mv[1] = Vector4(       xy + zw, 1.0f - xx - zz,        yz - xw, 0.0f);
+    mv[2] = Vector4(       xz - yw,        yz + xw, 1.0f - xx - yy, 0.0f); 
+    mv[3] = Vector4(          0.0f,           0.0f,           0.0f, 1.0f);
 }
 
 //=============================================================================
@@ -467,24 +463,22 @@ Matrix44::Matrix44 (const Quaternion & q, const Vector3 & t)
     const float32 yw = 2.0f * q.v.y * q.a;
     const float32 zw = 2.0f * q.v.z * q.a;
 
-    mv[0] = Vector4( 1.0f - yy - zz,           xy - zw,            xz + yw,     t.x );
-    mv[1] = Vector4(        xy + zw,    1.0f - xx - zz,            yz - xw,     t.y );
-    mv[2] = Vector4(        xz - yw,           yz + xw,     1.0f - xx - yy,     t.z );  
-    mv[3] = Vector4(           0.0f,              0.0f,               0.0f,     1.0f );
+    mv[0] = Vector4(1.0f - yy - zz,        xy - zw,        xz + yw, t.x);
+    mv[1] = Vector4(       xy + zw, 1.0f - xx - zz,        yz - xw, t.y);
+    mv[2] = Vector4(       xz - yw,        yz + xw, 1.0f - xx - yy, t.z);  
+    mv[3] = Vector4(          0.0f,           0.0f,           0.0f, 1.0f);
 }
 
-//----------------------------------------------------------------------------------------------------//
+//=============================================================================
+const float32 & Matrix22::operator() (uint32 r, uint32 c) const { return mv[r][c]; }
+const float32 & Matrix33::operator() (uint32 r, uint32 c) const { return mv[r][c]; }
+const float32 & Matrix34::operator() (uint32 r, uint32 c) const { return mv[r][c]; }
+const float32 & Matrix44::operator() (uint32 r, uint32 c) const { return mv[r][c]; }
 
-const float32 & Matrix22::operator()( uint32 r, uint32 c ) const          { return mv[r][c]; }
-const float32 & Matrix33::operator()( uint32 r, uint32 c ) const          { return mv[r][c]; }
-const float32 & Matrix34::operator()( uint32 r, uint32 c ) const          { return mv[r][c]; }
-const float32 & Matrix44::operator()( uint32 r, uint32 c ) const          { return mv[r][c]; }
-
-//----------------------------------------------------------------------------------------------------//
-
-float32 & Matrix22::operator()( uint32 r, uint32 c )                      { return mv[r][c]; }
-float32 & Matrix33::operator()( uint32 r, uint32 c )                      { return mv[r][c]; }
-float32 & Matrix34::operator()( uint32 r, uint32 c )                      { return mv[r][c]; }
-float32 & Matrix44::operator()( uint32 r, uint32 c )                      { return mv[r][c]; }
+//=============================================================================
+float32 & Matrix22::operator() (uint32 r, uint32 c) { return mv[r][c]; }
+float32 & Matrix33::operator() (uint32 r, uint32 c) { return mv[r][c]; }
+float32 & Matrix34::operator() (uint32 r, uint32 c) { return mv[r][c]; }
+float32 & Matrix44::operator() (uint32 r, uint32 c) { return mv[r][c]; }
 
 

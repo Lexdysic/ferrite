@@ -1,12 +1,3 @@
-//==================================================================================================
-//
-// File:    MathMatrix.inl
-// Author:  Jason Jackson
-// Date:    September 20, 2008
-//
-// Defines square matrices of different sizes
-//
-//==================================================================================================
 
 //=============================================================================
 const Vector2 & Matrix22::Row (uint32 r) const { ASSERT(r < 2); return mv[r]; }
@@ -97,7 +88,7 @@ Matrix33 operator* (const Matrix33 & lhs, const Matrix33 & rhs)
 }
 
 //=============================================================================
-Matrix34 operator*(const Matrix34 & lhs, const Matrix34 & rhs)
+Matrix34 operator* (const Matrix34 & lhs, const Matrix34 & rhs)
 {
     return Matrix34(
         Dot(lhs.Row(0).xyz, rhs.Column(0)),     Dot(lhs.Row(0).xyz, rhs.Column(1)),     Dot(lhs.Row(0).xyz, rhs.Column(2)),     Dot(lhs.Row(0), Vector4(rhs.Column(3),1)),  
@@ -107,7 +98,7 @@ Matrix34 operator*(const Matrix34 & lhs, const Matrix34 & rhs)
 }
 
 //=============================================================================
-Matrix44 operator*(const Matrix44 & lhs, const Matrix44 & rhs)
+Matrix44 operator* (const Matrix44 & lhs, const Matrix44 & rhs)
 {
     return Matrix44(
         Dot(lhs.Row(0), rhs.Column(0)),     Dot(lhs.Row(0), rhs.Column(1)),     Dot(lhs.Row(0), rhs.Column(2)),     Dot(lhs.Row(0), rhs.Column(3)), 
@@ -235,7 +226,7 @@ Matrix33 Inverse (const Matrix33 & m)
 }
 
 //=============================================================================
-Matrix34 Inverse(const Matrix34 & m)
+Matrix34 Inverse (const Matrix34 & m)
 {
     const float32 det = Determinant(m);
 
@@ -259,14 +250,14 @@ Matrix44 Inverse (const Matrix44 & m)
 }
 
 //=============================================================================
-bool Equal(const Matrix22 & lhs, const Matrix22 & rhs, sint32 maxUlps)   
+bool Equal (const Matrix22 & lhs, const Matrix22 & rhs, sint32 maxUlps)   
 { 
     return  Equal(lhs.Row(0), rhs.Row(0), maxUlps) && 
             Equal(lhs.Row(1), rhs.Row(1), maxUlps); 
 }
 
 //=============================================================================
-bool Equal(const Matrix33 & lhs, const Matrix33 & rhs, sint32 maxUlps)
+bool Equal (const Matrix33 & lhs, const Matrix33 & rhs, sint32 maxUlps)
 { 
     return  Equal(lhs.Row(0), rhs.Row(0), maxUlps) && 
             Equal(lhs.Row(1), rhs.Row(1), maxUlps) && 
@@ -274,7 +265,7 @@ bool Equal(const Matrix33 & lhs, const Matrix33 & rhs, sint32 maxUlps)
 }
 
 //=============================================================================
-bool Equal(const Matrix34 & lhs, const Matrix34 & rhs, sint32 maxUlps)
+bool Equal (const Matrix34 & lhs, const Matrix34 & rhs, sint32 maxUlps)
 { 
     return  Equal(lhs.Row(0), rhs.Row(0), maxUlps) && 
             Equal(lhs.Row(1), rhs.Row(1), maxUlps) && 
@@ -282,7 +273,7 @@ bool Equal(const Matrix34 & lhs, const Matrix34 & rhs, sint32 maxUlps)
 }
 
 //=============================================================================
-bool Equal(const Matrix44 & lhs, const Matrix44 & rhs, sint32 maxUlps)
+bool Equal (const Matrix44 & lhs, const Matrix44 & rhs, sint32 maxUlps)
 { 
     return  Equal(lhs.Row(0), rhs.Row(0), maxUlps) && 
             Equal(lhs.Row(1), rhs.Row(1), maxUlps) && 

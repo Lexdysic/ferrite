@@ -1,18 +1,16 @@
 #include "EngineDeps.h"
-#include <Windows.h>
 
-//=============================================================================
+
+//*****************************************************************************
 //
 // Constants
 //
-//=============================================================================
+//*****************************************************************************
 
-const uint16            UTF16_LEAD_MIN  = 0xd800;
-const uint16            UTF16_LEAD_MAX  = 0xdbff;
-const uint16            UTF16_TAIL_MIN  = 0xdc00;
-const uint16            UTF16_TAIL_MAX  = 0xdfff;
-const String::CodePoint UTF16_RANGE_MIN(0x0000);
-const String::CodePoint UTF16_RANGE_MAX(0x10ffff);
+const uint16 UTF16_LEAD_MIN  = 0xd800;
+const uint16 UTF16_LEAD_MAX  = 0xdbff;
+const uint16 UTF16_TAIL_MIN  = 0xdc00;
+const uint16 UTF16_TAIL_MAX  = 0xdfff;
 
 const uint32 UTF16_LEAD_OFFSET      = UTF16_LEAD_MIN - (0x10000 >> 10);
 const uint32 UTF16_SURROGATE_OFFSET = 0x10000 - (UTF16_LEAD_MIN << 10) - UTF16_TAIL_MIN;
@@ -25,15 +23,15 @@ const byte B11111000 = 0xf8;
 const byte B11111100 = 0xfc;
 const byte B11111110 = 0xfe;
 
-const String::CodePoint CODE_POINT_MAX(0x10ffff);
 
 
-//=============================================================================
+//*****************************************************************************
 //
 // Helpers
 //
-//=============================================================================
+//*****************************************************************************
 
+//=============================================================================
 static bool NeedsUtf16Surrogate(String::CodePoint codepoint)
 {
     return codepoint > String::CodePoint(0xffff);
@@ -58,15 +56,17 @@ static bool IsValidCodePoint (String::CodePoint codepoint)
 }
 
 
-//=============================================================================
+
+//*****************************************************************************
 //
 // Encoding
 //
-//=============================================================================
+//*****************************************************************************
 
 namespace String
 {
 
+//=============================================================================
 const Encoding Encoding::Unknown = { String::EEncoding::Unknown, EEndian::Unknown, 0 };
 
 //=============================================================================
@@ -102,15 +102,16 @@ Encoding GetEncoding (const byte data[])
 
 
 
-//=============================================================================
+//*****************************************************************************
 //
 // CodePoints
 //
-//=============================================================================
+//*****************************************************************************
 
 namespace String
 {
 
+//=============================================================================
 const CodePoint CodePoint::Invalid(0xffffffff);
 const CodePoint CodePoint::Null(0x0);
 const CodePoint CodePoint::Max(0x10ffff);
@@ -219,7 +220,7 @@ void Encode<EEncoding::Utf8> (CodePoint codepoint, TArray<byte> * data)
 {
     ASSERT(IsValidCodePoint(codepoint));
 
-    uint32 code = uint32(codepoint);
+    const uint32 code = uint32(codepoint);
 
     if (code < 0x80)
     {
@@ -257,8 +258,8 @@ void Encode<EEncoding::Utf16> (CodePoint codepoint, TArray<wchar> * data)
 
     if (NeedsUtf16Surrogate(codepoint))
     {
-        const uint32 code = uint32(codepoint);
-        const uint16 lead = (code >> 10) + 0xd7c0;
+        const uint32 code  = uint32(codepoint);
+        const uint16 lead  = (code >> 10) + 0xd7c0;
         const uint16 trail = (code & 0x3ff) | UTF16_TAIL_MIN;
         data->Add(lead);
         data->Add(trail);
@@ -273,11 +274,11 @@ void Encode<EEncoding::Utf16> (CodePoint codepoint, TArray<wchar> * data)
 
 
 
-//=============================================================================
+//*****************************************************************************
 //
 // CStringBuilder
 //
-//=============================================================================
+//*****************************************************************************
 
 //=============================================================================
 void CStringBuilder::Clear ()

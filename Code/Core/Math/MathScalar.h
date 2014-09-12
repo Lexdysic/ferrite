@@ -1,12 +1,3 @@
-//==================================================================================================
-//
-// File:    MathScalar.h
-// Author:  Jason Jackson
-// Date:    September 20, 2008
-//
-// Defines basic math operations dealing with scalars
-//
-//==================================================================================================
 
 #ifdef MATHSCALAR_H
 #  error "Cannot include header more than once."
@@ -17,7 +8,7 @@ template <typename T>
 inline T Sign (const T & x);
 
 template <typename T>
-inline T Sq(const T & x);
+inline T Sq (const T & x);
 
 template <typename Float>
 inline Float Sqrt (Float x);
@@ -31,7 +22,7 @@ inline Radian  ArcTan (float32 a);
 inline Radian  ArcTan (float32 x, float32 y);
 
 template <typename Float>
-inline Float Floor(Float x);
+inline Float Floor (Float x);
 
 template <typename Float>
 inline Float Ceil (Float x);
@@ -85,6 +76,7 @@ inline float32 InvLerp (const T & x, const T & a, const T & b);
 
 
 
+// TODO: need to figure out what to do with this set of functions. Mix of namespaces and none
 
 namespace Math
 {

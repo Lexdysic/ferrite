@@ -1,18 +1,20 @@
-//==================================================================================================
+//*****************************************************************************
 //
-// File:    MathVector.inl
-// Author:  Jason Jackson
-// Date:    September 24, 2008
+// Vector2
 //
-// Implementation of inline vector operators
-//
-//==================================================================================================
+//*****************************************************************************
 
 Vector2::Vector2 () {}
-Vector2::Vector2 (const Vector2 & v )   : x(v.x), y(v.y) {}
-Vector2::Vector2 (float32 c1, float32 c2 )      : x(c1), y(c2) {}
+Vector2::Vector2 (const Vector2 & v) : x(v.x), y(v.y) {}
+Vector2::Vector2 (float32 x, float32 y) : x(x), y(y) {}
 
-//----------------------------------------------------------------------------------------------------//
+
+
+//*****************************************************************************
+//
+// Vector3
+//
+//*****************************************************************************
 
 Vector3::Vector3 () {}
 Vector3::Vector3 (const Vector3 & v )           : x(v.x),   y(v.y),   z(v.z)   {}
@@ -20,117 +22,197 @@ Vector3::Vector3 (const Vector2 & c12, float32 c3 ) : x(c12.x), y(c12.y), z(c3) 
 Vector3::Vector3 (float32 c1, const Vector2 & c23 ) : x(c1),    y(c23.x), z(c23.y) {}
 Vector3::Vector3 (float32 c1, float32 c2, float32 c3 )      : x(c1),    y(c2),    z(c3)    {}
 
-//----------------------------------------------------------------------------------------------------//
 
-Vector4::Vector4 () {}
-Vector4::Vector4 (const Point3 & p )                : x(p.x),   y(p.y),     z(p.z),     w(1.0f) {}
-Vector4::Vector4 (const Vector3 & v )               : x(v.x),   y(v.y),     z(v.z),     w(0.0f) {}
-Vector4::Vector4 (const Vector4 & v )               : x(v.x),   y(v.y),     z(v.z),     w(v.w) {}
-Vector4::Vector4 (const Vector3 & xyz, float32 c4 )     : x(xyz.x), y(xyz.y),   z(xyz.z),   w(c4) {}
-Vector4::Vector4 (float32 c1, const Vector3 & c234 )         : x(c1),    yzw(c234) {}
-Vector4::Vector4 (const Vector2 & c12, const Vector2 & c34 )  : xy(c12),              zw(c34) {}
-Vector4::Vector4 (float32 c1, const Vector2 & c23, float32 c4 )  : x(c1),    yz(c23),                w(c4) {}
-Vector4::Vector4 (float32 c1, float32 c2, float32 c3, float32 c4 )  : x(c1),    y(c2),      z(c3),      w(c4) {}
-Vector4::Vector4 (const Quaternion & q )                   : x(q.v.x), y(q.v.y),   z(q.v.z),   w(q.a) {}
 
-//----------------------------------------------------------------------------------------------------//
+//*****************************************************************************
+//
+// Vector4
+//
+//*****************************************************************************
 
-Vector2 & Vector2::operator=(const Vector2 & v ) { if (this != &v ) { x = v.x; y = v.y; } return *this; }
-Vector3 & Vector3::operator=(const Vector3 & v ) { if (this != &v ) { x = v.x; y = v.y; z = v.z; } return *this; }
-Vector4 & Vector4::operator=(const Vector4 & v ) { if (this != &v ) { x = v.x; y = v.y; z = v.z; w = v.w; } return *this; }
+//=============================================================================
+Vector4::Vector4 ()
+{
+}
 
-//----------------------------------------------------------------------------------------------------//
+//=============================================================================
+Vector4::Vector4 (const Point3 & p) :
+    x(p.x),
+    y(p.y),
+    z(p.z),
+    w(1.0f)
+{
+}
 
-Vector2 & Vector2::operator/=(const Vector2 & v ) { x /= v.x; y /= v.y; return *this; }
-Vector3 & Vector3::operator/=(const Vector3 & v ) { x /= v.x; y /= v.y; z /= v.z; return *this; }
-Vector4 & Vector4::operator/=(const Vector4 & v ) { x /= v.x; y /= v.y; z /= v.z; w /= v.x; return *this; }
+//=============================================================================
+Vector4::Vector4 (const Vector3 & v) :
+    x(v.x),
+    y(v.y),
+    z(v.z),
+    w(0.0f)
+{
+}
 
-//----------------------------------------------------------------------------------------------------//
+//=============================================================================
+Vector4::Vector4 (const Vector4 & v) :
+    x(v.x),
+    y(v.y),
+    z(v.z),
+    w(v.w)
+{
+}
 
-Vector2 & Vector2::operator*= (const Vector2 & v ) { x *= v.x; y *= v.y; return *this; }
-Vector3 & Vector3::operator*= (const Vector3 & v ) { x *= v.x; y *= v.y; z *= v.z; return *this; }
-Vector4 & Vector4::operator*= (const Vector4 & v ) { x *= v.x; y *= v.y; z *= v.z; w *= v.x; return *this; }
+//=============================================================================
+Vector4::Vector4 (const Vector3 & xyz, float32 w) :
+    x(xyz.x),
+    y(xyz.y),
+    z(xyz.z),
+    w(w)
+{
+}
 
-//----------------------------------------------------------------------------------------------------//
+//=============================================================================
+Vector4::Vector4 (float32 x, const Vector3 & yzw) :
+    x(x),
+    y(yzw.x),
+    z(yzw.y),
+    w(yzw.z)
+{
+}
 
-Vector2 & Vector2::operator/= (float32 s ) { float32 m = 1.0f / s; x *= m; y *= m; return *this; }
-Vector3 & Vector3::operator/= (float32 s ) { float32 m = 1.0f / s; x *= m; y *= m; z *= m; return *this; }
-Vector4 & Vector4::operator/= (float32 s ) { float32 m = 1.0f / s; x *= m; y *= m; z *= m; w *= m; return *this; }
+//=============================================================================
+Vector4::Vector4 (const Vector2 & xy, const Vector2 & zw) :
+    x(xy.x),
+    y(xy.y),
+    z(zw.x),
+    w(zw.y)
+{
+}
 
-//----------------------------------------------------------------------------------------------------//
+//=============================================================================
+Vector4::Vector4 (float32 x, const Vector2 & yz, float32 w) :
+    x(x),
+    y(yz.x),
+    z(yz.y),
+    w(w)
+{
+}
 
-Vector2 & Vector2::operator*= (float32 s ) { x *= s; y *= s; return *this; }
-Vector3 & Vector3::operator*= (float32 s ) { x *= s; y *= s; z *= s; return *this; }
-Vector4 & Vector4::operator*= (float32 s ) { x *= s; y *= s; z *= s; w *= s; return *this; }
+//=============================================================================
+Vector4::Vector4 (float32 x, float32 y, float32 z, float32 w) :
+    x(x),
+    y(y),
+    z(z),
+    w(w)
+{
+}
 
-//----------------------------------------------------------------------------------------------------//
+//=============================================================================
+Vector4::Vector4 (const Quaternion & q) :
+    x(q.v.x),
+    y(q.v.y),
+    z(q.v.z),
+    w(q.a)
+{
+}
 
-Vector2 & Vector2::operator+= (const Vector2 & v ) { x += v.x; y += v.y; return *this; }
-Vector3 & Vector3::operator+= (const Vector3 & v ) { x += v.x; y += v.y; z += v.z; return *this; }
-Vector4 & Vector4::operator+= (const Vector4 & v ) { x += v.x; y += v.y; z += v.z; w += v.w; return *this; }
 
-//----------------------------------------------------------------------------------------------------//
 
-Vector2 & Vector2::operator-= (const Vector2 & v ) { x -= v.x; y -= v.y; return *this; }
-Vector3 & Vector3::operator-= (const Vector3 & v ) { x -= v.x; y -= v.y; z -= v.z; return *this; }
-Vector4 & Vector4::operator-= (const Vector4 & v ) { x -= v.x; y -= v.y; z -= v.z; w -= v.w; return *this; }
+//*****************************************************************************
+//
+// Member operators
+//
+//*****************************************************************************
 
-//----------------------------------------------------------------------------------------------------//
+//=============================================================================
+Vector2 & Vector2::operator= (const Vector2 & v) { if (this != &v) { x = v.x; y = v.y; } return *this; }
+Vector3 & Vector3::operator= (const Vector3 & v) { if (this != &v) { x = v.x; y = v.y; z = v.z; } return *this; }
+Vector4 & Vector4::operator= (const Vector4 & v) { if (this != &v) { x = v.x; y = v.y; z = v.z; w = v.w; } return *this; }
+                      
+//=============================================================================       
+Vector2 & Vector2::operator/= (const Vector2 & v) { x /= v.x; y /= v.y; return *this; }
+Vector3 & Vector3::operator/= (const Vector3 & v) { x /= v.x; y /= v.y; z /= v.z; return *this; }
+Vector4 & Vector4::operator/= (const Vector4 & v) { x /= v.x; y /= v.y; z /= v.z; w /= v.x; return *this; }
 
-const float32 & Vector2::operator[] (uint i ) const { return (&x)[i]; }
-const float32 & Vector3::operator[] (uint i ) const { return (&x)[i]; }
-const float32 & Vector4::operator[] (uint i ) const { return (&x)[i]; }
+//=============================================================================
+Vector2 & Vector2::operator*= (const Vector2 & v) { x *= v.x; y *= v.y; return *this; }
+Vector3 & Vector3::operator*= (const Vector3 & v) { x *= v.x; y *= v.y; z *= v.z; return *this; }
+Vector4 & Vector4::operator*= (const Vector4 & v) { x *= v.x; y *= v.y; z *= v.z; w *= v.x; return *this; }
 
-//----------------------------------------------------------------------------------------------------//
+//=============================================================================
+Vector2 & Vector2::operator/= (float32 s) { const float32 m = Inverse(s); x *= m; y *= m; return *this; }
+Vector3 & Vector3::operator/= (float32 s) { const float32 m = Inverse(s); x *= m; y *= m; z *= m; return *this; }
+Vector4 & Vector4::operator/= (float32 s) { const float32 m = Inverse(s); x *= m; y *= m; z *= m; w *= m; return *this; }
 
-float32 & Vector2::operator[] (uint i ) { return (&x)[i]; }
-float32 & Vector3::operator[] (uint i ) { return (&x)[i]; }
-float32 & Vector4::operator[] (uint i ) { return (&x)[i]; }
+//=============================================================================
+Vector2 & Vector2::operator*= (float32 s) { x *= s; y *= s; return *this; }
+Vector3 & Vector3::operator*= (float32 s) { x *= s; y *= s; z *= s; return *this; }
+Vector4 & Vector4::operator*= (float32 s) { x *= s; y *= s; z *= s; w *= s; return *this; }
 
-//----------------------------------------------------------------------------------------------------//
+//=============================================================================
+Vector2 & Vector2::operator+= (const Vector2 & v) { x += v.x; y += v.y; return *this; }
+Vector3 & Vector3::operator+= (const Vector3 & v) { x += v.x; y += v.y; z += v.z; return *this; }
+Vector4 & Vector4::operator+= (const Vector4 & v) { x += v.x; y += v.y; z += v.z; w += v.w; return *this; }
 
-Vector2  operator+ (const Vector2 & lhs,  const Vector2 & rhs ) { return Vector2(lhs.x + rhs.x, lhs.y + rhs.y); }
-Vector3  operator+ (const Vector3 & lhs,  const Vector3 & rhs ) { return Vector3(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z ); }
-Vector4  operator+ (const Vector4 & lhs,  const Vector4 & rhs ) { return Vector4(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z, lhs.w + rhs.w ); }
+//=============================================================================
+Vector2 & Vector2::operator-= (const Vector2 & v) { x -= v.x; y -= v.y; return *this; }
+Vector3 & Vector3::operator-= (const Vector3 & v) { x -= v.x; y -= v.y; z -= v.z; return *this; }
+Vector4 & Vector4::operator-= (const Vector4 & v) { x -= v.x; y -= v.y; z -= v.z; w -= v.w; return *this; }
 
-//---------------------------------------------------------------------------------------------------//
+//=============================================================================
+const float32 & Vector2::operator[] (uint i) const { return (&x)[i]; }
+const float32 & Vector3::operator[] (uint i) const { return (&x)[i]; }
+const float32 & Vector4::operator[] (uint i) const { return (&x)[i]; }
 
-Vector2  operator- (const Vector2 & lhs,  const Vector2 & rhs ) { return Vector2(lhs.x - rhs.x, lhs.y - rhs.y ); }
-Vector3  operator- (const Vector3 & lhs,  const Vector3 & rhs ) { return Vector3(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z ); }
-Vector4  operator- (const Vector4 & lhs,  const Vector4 & rhs ) { return Vector4(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z, lhs.w - rhs.w ); }
+//=============================================================================
+float32 & Vector2::operator[] (uint i) { return (&x)[i]; }
+float32 & Vector3::operator[] (uint i) { return (&x)[i]; }
+float32 & Vector4::operator[] (uint i) { return (&x)[i]; }
 
-//----------------------------------------------------------------------------------------------------//
 
-Vector2  operator* (const float32 & lhs, const Vector2 & rhs ) { return Vector2(lhs * rhs.x, lhs * rhs.y ); }
-Vector3  operator* (const float32 & lhs, const Vector3 & rhs ) { return Vector3(lhs * rhs.x, lhs * rhs.y, lhs * rhs.z ); }
-Vector4  operator* (const float32 & lhs, const Vector4 & rhs ) { return Vector4(lhs * rhs.x, lhs * rhs.y, lhs * rhs.z, lhs * rhs.w ); }
 
-//----------------------------------------------------------------------------------------------------//
+//*****************************************************************************
+//
+// Operators
+//
+//*****************************************************************************
 
-Vector2  operator* (const Vector2 & lhs,  const float32 & rhs ) { return Vector2(lhs.x * rhs, lhs.y * rhs ); }
-Vector3  operator* (const Vector3 & lhs,  const float32 & rhs ) { return Vector3(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs ); }
-Vector4  operator* (const Vector4 & lhs,  const float32 & rhs ) { return Vector4(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs, lhs.w * rhs); }
+//=============================================================================
+Vector2  operator+ (const Vector2 & lhs,  const Vector2 & rhs) { return Vector2(lhs.x + rhs.x, lhs.y + rhs.y); }
+Vector3  operator+ (const Vector3 & lhs,  const Vector3 & rhs) { return Vector3(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z); }
+Vector4  operator+ (const Vector4 & lhs,  const Vector4 & rhs) { return Vector4(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z, lhs.w + rhs.w); }
 
-//---------------------------------------------------------------------------------------------------//
+//=============================================================================
+Vector2  operator- (const Vector2 & lhs,  const Vector2 & rhs) { return Vector2(lhs.x - rhs.x, lhs.y - rhs.y); }
+Vector3  operator- (const Vector3 & lhs,  const Vector3 & rhs) { return Vector3(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z); }
+Vector4  operator- (const Vector4 & lhs,  const Vector4 & rhs) { return Vector4(lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z, lhs.w - rhs.w); }
 
-Vector2  operator* (const Vector2 & lhs,  const Vector2 & rhs ) { return Vector2(lhs.x * rhs.x, lhs.y * rhs.y ); }
-Vector3  operator* (const Vector3 & lhs,  const Vector3 & rhs ) { return Vector3(lhs.x * rhs.x, lhs.y * rhs.y, lhs.z * rhs.z ); }
-Vector4  operator* (const Vector4 & lhs,  const Vector4 & rhs ) { return Vector4(lhs.x * rhs.x, lhs.y * rhs.y, lhs.z * rhs.z, lhs.w * rhs.w ); }
+//=============================================================================
+Vector2  operator* (const float32 & lhs, const Vector2 & rhs) { return Vector2(lhs * rhs.x, lhs * rhs.y); }
+Vector3  operator* (const float32 & lhs, const Vector3 & rhs) { return Vector3(lhs * rhs.x, lhs * rhs.y, lhs * rhs.z); }
+Vector4  operator* (const float32 & lhs, const Vector4 & rhs) { return Vector4(lhs * rhs.x, lhs * rhs.y, lhs * rhs.z, lhs * rhs.w); }
 
-//---------------------------------------------------------------------------------------------------//
+//=============================================================================
+Vector2  operator* (const Vector2 & lhs,  const float32 & rhs) { return Vector2(lhs.x * rhs, lhs.y * rhs); }
+Vector3  operator* (const Vector3 & lhs,  const float32 & rhs) { return Vector3(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs); }
+Vector4  operator* (const Vector4 & lhs,  const float32 & rhs) { return Vector4(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs, lhs.w * rhs); }
 
-Vector2  operator/ (const Vector2 & lhs,  const Vector2 & rhs ) { return Vector2(lhs.x / rhs.x, lhs.y / rhs.y ); }
-Vector3  operator/ (const Vector3 & lhs,  const Vector3 & rhs ) { return Vector3(lhs.x / rhs.x, lhs.y / rhs.y, lhs.z / rhs.z ); }
-Vector4  operator/ (const Vector4 & lhs,  const Vector4 & rhs ) { return Vector4(lhs.x / rhs.x, lhs.y / rhs.y, lhs.z / rhs.z, lhs.w / rhs.w ); }
+//=============================================================================
+Vector2  operator* (const Vector2 & lhs,  const Vector2 & rhs) { return Vector2(lhs.x * rhs.x, lhs.y * rhs.y); }
+Vector3  operator* (const Vector3 & lhs,  const Vector3 & rhs) { return Vector3(lhs.x * rhs.x, lhs.y * rhs.y, lhs.z * rhs.z); }
+Vector4  operator* (const Vector4 & lhs,  const Vector4 & rhs) { return Vector4(lhs.x * rhs.x, lhs.y * rhs.y, lhs.z * rhs.z, lhs.w * rhs.w); }
 
-//----------------------------------------------------------------------------------------------------//
+//=============================================================================
+Vector2  operator/ (const Vector2 & lhs,  const Vector2 & rhs) { return Vector2(lhs.x / rhs.x, lhs.y / rhs.y); }
+Vector3  operator/ (const Vector3 & lhs,  const Vector3 & rhs) { return Vector3(lhs.x / rhs.x, lhs.y / rhs.y, lhs.z / rhs.z); }
+Vector4  operator/ (const Vector4 & lhs,  const Vector4 & rhs) { return Vector4(lhs.x / rhs.x, lhs.y / rhs.y, lhs.z / rhs.z, lhs.w / rhs.w); }
 
-Vector2  operator/ (const Vector2 & lhs,  const float32 & rhs ) { return lhs * (1.0f / rhs); }
-Vector3  operator/ (const Vector3 & lhs,  const float32 & rhs ) { return lhs * (1.0f / rhs); }
-Vector4  operator/ (const Vector4 & lhs,  const float32 & rhs ) { return lhs * (1.0f / rhs); }
+//=============================================================================
+Vector2  operator/ (const Vector2 & lhs,  const float32 & rhs) { return lhs * (1.0f / rhs); }
+Vector3  operator/ (const Vector3 & lhs,  const float32 & rhs) { return lhs * (1.0f / rhs); }
+Vector4  operator/ (const Vector4 & lhs,  const float32 & rhs) { return lhs * (1.0f / rhs); }
 
-//----------------------------------------------------------------------------------------------------//
-
+//=============================================================================
 Vector2  operator- (const Vector2 & v) { return Vector2(-v.x, -v.y); }
 Vector3  operator- (const Vector3 & v) { return Vector3(-v.x, -v.y, -v.z); }
 Vector4  operator- (const Vector4 & v) { return Vector4(-v.x, -v.y, -v.z, -v.w); }
@@ -354,32 +436,27 @@ Vector4 Normalize (const Vector4 & v, float32 * outLength)
     );
 }
 
-//----------------------------------------------------------------------------------------------------//
-
+//=============================================================================
 float32 Normalize2 (Vector2 & v) { float32 length = Length(v); v /= length; return length; }
 float32 Normalize2 (Vector3 & v) { float32 length = Length(v); v /= length; return length; }
 float32 Normalize2 (Vector4 & v) { float32 length = Length(v); v /= length; return length; }
 
-//----------------------------------------------------------------------------------------------------//
-
+//=============================================================================
 float32 Length (const Vector2 & v) { return Sqrt(LengthSq(v)); }
 float32 Length (const Vector3 & v) { return Sqrt(LengthSq(v)); }
 float32 Length (const Vector4 & v) { return Sqrt(LengthSq(v)); }
 
-//----------------------------------------------------------------------------------------------------//
-
+//=============================================================================
 float32 LengthSq (const Vector2 & v) { return Dot(v, v); }
 float32 LengthSq (const Vector3 & v) { return Dot(v, v); }
 float32 LengthSq (const Vector4 & v) { return Dot(v, v); }
 
-//----------------------------------------------------------------------------------------------------//
-
+//=============================================================================
 bool IsParallel (const Vector2 & a, const Vector2 & b) { return Sq(Dot(a, b)) > LengthSq(a) * LengthSq(b) * Sq(1.0f-Math::Epsilon); }
 bool IsParallel (const Vector3 & a, const Vector3 & b) { return Sq(Dot(a, b)) > LengthSq(a) * LengthSq(b) * Sq(1.0f-Math::Epsilon); }
 bool IsParallel (const Vector4 & a, const Vector4 & b) { return Sq(Dot(a, b)) > LengthSq(a) * LengthSq(b) * Sq(1.0f-Math::Epsilon); }
 
-//----------------------------------------------------------------------------------------------------//
-
+//=============================================================================
 bool IsPerpendicular (const Vector2 & a, const Vector2 & b) { return Equal(Dot(a, b), 0.0f); }
 bool IsPerpendicular (const Vector3 & a, const Vector3 & b) { return Equal(Dot(a, b), 0.0f); }
 bool IsPerpendicular (const Vector4 & a, const Vector4 & b) { return Equal(Dot(a, b), 0.0f); }
@@ -409,13 +486,13 @@ float32 Min (const Vector2 & v)
 //=============================================================================
 float32 Min (const Vector3 & v) 
 { 
-    return Min(Min(v.x, v.y), v.z); 
+    return Min(v.x, v.y, v.z); 
 }
 
 //=============================================================================
 float32 Min (const Vector4 & v) 
 { 
-    return Min(Min(Min(v.x, v.y), v.z), v.w); 
+    return Min(v.x, v.y, v.z, v.w); 
 }
 
 //=============================================================================
@@ -433,7 +510,7 @@ float32 Max (const Vector3 & v)
 //=============================================================================
 float32 Max (const Vector4 & v) 
 { 
-    return Max(Max(Max(v.x, v.y), v.z), v.w); 
+    return Max(v.x, v.y, v.z, v.w); 
 }
 
 //=============================================================================
@@ -456,7 +533,7 @@ Vector3 Min (const Vector3 & a, const Vector3 & b)
 }
 
 //=============================================================================
-Vector4 Min (const Vector4 & a, const Vector4 & b ) 
+Vector4 Min (const Vector4 & a, const Vector4 & b) 
 { 
     return Vector4(
         Min(a.x, b.x), 
@@ -467,7 +544,7 @@ Vector4 Min (const Vector4 & a, const Vector4 & b )
 }
 
 //=============================================================================
-Vector2 Max (const Vector2 & a, const Vector2 & b ) 
+Vector2 Max (const Vector2 & a, const Vector2 & b) 
 { 
     return Vector2(
         Max(a.x, b.x), 
@@ -476,7 +553,7 @@ Vector2 Max (const Vector2 & a, const Vector2 & b )
 }
 
 //=============================================================================
-Vector3 Max (const Vector3 & a, const Vector3 & b ) 
+Vector3 Max (const Vector3 & a, const Vector3 & b) 
 { 
     return Vector3(
         Max(a.x, b.x), 
@@ -486,7 +563,7 @@ Vector3 Max (const Vector3 & a, const Vector3 & b )
 }
 
 //=============================================================================
-Vector4 Max (const Vector4 & a, const Vector4 & b ) { 
+Vector4 Max (const Vector4 & a, const Vector4 & b) { 
     return Vector4(
         Max(a.x, b.x), 
         Max(a.y, b.y), 
@@ -496,7 +573,7 @@ Vector4 Max (const Vector4 & a, const Vector4 & b ) {
 }
 
 //=============================================================================
-Vector2 Abs (const Vector2 & v ) 
+Vector2 Abs (const Vector2 & v) 
 { 
     return Vector2(
         Abs(v.x), 
@@ -505,7 +582,7 @@ Vector2 Abs (const Vector2 & v )
 }
 
 //=============================================================================
-Vector3 Abs (const Vector3 & v ) 
+Vector3 Abs (const Vector3 & v) 
 { 
     return Vector3(
         Abs(v.x), 
@@ -515,7 +592,7 @@ Vector3 Abs (const Vector3 & v )
 }
 
 //=============================================================================
-Vector4 Abs (const Vector4 & v ) 
+Vector4 Abs (const Vector4 & v) 
 { 
     return Vector4(
         Abs(v.x), 
@@ -556,43 +633,43 @@ inline Vector4 Sign(const Vector4 & v)
 }
 
 //=============================================================================
-bool Equal (const Vector2 & a, const Vector2 & b, sint32 maxUlps ) 
+bool Equal (const Vector2 & a, const Vector2 & b, sint32 maxUlps) 
 { 
     return Equal(a.x, b.x, maxUlps ) && 
            Equal(a.y, b.y, maxUlps ); 
 }
 
 //=============================================================================
-bool Equal (const Vector3 & a, const Vector3 & b, sint32 maxUlps ) 
+bool Equal (const Vector3 & a, const Vector3 & b, sint32 maxUlps) 
 { 
-    return Equal(a.x, b.x, maxUlps ) && 
-           Equal(a.y, b.y, maxUlps ) && 
-           Equal(a.z, b.z, maxUlps ); 
+    return Equal(a.x, b.x, maxUlps) && 
+           Equal(a.y, b.y, maxUlps) && 
+           Equal(a.z, b.z, maxUlps); 
 }
 
 //=============================================================================
-bool Equal (const Vector4 & a, const Vector4 & b, sint32 maxUlps ) 
+bool Equal (const Vector4 & a, const Vector4 & b, sint32 maxUlps) 
 { 
-    return Equal(a.x, b.x, maxUlps ) && 
-           Equal(a.y, b.y, maxUlps ) && 
-           Equal(a.z, b.z, maxUlps ) && 
-           Equal(a.w, b.w, maxUlps ); 
+    return Equal(a.x, b.x, maxUlps) && 
+           Equal(a.y, b.y, maxUlps) && 
+           Equal(a.z, b.z, maxUlps) && 
+           Equal(a.w, b.w, maxUlps); 
 }
 
 //=============================================================================
-bool Normalized (const Vector2 & v, sint32 maxUlps ) 
+bool Normalized (const Vector2 & v, sint32 maxUlps) 
 { 
-    return Equal(LengthSq(v ), 1.0f, maxUlps ); 
+    return Equal(LengthSq(v ), 1.0f, maxUlps); 
 }
 
 //=============================================================================
-bool Normalized (const Vector3 & v, sint32 maxUlps ) 
+bool Normalized (const Vector3 & v, sint32 maxUlps) 
 { 
-    return Equal(LengthSq(v ), 1.0f, maxUlps ); 
+    return Equal(LengthSq(v ), 1.0f, maxUlps); 
 }
 
 //=============================================================================
-bool Normalized (const Vector4 & v, sint32 maxUlps ) 
+bool Normalized (const Vector4 & v, sint32 maxUlps) 
 { 
-    return Equal(LengthSq(v ), 1.0f, maxUlps ); 
+    return Equal(LengthSq(v ), 1.0f, maxUlps); 
 }

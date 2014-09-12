@@ -1,21 +1,27 @@
-//==================================================================================================
-//
-// File:    MathVector.cpp
-// Author:  Jason Jackson
-// Date:    September 24, 2008
-//
-// Implementation of vector methods in 2-, 3-, and 4-space
-//
-//==================================================================================================
-
 #include "MathPch.h"
 
-const Vector2 Vector2::Zero(    0.0f, 0.0f );
-const Vector2 Vector2::One(     1.0f, 1.0f );
-const Vector2 Vector2::UnitX(   1.0f, 0.0f );
-const Vector2 Vector2::UnitY(   0.0f, 1.0f );
+
+//*****************************************************************************
+//
+// Vector2
+//
+//*****************************************************************************
+
+//=============================================================================
+const Vector2 Vector2::Zero(    0.0f, 0.0f);
+const Vector2 Vector2::One(     1.0f, 1.0f);
+const Vector2 Vector2::UnitX(   1.0f, 0.0f);
+const Vector2 Vector2::UnitY(   0.0f, 1.0f);
 const Vector2 Vector2::Infinity( Math::Infinity, Math::Infinity );
 
+
+//*****************************************************************************
+//
+// Vector3
+//
+//*****************************************************************************
+
+//=============================================================================
 const Vector3 Vector3::Zero(    0.0f, 0.0f, 0.0f );
 const Vector3 Vector3::One(     1.0f, 1.0f, 1.0f );
 const Vector3 Vector3::UnitX(   1.0f, 0.0f, 0.0f );
@@ -23,6 +29,14 @@ const Vector3 Vector3::UnitY(   0.0f, 1.0f, 0.0f );
 const Vector3 Vector3::UnitZ(   0.0f, 0.0f, 1.0f );
 const Vector3 Vector3::Infinity( Math::Infinity, Math::Infinity, Math::Infinity );
 
+
+//*****************************************************************************
+//
+// Vector4
+//
+//*****************************************************************************
+
+//=============================================================================
 const Vector4 Vector4::Zero(    0.0f, 0.0f, 0.0f, 0.0f );
 const Vector4 Vector4::One(     1.0f, 1.0f, 1.0f, 1.0f );
 const Vector4 Vector4::UnitX(   1.0f, 0.0f, 0.0f, 0.0f );
@@ -30,6 +44,13 @@ const Vector4 Vector4::UnitY(   0.0f, 1.0f, 0.0f, 0.0f );
 const Vector4 Vector4::UnitZ(   0.0f, 0.0f, 1.0f, 0.0f );
 const Vector4 Vector4::UnitW(   0.0f, 0.0f, 0.0f, 1.0f );
 const Vector4 Vector4::Infinity( Math::Infinity, Math::Infinity, Math::Infinity, Math::Infinity );
+
+
+//*****************************************************************************
+//
+// Functions
+//
+//*****************************************************************************
 
 //=============================================================================
 void BuildBasis(const Vector3 & x, Vector3 & u, Vector3 & v, Vector3 & w)

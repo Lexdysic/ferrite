@@ -1,13 +1,3 @@
-//==================================================================================================
-//
-// File:    MathTypes.h
-// Author:  Jason Jackson
-// Date:    September 20, 2008
-//
-// Defines all types for the math library.
-//
-//==================================================================================================
-
 #ifdef MATHTYPES_H
 #  error "Cannot include header more than once."
 #endif

@@ -1,16 +1,17 @@
 
 
-//==================================================================================================
+//*****************************************************************************
 //
 // Token
 //
-//==================================================================================================
+//*****************************************************************************
 
 class Token
 {
 public:
 
     inline Token ();
+    inline Token (const Token & token);
     inline explicit Token (
         char a,
         char b = '\0',
@@ -28,15 +29,7 @@ public:
     );
     template <uint N>
     inline explicit Token (const char (& str)[N], uint index = 0);
-
-    inline Token (const Token & token);
-
-    //friend bool operator<  (Token, Token);
-    //friend bool operator<= (Token, Token);
-    //friend bool operator>  (Token, Token);
-    //friend bool operator>= (Token, Token);
-    //friend bool operator== (Token, Token);
-    //friend bool operator!= (Token, Token);
+    
 
 
 
@@ -57,19 +50,5 @@ private:
     SIMPLE_TYPE_EQUATABLE(Token);
     SIMPLE_TYPE_COMPARABLE(Token);
 };
-
-
-//==================================================================================================
-//
-// Operations
-//
-//==================================================================================================
-
-//inline bool operator<  (Token lhs, Token rhs);
-//inline bool operator<= (Token lhs, Token rhs);
-//inline bool operator>  (Token lhs, Token rhs);
-//inline bool operator>= (Token lhs, Token rhs);
-//inline bool operator== (Token lhs, Token rhs);
-//inline bool operator!= (Token lhs, Token rhs);
 
 #include "Token.inl"

@@ -1,13 +1,3 @@
-//=================================================================================================
-//
-// File:    Core.h
-// Author:  Jason Jackson
-// Date:    May 20, 2009
-//
-// Exported interface of the core library
-//
-//=================================================================================================
-
 #ifdef CORE_H
 #  error "Cannot include Core.h more than once."
 #endif

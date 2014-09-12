@@ -1,33 +1,28 @@
-//==================================================================================================
-//
-// File:    MathVector.h
-// Author:  Jason Jackson
-// Date:    September 20, 2008
-//
-// Definition of vectors in 2-, 3-, and 4-Space and their operators
-//
-//==================================================================================================
-
 #ifdef MATHVECTOR_H
 #  error "Cannot include header more than once."
 #endif
 #define MATHVECTOR_H
 
 
-//=============================================================================
+//*****************************************************************************
 //
-// Represents a 2-dimensional vector
+// Vector2
 //
-//=============================================================================
+//*****************************************************************************
 
 class Vector2
 {
-public:
+public: // Construction
+
     inline Vector2 ();
     inline Vector2 (const Vector2 & v);
-    inline Vector2 (float32 c1, float32 c2);
+    inline Vector2 (float32 x, float32 y);
     
+public: // Assignment
+
     inline Vector2 &    operator=  (const Vector2 & v);
+
+public: // Operators
 
     inline Vector2 &    operator*= (float32 s);
     inline Vector2 &    operator/= (float32 s);
@@ -36,8 +31,12 @@ public:
     inline Vector2 &    operator+= (const Vector2 & v);
     inline Vector2 &    operator-= (const Vector2 & v);
 
-    inline const float32 &  operator[] (uint32 i) const;
-    inline       float32 &  operator[] (uint32 i);
+public: // Accessors
+
+    inline const float32 &  operator[] (uint i) const;
+    inline       float32 &  operator[] (uint i);
+
+public: // Constants
 
     static const Vector2 Zero;
     static const Vector2 One;
@@ -45,39 +44,49 @@ public:
     static const Vector2 UnitY;
     static const Vector2 Infinity;
 
-    union { 
-        struct { float32 x, y; };
-        //struct { float32 u, v; };
-    };
-
+public: // Data
+    
+    float32 x;
+    float32 y;
 };
 
 
-//=============================================================================
+
+//*****************************************************************************
 //
-// Represents a 3-dimensional vector
+// Vector3
 //
-//=============================================================================
+//*****************************************************************************
 
 class Vector3
 {
-public:
-    inline Vector3();
-    inline Vector3( const Vector3 & v );
-    inline explicit Vector3( const Vector2 & c12, float32 c3 );
-    inline explicit Vector3( float32 c1, const Vector2 & c23 );
-    inline Vector3( float32 c1, float32 c2, float32 c3 );
+public: // Construction
 
-    inline Vector3 &    operator=( const Vector3 & v );
-    inline Vector3 &    operator/=( const Vector3 & v );
-    inline Vector3 &    operator/=( float32 s );
-    inline Vector3 &    operator*=( const Vector3 & v );
-    inline Vector3 &    operator*=( float32 s );
-    inline Vector3 &    operator+=( const Vector3 & v );
-    inline Vector3 &    operator-=( const Vector3 & v );
-    inline const float32 &  operator[] (uint32 i) const;
-    inline       float32 &  operator[] (uint32 i);
+    inline Vector3 ();
+    inline Vector3 (const Vector3 & v);
+    inline explicit Vector3 (const Vector2 & xy, float32 z);
+    inline explicit Vector3 (float32 x, const Vector2 & yz);
+    inline Vector3 (float32 x, float32 y, float32 z);
 
+public: // Assignment
+
+    inline Vector3 & operator=( const Vector3 & v );
+
+public: // Operators
+
+    inline Vector3 & operator/= (const Vector3 & v);
+    inline Vector3 & operator/= (float32 s);
+    inline Vector3 & operator*= (const Vector3 & v);
+    inline Vector3 & operator*= (float32 s);
+    inline Vector3 & operator+= (const Vector3 & v);
+    inline Vector3 & operator-= (const Vector3 & v);
+
+public: // Accessors
+
+    inline const float32 & operator[] (uint32 i) const;
+    inline       float32 & operator[] (uint32 i);
+
+public: // Constants
 
     static const Vector3 Zero;
     static const Vector3 One;
@@ -86,47 +95,55 @@ public:
     static const Vector3 UnitZ;
     static const Vector3 Infinity;
 
+public: // Data
 
-    union
-    {
-        struct { float32 x,     y,      z; };
-        //struct { float32 u,     v,      w; };
-        //struct { float32 i,     j,      k; };
-        //struct { Vector2 xy;           float32 z; };
-        //struct { float32 x;           Vector2 yz; };
-    };
+    float32 x;
+    float32 y;
+    float32 z;
 };
 
 
-//=============================================================================
+
+//*****************************************************************************
 //
-// Represents a 4-dimensional vector
+// Vector4
 //
-//=============================================================================
+//*****************************************************************************
 
 class Vector4
 {
-public:
-    inline Vector4();
-    inline Vector4( const Point3 & p );
-    inline Vector4( const Vector3 & v );
-    inline Vector4( const Vector4 & v );
-    inline Vector4( const Quaternion & q );
-    inline Vector4( const Vector3 & c123, float32 c4 );
-    inline Vector4( float32 c1, const Vector3 & c234 );
-    inline Vector4( const Vector2 & c12, const Vector2 & c34 );
-    inline Vector4( float32 c1, const Vector2 & c23, float32 c4 );
-    inline Vector4( float32 c1, float32 c2, float32 c3, float32 c4 );
+public: // Construction
 
-    inline Vector4 &    operator=( const Vector4 & v );
-    inline Vector4 &    operator/=( const Vector4 & v );
-    inline Vector4 &    operator/=( float32 s );
-    inline Vector4 &    operator*=( const Vector4 & v );
-    inline Vector4 &    operator*=( float32 s );
-    inline Vector4 &    operator+=( const Vector4 & v );
-    inline Vector4 &    operator-=( const Vector4 & v );
-    inline const float32 &  operator[]( uint32 i ) const;
-    inline       float32 &  operator[]( uint32 i );
+    inline Vector4 ();
+    inline Vector4 (const Point3 & p);
+    inline Vector4 (const Vector3 & v);
+    inline Vector4 (const Vector4 & v);
+    inline Vector4 (const Quaternion & q);
+    inline Vector4 (const Vector3 & xyz, float32 w);
+    inline Vector4 (float32 x, const Vector3 & yzw);
+    inline Vector4 (const Vector2 & xy, const Vector2 & xw);
+    inline Vector4 (float32 x, const Vector2 & yz, float32 w);
+    inline Vector4 (float32 x, float32 y, float32 z, float32 w);
+
+public: // Assignment
+
+    inline Vector4 & operator= (const Vector4 & v);
+
+public: // Operators
+
+    inline Vector4 & operator/= (const Vector4 & v);
+    inline Vector4 & operator/= (float32 s);
+    inline Vector4 & operator*= (const Vector4 & v);
+    inline Vector4 & operator*= (float32 s);
+    inline Vector4 & operator+= (const Vector4 & v);
+    inline Vector4 & operator-= (const Vector4 & v);
+
+public: // Accessors
+
+    inline const float32 & operator[] (uint i) const;
+    inline       float32 & operator[] (uint i);
+
+public: // Constants
 
     static const Vector4 Zero;
     static const Vector4 One;
@@ -136,69 +153,75 @@ public:
     static const Vector4 UnitW;
     static const Vector4 Infinity;
 
+public: // Data
     union
     {
-        struct { float32 x, y, z, w; };
-        //struct { float32 u, v; };
-        struct { Vector2 uv; };
-        struct { Vector3 uvw; };
-        struct { Vector3 xyz; };
-        struct { float32 x; Vector2 yz; };
-        struct { float32 x; Vector3 yzw; };
-        struct { Vector2 xy, zw; };
+        struct
+        {
+            Vector3 xyz;
+            float32 _;
+        };
+        struct
+        {
+            float32 x;
+            float32 y;
+            float32 z;
+            float32 w;
+        };
     };
 };
 
 
-//=============================================================================
+
+//*****************************************************************************
 //
 // Operators
 //
-//=============================================================================
+//*****************************************************************************
 
-inline Vector2   operator+( const Vector2 & lhs,  const Vector2 & rhs );
-inline Vector3   operator+( const Vector3 & lhs,  const Vector3 & rhs );
-inline Vector4   operator+( const Vector4 & lhs,  const Vector4 & rhs );
+inline Vector2   operator+ (const Vector2 & lhs, const Vector2 & rhs);
+inline Vector3   operator+ (const Vector3 & lhs, const Vector3 & rhs);
+inline Vector4   operator+ (const Vector4 & lhs, const Vector4 & rhs);
 
-inline Vector2   operator-( const Vector2 & lhs,  const Vector2 & rhs );
-inline Vector3   operator-( const Vector3 & lhs,  const Vector3 & rhs );
-inline Vector4   operator-( const Vector4 & lhs,  const Vector4 & rhs );
+inline Vector2   operator- (const Vector2 & lhs, const Vector2 & rhs);
+inline Vector3   operator- (const Vector3 & lhs, const Vector3 & rhs);
+inline Vector4   operator- (const Vector4 & lhs, const Vector4 & rhs);
 
-inline Vector2   operator*( const float32 & lhs, const Vector2 & rhs );
-inline Vector3   operator*( const float32 & lhs, const Vector3 & rhs );
-inline Vector4   operator*( const float32 & lhs, const Vector4 & rhs );
+inline Vector2   operator* (const float32 & lhs, const Vector2 & rhs);
+inline Vector3   operator* (const float32 & lhs, const Vector3 & rhs);
+inline Vector4   operator* (const float32 & lhs, const Vector4 & rhs);
 
-inline Vector2   operator*( const Vector2 & rhs,  const float32 & lhs );
-inline Vector3   operator*( const Vector3 & rhs,  const float32 & lhs );
-inline Vector4   operator*( const Vector4 & rhs,  const float32 & lhs );
+inline Vector2   operator* (const Vector2 & rhs, const float32 & lhs);
+inline Vector3   operator* (const Vector3 & rhs, const float32 & lhs);
+inline Vector4   operator* (const Vector4 & rhs, const float32 & lhs);
 
-inline Vector2   operator*( const Vector2 & lhs,  const Vector2 & rhs );
-inline Vector3   operator*( const Vector3 & lhs,  const Vector3 & rhs );
-inline Vector4   operator*( const Vector4 & lhs,  const Vector4 & rhs );
+inline Vector2   operator* (const Vector2 & lhs, const Vector2 & rhs);
+inline Vector3   operator* (const Vector3 & lhs, const Vector3 & rhs);
+inline Vector4   operator* (const Vector4 & lhs, const Vector4 & rhs);
+                           
+inline Vector2   operator/ (const Vector2 & lhs, const Vector2 & rhs);
+inline Vector3   operator/ (const Vector3 & lhs, const Vector3 & rhs);
+inline Vector4   operator/ (const Vector4 & lhs, const Vector4 & rhs);
 
-inline Vector2   operator/( const Vector2 & lhs,  const Vector2 & rhs );
-inline Vector3   operator/( const Vector3 & lhs,  const Vector3 & rhs );
-inline Vector4   operator/( const Vector4 & lhs,  const Vector4 & rhs );
+inline Vector2   operator/ (const Vector2 & rhs, const float32 & lhs);
+inline Vector3   operator/ (const Vector3 & rhs, const float32 & lhs);
+inline Vector4   operator/ (const Vector4 & rhs, const float32 & lhs);
 
-inline Vector2   operator/( const Vector2 & rhs,  const float32 & lhs );
-inline Vector3   operator/( const Vector3 & rhs,  const float32 & lhs );
-inline Vector4   operator/( const Vector4 & rhs,  const float32 & lhs );
+inline Vector2   operator- (const Vector2 & v );
+inline Vector3   operator- (const Vector3 & v );
+inline Vector4   operator- (const Vector4 & v );
 
-inline Vector2   operator-( const Vector2 & v );
-inline Vector3   operator-( const Vector3 & v );
-inline Vector4   operator-( const Vector4 & v );
+inline bool operator== (const Vector2 & lhs, const Vector2 & rhs);
+inline bool operator== (const Vector3 & lhs, const Vector3 & rhs);
+inline bool operator== (const Vector4 & lhs, const Vector4 & rhs);
 
-inline bool operator==( const Vector2 & lhs, const Vector2 & rhs );
-inline bool operator==( const Vector3 & lhs, const Vector3 & rhs );
-inline bool operator==( const Vector4 & lhs, const Vector4 & rhs );
+inline bool operator!= (const Vector2 & lhs, const Vector2 & rhs);
+inline bool operator!= (const Vector3 & lhs, const Vector3 & rhs);
+inline bool operator!= (const Vector4 & lhs, const Vector4 & rhs);
 
-inline bool operator!=( const Vector2 & lhs, const Vector2 & rhs );
-inline bool operator!=( const Vector3 & lhs, const Vector3 & rhs );
-inline bool operator!=( const Vector4 & lhs, const Vector4 & rhs );
-
-inline float32  Dot( const Vector2 & lhs, const Vector2 & rhs );
-inline float32  Dot( const Vector3 & lhs, const Vector3 & rhs );
-inline float32  Dot( const Vector4 & lhs, const Vector4 & rhs );
+inline float32  Dot (const Vector2 & lhs, const Vector2 & rhs);
+inline float32  Dot (const Vector3 & lhs, const Vector3 & rhs);
+inline float32  Dot (const Vector4 & lhs, const Vector4 & rhs);
 
 inline float32 Cross (const Vector2 & lhs, const Vector2 & rhs);
 inline Vector3 Cross (const Vector3 & lhs, const Vector3 & rhs);
@@ -220,13 +243,13 @@ inline Vector3   Normalize (const Vector3 & v, float32 * outLength);
 inline Vector4   Normalize (const Vector4 & v, float32 * outLength);
 
 // TODO (jason): want a better name for this
-inline float32  Normalize2( Vector2 & v );
-inline float32  Normalize2( Vector3 & v );
-inline float32  Normalize2( Vector4 & v );
+inline float32  Normalize2 (Vector2 & v);
+inline float32  Normalize2 (Vector3 & v);
+inline float32  Normalize2 (Vector4 & v);
 
-inline float32  Length( const Vector2 & v );
-inline float32  Length( const Vector3 & v );
-inline float32  Length( const Vector4 & v );
+inline float32  Length (const Vector2 & v);
+inline float32  Length (const Vector3 & v);
+inline float32  Length (const Vector4 & v);
 
 inline float32  LengthSq (const Vector2 & v);
 inline float32  LengthSq (const Vector3 & v);

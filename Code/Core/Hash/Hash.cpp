@@ -10,15 +10,164 @@
 #include "EngineDeps.h"
 #include "Hash.h"
 
-// When defined, additional checks will be put in place that will confirm that when a string matches, the hash matches
+//*****************************************************************************
+//
+// Compile-Time Switches
+//
+//*****************************************************************************
+
 #define DBG_HASH_CHECK_COLLISIONS 
 
 
-static uint32 _sHash32( const uint8 *  pData, uint32 sizeInBytes );
-static uint32 _sHash32( const uint16 * pData, uint32 sizeInBytes );
-static uint32 _sHash32( const uint32 * pData, uint32 sizeInBytes );
 
-static const uint32 _sHashTab[256] = {
+//*****************************************************************************
+//
+// Helpers
+//
+//*****************************************************************************
+
+//=============================================================================
+#define mix(a, b, c)                \
+{                                   \
+    a -= b; a -= c; a ^= (c >> 13); \
+    b -= c; b -= a; b ^= (a <<  8); \
+    c -= a; c -= b; c ^= (b >> 13); \
+    a -= b; a -= c; a ^= (c >> 12); \
+    b -= c; b -= a; b ^= (a << 16); \
+    c -= a; c -= b; c ^= (b >>  5); \
+    a -= b; a -= c; a ^= (c >>  3); \
+    b -= c; b -= a; b ^= (a << 10); \
+    c -= a; c -= b; c ^= (b >> 15); \
+}
+
+//=============================================================================
+static uint32 Hash (const uint8 data[], uint length, uint32 previous)
+{
+    register uint32 len = length;
+    register uint32 a   = 0x9e3779b9;
+    register uint32 b   = 0x9e3779b9;   // the golden ratio; an arbitrary value
+    register uint32 c   = previous;
+
+    // Process the data 12 bytes at a time
+    while (len >= 12)
+    {
+        a += data[0] + ((uint32)data[1] << 8) + ((uint32)data[2]  << 16) + ((uint32)data[3]  << 24);
+        b += data[4] + ((uint32)data[5] << 8) + ((uint32)data[6]  << 16) + ((uint32)data[7]  << 24);
+        c += data[8] + ((uint32)data[9] << 8) + ((uint32)data[10] << 16) + ((uint32)data[11] << 24);
+
+        mix(a, b, c);
+
+        data += 12; 
+        len  -= 12;
+    }
+
+    c += length;
+
+    // Process the remaining data, each case falls through
+    switch(len)
+    {
+        case 11: c += (uint32)data[10] << 24;
+        case 10: c += (uint32)data[9]  << 16;
+        case 9 : c += (uint32)data[8]  << 8;
+          // the first byte of c is reserved for the length
+        case 8 : b += (uint32)data[7]  << 24;
+        case 7 : b += (uint32)data[6]  << 16;
+        case 6 : b += (uint32)data[5]  << 8;
+        case 5 : b += data[4];
+        case 4 : a += (uint32)data[3]  << 24;
+        case 3 : a += (uint32)data[2]  << 16;
+        case 2 : a += (uint32)data[1]  << 8;
+        case 1 : a += data[0];
+    }
+
+    mix(a, b, c);
+
+    return c;
+}
+
+//=============================================================================
+static uint32 Hash (const uint16 data[], uint length, uint32 previous)
+{
+    register uint32 len = length;
+    register uint32 a   = 0x9e3779b9;
+    register uint32 b   = 0x9e3779b9;   // the golden ratio; an arbitrary value
+    register uint32 c   = previous;
+
+    // Process 12 bytes at a time
+    while (len >= 6)
+    {
+        a += data[0] + ((uint32)data[1] << 16);
+        b += data[2] + ((uint32)data[3] << 16);
+        c += data[4] + ((uint32)data[5] << 16);
+
+        mix(a, b, c);
+
+        data += 6; 
+        len  -= 6;
+    }
+
+    c += length;
+
+    // Process the remaining data, each case falls through
+    switch(len)
+    {
+        case 5: c += (uint32)data[4] << 16;
+        case 4: c += (uint32)data[3] << 16;
+        case 3: c += (uint32)data[2];
+        case 2: c += (uint32)data[1] << 16;
+        case 1: c += (uint32)data[0];
+    }
+
+    mix(a, b, c);
+
+    return c;
+}
+
+//==================================================================================================
+static uint32 Hash (const uint32 data[], uint length, uint32 previous)
+{
+    // Set up the internal state
+    register uint32 len = length;
+    register uint32 a   = 0x9e3779b9;
+    register uint32 b   = 0x9e3779b9;   // the golden ratio; an arbitrary value
+    register uint32 c   = previous;
+
+    // Process 12 bytes at a time
+    while (len >= 3)
+    {
+        a += data[0];
+        b += data[1];
+        c += data[2];
+
+        mix(a, b, c);
+
+        data += 3; 
+        len  -= 3;
+    }
+
+    c += length;
+
+    // Process remaining data, each case falls through
+    switch(len)
+    {
+        case 2: c += (uint32)data[1];
+        case 1: c += (uint32)data[0];
+    }
+
+    mix(a, b, c);
+
+    return c;
+}
+
+
+
+//*****************************************************************************
+//
+// Constants
+//
+//*****************************************************************************
+
+static const uint32 s_hashTable[256] = {
     0x46d1e192, 0x66edf9aa, 0x927fc9e5, 0xa53baacc, 0x29b47658, 0x5a411a01, 0x0e66d5bd, 0x0dd5b1db,
     0xcb38340e, 0x04d4ebb6, 0x98bc4f54, 0x36f20f2c, 0x4a3047ed, 0x1ec1e0eb, 0x568c0c1f, 0x6a731432,
     0x81367fc6, 0xe3e25237, 0xe7f64884, 0x0fa59f64, 0x4f3109de, 0xf02d61f5, 0x5daec03b, 0x7f740e83, 
@@ -55,332 +204,73 @@ static const uint32 _sHashTab[256] = {
 
 
 
+//*****************************************************************************
+//
+// Hash32
+//
+//*****************************************************************************
 
-
-//==================================================================================================
-// 
-//    Hash32::Hash32
-//    
-// Description: 
-//    Constructs a hash from an array of bytes
-//    
-// Parameters: 
-//    [const u8* pData] - Start of the data
-//    [uint32 size] - number of u8s in the array to hash
-//    
-//==================================================================================================
-Hash32::Hash32( const uint8 * pData, uint32 size )
+//=============================================================================
+Hash32::Hash32 () :
+    m_value(0x1c8cfbff)
 {
-    mValue = _sHash32( pData, size );
 }
 
-
-//==================================================================================================
-// 
-//    Hash32::Hash32
-//    
-// Description: 
-//    Constructor that computes a hash from a data array
-//    
-// Parameters: 
-//    [const u8* pStart] - Start of the data to hash
-//    [const u8* pEnd] - One past the end of the data to hash
-//    
-//==================================================================================================
-Hash32::Hash32( const uint8* pStart, const uint8* pEnd )
+//=============================================================================
+Hash32::Hash32 (const uint8 data[], uint bytes) :
+    Hash32()
 {
-    mValue = _sHash32( pStart, pEnd - pStart - 1);
+    Add(data, bytes);
 }
 
-
-//==================================================================================================
-// 
-//    StringHash32::StringHash32
-//    
-// Description: 
-//    Constructor
-//    
-// Parameters: 
-//    [const std::string& str] - string that will be hashed
-//    
-//==================================================================================================
-StringHash32::StringHash32( const std::string& str )
+//=============================================================================
+Hash32::Hash32 (const uint16 data[], uint bytes) :
+    Hash32()
 {
-    Compute( str.c_str() );
-#ifdef DEBUG
-    mStr = str;
-#endif
+    Add(data, bytes);
 }
 
-
-//==================================================================================================
-// 
-//    StringHash32::StringHash32
-//    
-// Description: 
-//    Constructor
-//    
-// Parameters: 
-//    [const char* pStr] - null-terminated string that will be hashed 
-//    
-//==================================================================================================
-StringHash32::StringHash32( const char* pStr )
+//=============================================================================
+Hash32::Hash32 (const uint32 data[], uint bytes) :
+    Hash32()
 {
-    Compute( pStr );
-#ifdef DEBUG
-    mStr = pStr;
-#endif
+    Add(data, bytes);
 }
-
-
-//==================================================================================================
-// 
-//    StringHash32::Compute
-//    
-// Description: 
-//    Computes a hash from a null-terminated string. Does not use the data hashing functions in 
-//    order to get rid of the extra strlen() call.
-//    
-// Parameters: 
-//    [const char* pStr] - null-terminated string
-//    
-// Return: 
-//    [void] - none
-//==================================================================================================
-void StringHash32::Compute( const char* pStr )
+ 
+//=============================================================================
+Hash32::Hash32 (const uint8 * start, const uint8 * end) :
+    Hash32()
 {
-    // We want null strings to map to zero
-    mHash = 0;
-
-    if( !pStr )
-        return;
-
-    for( uint32 c = *pStr; c; pStr++ )
-        mHash = (mHash >> 8) ^ _sHashTab[(mHash & 0xff) ^ c];
-
+    Add(start, end);
 }
 
-
-#if defined(DEBUG) && defined(DBG_HASH_CHECK_COLLISIONS)
-
-StringHash32& StringHash32::operator=( const StringHash32& rhs )
+//=============================================================================
+void Hash32::Add (const uint8 data[], uint size)
 {
-    if( this != &rhs )
-    {
-        mHash   = rhs.mHash;
-        mStr    = rhs.mStr;
-    }
-    return *this;
+    m_value = Hash(data, size, m_value);
 }
 
-bool StringHash32::operator==( const StringHash32& rhs ) const 
+//=============================================================================
+void Hash32::Add (const uint16 data[], uint size)
 {
-    ASSERT( (mHash == rhs.mHash) == (mStr == rhs.mStr)) && "Hash Collision" );
-    return mHash == rhs.mHash;
+    m_value = Hash(data, size, m_value);
 }
 
-bool StringHash32::operator!=( const StringHash32& rhs ) const 
+//=============================================================================
+void Hash32::Add (const uint32 data[], uint size)
 {
-    ASSERT( (mHash == rhs.mHash) == (mStr == rhs.mStr)) && "Hash Collision" );
-    return mHash != rhs.mHash;
+    m_value = Hash(data, size, m_value);
 }
 
-bool StringHash32::operator<=( const StringHash32& rhs ) const 
-{ 
-    ASSERT( (mHash == rhs.mHash) == (mStr == rhs.mStr)) && "Hash Collision" );
-    return mHash <= rhs.mHash; 
-}
-
-bool StringHash32::operator>=( const StringHash32& rhs ) const 
+//=============================================================================
+void Hash32::Add (const uint8 * start, const uint8 * end)
 {
-    ASSERT( (mHash == rhs.mHash) == (mStr == rhs.mStr)) && "Hash Collision" );
-    return mHash >= rhs.mHash; 
-}
-
-bool StringHash32::operator< ( const StringHash32& rhs ) const 
-{
-    ASSERT( (mHash == rhs.mHash) == (mStr == rhs.mStr)) && "Hash Collision" );
-    return mHash <  rhs.mHash; 
-}
-
-bool StringHash32::operator> ( const StringHash32& rhs ) const 
-{
-    ASSERT( (mHash == rhs.mHash) == (mStr == rhs.mStr)) && "Hash Collision" );
-    return mHash >  rhs.mHash; 
-}
-
-StringHash32::operator bool() const 
-{
-    ASSERT( (mHash == 0) == (mStr.Empty()) && "Hash Collision" );
-    return mHash > 0; 
-}
-
-#else
-StringHash32& StringHash32::operator=( const StringHash32& rhs )    { if( this != &rhs ) { mHash = rhs.mHash; } return *this; }
-bool StringHash32::operator==( const StringHash32& rhs ) const      { return mHash == rhs.mHash; }
-bool StringHash32::operator!=( const StringHash32& rhs ) const      { return mHash != rhs.mHash; }
-bool StringHash32::operator<=( const StringHash32& rhs ) const      { return mHash <= rhs.mHash; }
-bool StringHash32::operator>=( const StringHash32& rhs ) const      { return mHash >= rhs.mHash; }
-bool StringHash32::operator< ( const StringHash32& rhs ) const      { return mHash <  rhs.mHash; }
-bool StringHash32::operator> ( const StringHash32& rhs ) const      { return mHash >  rhs.mHash; }
-StringHash32::operator bool() const                                 { return mHash > 0; }
-
-#endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#define mix(a,b,c)                  \
-{                                   \
-    a -= b; a -= c; a ^= (c >> 13); \
-    b -= c; b -= a; b ^= (a <<  8); \
-    c -= a; c -= b; c ^= (b >> 13); \
-    a -= b; a -= c; a ^= (c >> 12); \
-    b -= c; b -= a; b ^= (a << 16); \
-    c -= a; c -= b; c ^= (b >>  5); \
-    a -= b; a -= c; a ^= (c >>  3); \
-    b -= c; b -= a; b ^= (a << 10); \
-    c -= a; c -= b; c ^= (b >> 15); \
-}
-
-static uint32 _sHash32( const uint8* pData, uint32 length )
-{
-    // Set up the internal state
-    register uint32 len    = length;
-    register uint32 a      = 0x9e3779b9;
-    register uint32 b      = 0x9e3779b9;   // the golden ratio; an arbitrary value
-    register uint32 c      = 0x1c8cfbff;   // the previous hash value
-
-    while( len >= 12 )
-    {
-        a += pData[0] + ((uint32)pData[1] << 8) + ((uint32)pData[2]  << 16) + ((uint32)pData[3]  << 24);
-        b += pData[4] + ((uint32)pData[5] << 8) + ((uint32)pData[6]  << 16) + ((uint32)pData[7]  << 24);
-        c += pData[8] + ((uint32)pData[9] << 8) + ((uint32)pData[10] << 16) + ((uint32)pData[11] << 24);
-
-        mix(a, b, c);
-
-        pData   += 12; 
-        len     -= 12;
-    }
-
-    c += length;
-
-    switch(len)
-    {
-        case 11: c += (uint32)pData[10] << 24;
-        case 10: c += (uint32)pData[9]  << 16;
-        case 9 : c += (uint32)pData[8]  << 8;
-          // the first byte of c is reserved for the length
-        case 8 : b += (uint32)pData[7]  << 24;
-        case 7 : b += (uint32)pData[6]  << 16;
-        case 6 : b += (uint32)pData[5]  << 8;
-        case 5 : b += pData[4];
-        case 4 : a += (uint32)pData[3]  << 24;
-        case 3 : a += (uint32)pData[2]  << 16;
-        case 2 : a += (uint32)pData[1]  << 8;
-        case 1 : a += pData[0];
-    }
-
-    mix(a,b,c);
-
-    return c;
-}
-
-static uint32 _sHash32( const uint16* pData, uint32 length )
-{
-    // Set up the internal state
-    register uint32 len    = length;
-    register uint32 a      = 0x9e3779b9;
-    register uint32 b      = 0x9e3779b9;   // the golden ratio; an arbitrary value
-    register uint32 c      = 0x1c8cfbff;   // the previous hash value
-
-    while( len >= 6 )
-    {
-        a += pData[0] + ((uint32)pData[1] << 16);
-        b += pData[2] + ((uint32)pData[3] << 16);
-        c += pData[4] + ((uint32)pData[5] << 16);
-
-        mix(a, b, c);
-
-        pData   += 6; 
-        len     -= 6;
-    }
-
-    c += length;
-
-    switch(len)
-    {
-        case 5: c += (uint32)pData[4] << 16;
-        case 4: c += (uint32)pData[3] << 16;
-        case 3: c += (uint32)pData[2];
-        case 2: c += (uint32)pData[1] << 16;
-        case 1: c += (uint32)pData[0];
-    }
-
-    mix(a,b,c);
-
-    return c;
+    m_value = Hash(start, end - start - 1, m_value);
 }
 
 
-//==================================================================================================
-// 
-//    _sHash32
-//    
-// Description: 
-//    
-//    
-// Parameters: 
-//    [const uint32* pData] - 
-//    [uint32 length] - 
-//    
-// Return: 
-//    [uint32] - Hashed value
-//==================================================================================================
-static uint32 _sHash32( const uint32* pData, uint32 length )
-{
-    // Set up the internal state
-    register uint32 len    = length;
-    register uint32 a      = 0x9e3779b9;
-    register uint32 b      = 0x9e3779b9;   // the golden ratio; an arbitrary value
-    register uint32 c      = 0x1c8cfbff;   // the previous hash value
 
-    while( len >= 3 )
-    {
-        a += pData[0];
-        b += pData[1];
-        c += pData[2];
 
-        mix(a, b, c);
 
-        pData   += 3; 
-        len     -= 3;
-    }
 
-    c += length;
 
-    switch(len)
-    {
-        case 2: c += (uint32)pData[1];
-        case 1: c += (uint32)pData[0];
-    }
-
-    mix(a,b,c);
-
-    return c;
-}

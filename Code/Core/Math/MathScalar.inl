@@ -1,13 +1,3 @@
-//==================================================================================================
-//
-// File:    MathScalar.inl
-// Author:  Jason Jackson
-// Date:    September 20, 2008
-//
-// Defines basic math operations dealing with scalars
-//
-//==================================================================================================
-
 
 //=============================================================================
 template <typename T>
@@ -65,20 +55,20 @@ T Abs (T x)
 }
 
 //=============================================================================
-float32 Pow (float32 b, float32 e)      { return powf(b, e); }
-float32 Exp (float32 x)                 { return expf(x); }
+float32 Pow (float32 b, float32 e) { return powf(b, e); }
+float32 Exp (float32 x)            { return expf(x); }
 
 //=============================================================================
-float32 Log (float32 x)                 { return log10f(x); }
-float32 Ln (float32 x)                  { return logf(x); }
-float32 Lg (float32 x)                  { return Log(x, 2.0f); }
-float32 Log (float32 x, float32 base)   { return Ln(x) / Ln(base); }
+float32 Log (float32 x)               { return log10f(x); }
+float32 Ln (float32 x)                { return logf(x); }
+float32 Lg (float32 x)                { return Log(x, 2.0f); }
+float32 Log (float32 x, float32 base) { return Ln(x) / Ln(base); }
 
 //=============================================================================
-float32 Mod (float32 x, float32 r)      { return fmodf(x, r); }
+float32 Mod (float32 x, float32 r) { return fmodf(x, r); }
 
 //=============================================================================
-float32 Difference(float32 a, float32 b, float32 modulo)
+float32 Difference (float32 a, float32 b, float32 modulo)
 {
     ASSERT(modulo > 0.0f);
     const float32 halfModulo = modulo * 0.5f;
@@ -211,6 +201,8 @@ float64 Inverse (float64 x)
 {
     return 1.0 / x;
 }
+
+
 
 namespace Math
 {

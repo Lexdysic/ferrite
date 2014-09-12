@@ -1,38 +1,32 @@
-//==================================================================================================
-//
-// File:    MathFixed.h
-// Author:  Jason Jackson
-// Date:    May 19, 2009
-//
-// Fixed point math utilities
-//
-//=================================================================================================
-
 #ifdef MATHFIXED_H
 #  error "Cannot include header more than once."
 #endif
 #define MATHFIXED_H
 
-//=============================================================================
+//*****************************************************************************
 //
-// Fixed point
+// TFixed
 //
-//=============================================================================
+//*****************************************************************************
+
 template <typename T = sint16, uint32 magnitudeBits = 1, uint32 fractionalBits = 14> 
-class Fixed 
+class TFixed 
 {
-    static_assert(magnitudeBits + fractionalBits + 1 == sizeof(T) * std::numeric_limits<unsigned char>::digits, "The total count of bits must match the field size");
+    static_assert(
+        magnitudeBits + fractionalBits + 1 == sizeof(T) * std::numeric_limits<unsigned char>::digits,
+        "The total count of bits must match the field size"
+    );
 
 public:
-    explicit Fixed(float32 f);
-    inline Fixed(T sign, T magnitude, T fractional);
-    inline Fixed(T bits);
+    explicit TFixed (float32 f);
+    inline TFixed (T sign, T magnitude, T fractional);
+    inline TFixed (T bits);
 
     float32 ToFloat() const;
 
-    static float32 ApproxMax();
-    static float32 ApproxMin();
-    static float32 ApproxResolution();
+    static float32 ApproxMax ();
+    static float32 ApproxMin ();
+    static float32 ApproxResolution ();
 
 private:
     T mBits;
@@ -51,13 +45,13 @@ private:
 };
 
 template <typename T, uint32 M, uint32 F> 
-inline Fixed<T,M,F> operator+( const Fixed<T,M,F> & lhs, const Fixed<T,M,F> & rhs );
+inline TFixed<T,M,F> operator+ (const TFixed<T,M,F> & lhs, const TFixed<T,M,F> & rhs);
 
 template <typename T, uint32 M, uint32 F> 
-inline Fixed<T,M,F> operator-( const Fixed<T,M,F> & lhs, const Fixed<T,M,F> & rhs );
+inline TFixed<T,M,F> operator- (const TFixed<T,M,F> & lhs, const TFixed<T,M,F> & rhs);
 
 template <typename T, uint32 M, uint32 F> 
-inline Fixed<T,M,F> operator*( const Fixed<T,M,F> & lhs, const Fixed<T,M,F> & rhs );
+inline TFixed<T,M,F> operator* (const TFixed<T,M,F> & lhs, const TFixed<T,M,F> & rhs);
 
 template <typename T, uint32 M, uint32 F> 
-inline Fixed<T,M,F> operator/( const Fixed<T,M,F> & lhs, const Fixed<T,M,F> & rhs );
+inline TFixed<T,M,F> operator/ (const TFixed<T,M,F> & lhs, const TFixed<T,M,F> & rhs);

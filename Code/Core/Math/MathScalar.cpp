@@ -1,13 +1,3 @@
-//==================================================================================================
-//
-// File:    MathScalar.cpp
-// Author:  Jason Jackson
-// Date:    September 20, 2008
-//
-// Defines basic math operations dealing with scalars
-//
-//==================================================================================================
-
 #include "MathPch.h"
 
 // Support functions and conditional compilation directives for the
@@ -17,7 +7,7 @@
 //#define SIGNCHECK
 
 //=============================================================================
-static inline bool _IsInfinite(float32 A)
+static inline bool _IsInfinite (float32 A)
 {
     const sint32 kInfAsInt = 0x7F800000;
 
@@ -29,7 +19,7 @@ static inline bool _IsInfinite(float32 A)
 }
 
 //=============================================================================
-static inline bool _IsNan(float32 A)
+static inline bool _IsNan (float32 A)
 {
     // A NAN has an exponent of 255 (shifted left 23 positions) and
     // a non-zero mantissa.
@@ -41,14 +31,14 @@ static inline bool _IsNan(float32 A)
 }
 
 //=============================================================================
-static inline sint32 _Sign(float32 A)
+static inline sint32 _Sign (float32 A)
 {
     // The sign bit of a number is the high bit.
     return (*(sint32*)&A) & 0x80000000;
 }
 
 //=============================================================================
-bool Equal( float32 a, float32 b, sint32 maxUlps )
+bool Equal (float32 a, float32 b, sint32 maxUlps)
 {
     // There are several optional checks that you can do, depending
     // on what behavior you want from your floating point comparisons.
@@ -93,6 +83,7 @@ bool Equal( float32 a, float32 b, sint32 maxUlps )
     // Make aInt lexicographically ordered as a twos-complement int
     if (aInt < 0)
         aInt = 0x80000000 - aInt;
+
     // Make bInt lexicographically ordered as a twos-complement int
     sint32 bInt = *(sint32*)&b;
     if (bInt < 0)
