@@ -7,7 +7,8 @@ public:
 
     float32 ComputeArea () const;
     Point2 ComputeCentroid () const;
-    void ComputeInfo (Point2 * centroid, float32 * area) const;
+    void ComputeCentroidInfo (Point2 * centroid, float32 * area) const;
+    Interval ProjectedIntervalAlongVector (const Vector2 & v) const;
 
 public: // 
 

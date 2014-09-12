@@ -101,9 +101,9 @@ Aabb3::Aabb3()
 }
 
 //=============================================================================
-Aabb3::Aabb3(const Point3 & min, const Point3 & max)
-: min(min)
-, max(max)
+Aabb3::Aabb3(const Point3 & min, const Point3 & max) :
+    min(min),
+    max(max)
 {
 }
 
@@ -115,9 +115,8 @@ Aabb3::Aabb3(const Point3 & center, const Vector3 & halfExtent) :
 }
 
 //=============================================================================
-void MostSeparatedPointsOnAabb (uint & min, uint & max, const TArray<Point3> & points )
+void MostSeparatedPointsOnAabb (uint & min, uint & max, const TArray<Point3> & points)
 {
-
     // first find the index of the most extreme points along principal axes
     uint minX = 0;
     uint maxX = 0;

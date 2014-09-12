@@ -60,7 +60,7 @@ Point2 Polygon2::ComputeCentroid () const
 }
 
 //=============================================================================
-void Polygon2::ComputeInfo (Point2 * centroid, float32 * area) const
+void Polygon2::ComputeCentroidInfo (Point2 * centroid, float32 * area) const
 {
     ASSERT(centroid);
     ASSERT(area);
@@ -130,4 +130,18 @@ Polygon2 Polygon2::Clip (const Polygon2 & subjectPoly, const Polygon2 & clipPoly
     }
 
     return outputList;
+}
+
+//=============================================================================
+Interval Polygon2::ProjectedIntervalAlongVector (const Vector2 & axis) const
+{
+    Interval interval = Interval::Null;
+    for (auto point : points)
+    {
+        const float32 x = Dot(axis, Vector2(point));
+        interval.min = Min(interval.min, x);
+        interval.max = Max(interval.max, x);
+    }
+    
+    return interval;
 }

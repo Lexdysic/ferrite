@@ -22,7 +22,7 @@ class Interval
 {
 public:
     inline Interval ();
-    inline Interval (float32 a, float32 b);
+    inline Interval (float32 min, float32 max);
 
     inline Interval & operator+= (const Interval & rhs);
 
@@ -31,12 +31,14 @@ public:
     static const Interval Null;
     static const Interval Infinite;
 
-    float32 a;
-    float32 b;
+    float32 min;
+    float32 max;
 };
 
 inline Interval operator+ (const Interval & lhs, const Interval & rhs);
 inline bool     operator== (const Interval & lhs, const Interval & rhs);
+
 inline bool     Equal (const Interval & lhs, const Interval & rhs);
 inline Interval Intersection (const Interval & lhs, const Interval & rhs);
-inline bool     IsNull (const Interval & i);
+inline float32  Distance (const Interval & lhs, const Interval & rhs);
+inline float32  Length (const Interval & lhs);
