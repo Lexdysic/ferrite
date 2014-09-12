@@ -6,10 +6,17 @@
 
 #include "EngineDeps.h"
 
+
 using namespace Json;
 
 namespace CommandLine
 {
+
+//*****************************************************************************
+//
+// CManager
+//
+//*****************************************************************************
 
 class CManager : public IManager
 {

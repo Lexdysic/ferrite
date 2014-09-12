@@ -2,6 +2,12 @@
 #   define BLOCK_ALLOCATOR_VALIDATE
 #endif
 
+//*****************************************************************************
+//
+// TBlockAllocator
+//
+//*****************************************************************************
+
 template <typename T, uint Count = 16>
 class TBlockAllocator
 {
