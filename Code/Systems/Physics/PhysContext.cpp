@@ -9,7 +9,7 @@ namespace Physics
 //
 //=============================================================================
 
-const Time::Delta TIME_STEP = Time::Ms(10.0);
+const Time::Delta TIME_STEP = Time::Ms(8.0);
 
 
 
@@ -88,9 +88,9 @@ void CContext::Update (Time::Delta deltaTime)
         Tick();
 
         m_notifier.Call(&IContextNotify::OnPhysicsPostTick);
+        Cleanup();
     }
 
-    Cleanup();
 
     DebugValue("Physics::Ticks", counter);
     DebugValue("Physics::Collisions", m_debugCollisionCount);
@@ -106,36 +106,174 @@ void CContext::Tick ()
 //=============================================================================
 void CContext::Detection ()
 {
-    for (auto * colliderA : m_colliderList)
+    // TODO: find potential collection sets
+
+    for (auto * colliderA = m_colliderList.Head(); colliderA; colliderA = m_colliderList.Next(colliderA))
     {
-        const Aabb2 boundingBox = colliderA->GetBoundingBox();
+        auto * entityA        = colliderA->GetOwner();
+        auto * rigidBodyA     = entityA->Get<IRigidBodyComponent>();
+        const auto & velocityA = rigidBodyA ? rigidBodyA->GetVelocity() : Vector2::Zero;
+        const auto & polygonA = colliderA->GetPolygon();
 
-        const auto & potentials = m_broadphase.Find(boundingBox, colliderA->GetGroups());
-
-        if (potentials.IsEmpty())
-            continue;
-
-        const Polygon2 & polygonA = colliderA->GetPolygon();
-
-        for (auto * colliderB : potentials)
+        for (auto * colliderB = m_colliderList.Next(colliderA); colliderB; colliderB = m_colliderList.Next(colliderB))
         {
-            if (colliderA == colliderB)
-                continue;
-            
-            const Polygon2 & polygonB = colliderB->GetPolygon();
+            // TODO: check any collision filters
 
-            const Polygon2 & clipped = Polygon2::Clip(polygonA, polygonB);
-            if (clipped.points.IsEmpty())
+            auto * entityB         = colliderB->GetOwner();
+            auto * rigidBodyB      = entityB->Get<IRigidBodyComponent>();
+            const auto & velocityB = rigidBodyB ? rigidBodyB->GetVelocity() : Vector2::Zero;
+            const auto & polygonB  = colliderB->GetPolygon();
+
+            // There is no way to respond to two bodies with no rigidBody
+            if (!rigidBodyA && !rigidBodyB)
                 continue;
 
-            m_debugCollisionCount++;
+            const Vector2 relativeVelocity = velocityA - velocityB;
+            CollisionResult result;
+            if (!CheckCollision(polygonA, polygonB, relativeVelocity, &result))
+                continue;
+
+            Response(colliderA, colliderB, result);
         }
     }
 }
 
 //=============================================================================
-void CContext::Response (CColliderComponent * colliderA, CColliderComponent * colliderB)
+bool CContext::CheckCollision (
+    const Polygon2 &  polygonA,
+    const Polygon2 &  polygonB,
+    const Vector2 &   velocity,
+    CollisionResult * result
+) const {
+    ASSERT(result);
+    result->separation  = Math::Infinity;
+    result->isCollide   = true;
+    result->willCollide = true;
+
+    // Check PolygonA
+    if (!CheckCollisionSingle(
+        polygonA,
+        polygonA,
+        polygonB,
+        velocity,
+        result
+    )) {
+        return false;
+    }
+    
+    // Check PolygonB
+    if (!CheckCollisionSingle(
+        polygonB,
+        polygonA,
+        polygonB,
+        velocity,
+        result
+    )) {
+        return false;
+    }
+
+    return result->willCollide;
+}
+
+//=============================================================================
+bool CContext::CheckCollisionSingle (
+    const Polygon2 &  polygonCheck,
+    const Polygon2 &  polygonA,
+    const Polygon2 &  polygonB,
+    const Vector2 &   velocity,
+    CollisionResult * result
+) const
 {
+    ASSERT(result);
+
+    const uint count = polygonCheck.points.Count();
+    for (uint iPrev = count-1, iCurr=0; iCurr < count; iPrev = iCurr, iCurr++)
+    {
+        // Get the current axis
+        const Point2 &  prev = polygonCheck.points[iPrev];
+        const Point2 &  curr = polygonCheck.points[iCurr];
+        const Vector2 & edge = curr - prev;
+        const Vector2 & axis = Normalize(Perpendicular(edge));
+
+        // Get the projected interval along the axis
+        Interval intervalA = polygonA.ProjectedIntervalAlongVector(axis);
+        Interval intervalB = polygonB.ProjectedIntervalAlongVector(axis);
+
+        // If the projected intervals overlap (negative distance), there is currently a collision
+        if (Distance(intervalA, intervalB) > 0.0f)
+            result->isCollide = false;
+
+        // Add the projected velocity to the range in order to extend it
+        const float32 projectedVelocity = Dot(axis, velocity);
+        if (projectedVelocity < 0.0f)
+            intervalA.min += projectedVelocity;
+        else
+            intervalA.max += projectedVelocity;
+
+        // Do the same test with the velocity extended range
+        float32 separation = Distance(intervalA, intervalB);
+        if (separation > 0.0f)
+            result->willCollide = false;
+
+        // If no collision possible, we can exit loop
+        if (!result->isCollide && !result->willCollide)
+            return false;
+
+        // Is this now the smallest separation?
+        separation = Abs(separation);
+        if (separation < result->separation)
+        {
+            result->separation = separation;
+            result->direction  = axis;
+        }
+    }
+
+    return true;
+}
+
+//=============================================================================
+void CContext::Response (
+    CColliderComponent * colliderA,
+    CColliderComponent * colliderB,
+    const CollisionResult & result
+) {
+    auto * entityA    = colliderA->GetOwner();
+    auto * transformA = entityA->Get<CTransformComponent2>();
+    auto * rigidBodyA = entityA->Get<IRigidBodyComponent>();
+
+    auto * entityB    = colliderB->GetOwner();
+    auto * transformB = entityB->Get<CTransformComponent2>();
+    auto * rigidBodyB = entityB->Get<IRigidBodyComponent>();
+
+    ASSERT(rigidBodyA || rigidBodyB);
+        return; // TODO: this is not a valid thing to do
+
+    if (rigidBodyA && rigidBodyB)
+    {
+        const float32 massA     = rigidBodyA ? rigidBodyA->GetMass() : Math::Infinity;
+        const float32 massB     = rigidBodyB ? rigidBodyB->GetMass() : Math::Infinity;
+        const float32 totalMass = massA + massB;
+        const float32 coeffA    = massB / totalMass;
+        const float32 coeffB    = massA / totalMass;
+
+        transformA->UpdatePosition(result.direction * result.separation * coeffA);
+        transformB->UpdatePosition(result.direction * result.separation * -coeffB);
+    }
+    else
+    {
+        auto * transform = rigidBodyA ? transformA : transformB;
+        auto * rigidbody = rigidBodyA ? rigidBodyA : rigidBodyB;
+        const float32 coeff = rigidBodyA ? 1.0f : -1.0f;
+
+        const auto velocity = rigidbody->GetVelocity();
+        const auto projectedSeparation = Dot(result.direction, velocity);
+        const auto separation = result.direction * projectedSeparation * coeff;
+        rigidbody->SetVelocity(velocity + separation);
+    }
+
+
+
+    m_debugCollisionCount++;
 }
 
 //=============================================================================

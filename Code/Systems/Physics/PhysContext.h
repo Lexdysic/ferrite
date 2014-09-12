@@ -44,6 +44,25 @@ private:
     typedef LIST_DECLARE(CColliderComponent, m_linkMaterial) ColliderMaterialList;
     typedef TNotifier<IContextNotify>                        CNotify;
 
+    struct Contact
+    {
+        Point2 point;
+        Vector2 normal;
+    };
+
+    struct Manifold
+    {
+        Contact contacts[2];
+    };
+
+    struct CollisionResult
+    {
+        float32 separation;
+        Vector2 direction;
+        bool    isCollide;
+        bool    willCollide;
+    };
+
     // Data
     CNotify                 m_notifier;
     RigidBodyList           m_rigidBodyList;
@@ -63,7 +82,25 @@ private:
     void Tick ();
     void Detection ();
     void Integrate ();
-    void Response (CColliderComponent * colliderA, CColliderComponent * colliderB);
+    bool CheckCollision (
+        const Polygon2 & polygonA,
+        const Polygon2 & polygonB,
+        const Vector2 & relativeVelocity,
+        CollisionResult * result
+    ) const;
+    
+    bool CheckCollisionSingle (
+        const Polygon2 & polygonCheck,
+        const Polygon2 & polygonA,
+        const Polygon2 & polygonB,
+        const Vector2 & relativeVelocity,
+        CollisionResult * result
+    ) const;
+    void Response (
+        CColliderComponent * colliderA,
+        CColliderComponent * colliderB,
+        const CollisionResult & result
+    );
     void Cleanup ();
 };
 
