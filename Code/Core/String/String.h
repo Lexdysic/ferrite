@@ -66,10 +66,11 @@ struct CodePoint
 {
 public: // Construction
 
-    CodePoint () : m_code(Invalid) {}
-    explicit CodePoint (uint32 code) : m_code(code) {}
+    inline CodePoint ();
+    inline CodePoint (const CodePoint & rhs) = default;
+    inline explicit CodePoint (uint32 code);
 
-    explicit operator uint32 () const { return m_code; }
+    inline explicit operator uint32 () const;
 
 public: // Statics
 
@@ -138,42 +139,6 @@ template <>           struct EncodingType<uint32> { static const EEncoding value
 template <>           struct EncodingType<uint16> { static const EEncoding value = EEncoding::Ucs2; };
 
 } // namespace String
-
-
-
-//*****************************************************************************
-//
-// Helpers
-//
-//*****************************************************************************
-
-inline bool CharIsUpper (String::CodePoint code);
-inline bool CharIsLower (String::CodePoint code);
-
-inline String::CodePoint CharToUpper (String::CodePoint code);
-inline String::CodePoint CharToLower (String::CodePoint code);
-
-inline bool CharIsAlpha (String::CodePoint ch);
-inline bool CharIsNumeric (String::CodePoint ch);
-inline bool CharIsControl (String::CodePoint ch);
-
-inline bool CharIsWhitespace (String::CodePoint ch);
-
-inline uint StrLen (const wchar text[]);
-inline uint StrLen (const char text[]);
-
-inline const wchar * StrFind (const wchar text[], wchar ch);
-inline const char *  StrFind (const char text[], char ch);
-
-template <typename C, uint N>
-inline int StrPrintf (C (& buffer)[N], const C format[], ...);
-inline int StrPrintf (wchar buffer[], uint bufferCount, const wchar format[], ...);
-inline int StrPrintf (char buffer[], uint bufferCount, const char format[], ...);
-
-template <typename C, uint N>
-inline int StrPrintfV (C (& buffer)[N], const C format[], va_list args);
-inline int StrPrintfV (wchar buffer[], uint bufferCount, const wchar format[], va_list args);
-inline int StrPrintfV (char buffer[], uint bufferCount, const char format[], va_list args);
 
 
 
@@ -324,6 +289,44 @@ private:
 
     TQueue<String::CodePoint> m_data;
 };
+
+
+
+//*****************************************************************************
+//
+// Helpers
+//
+//*****************************************************************************
+
+inline bool CharIsUpper (String::CodePoint code);
+inline bool CharIsLower (String::CodePoint code);
+
+inline String::CodePoint CharToUpper (String::CodePoint code);
+inline String::CodePoint CharToLower (String::CodePoint code);
+
+inline bool CharIsAlpha (String::CodePoint ch);
+inline bool CharIsNumeric (String::CodePoint ch);
+inline bool CharIsControl (String::CodePoint ch);
+
+inline bool CharIsWhitespace (String::CodePoint ch);
+
+inline uint StrLen (const wchar text[]);
+inline uint StrLen (const char text[]);
+
+inline const wchar * StrFind (const wchar text[], wchar ch);
+inline const char *  StrFind (const char text[], char ch);
+
+template <typename C, uint N>
+inline int StrPrintf (C (& buffer)[N], const C format[], ...);
+inline int StrPrintf (wchar buffer[], uint bufferCount, const wchar format[], ...);
+inline int StrPrintf (char buffer[], uint bufferCount, const char format[], ...);
+
+template <typename C, uint N>
+inline int StrPrintfV (C (& buffer)[N], const C format[], va_list args);
+inline int StrPrintfV (wchar buffer[], uint bufferCount, const wchar format[], va_list args);
+inline int StrPrintfV (char buffer[], uint bufferCount, const char format[], va_list args);
+
+float32 StrDistance (const CString & lhs, const CString & rhs);
 
 
 #include "String.inl"

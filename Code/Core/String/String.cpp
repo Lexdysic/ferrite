@@ -52,7 +52,8 @@ static bool IsUtf16TailSurrogate (uint16 codeunit)
 //=============================================================================
 static bool IsValidCodePoint (String::CodePoint codepoint)
 {
-    return Math::IsInRange(uint32(codepoint), uint32(0), uint32(String::CodePoint::Max));
+    const String::CodePoint CODE_POINT_MAX(0x10fff);
+    return Math::IsInRange(uint32(codepoint), uint32(0), uint32(CODE_POINT_MAX));
 }
 
 
@@ -304,4 +305,83 @@ const CStringBuilder & CStringBuilder::operator+= (String::CodePoint codepoint)
 const CStringBuilder & CStringBuilder::operator+= (char ch)
 {
     return *this += String::CodePoint(ch);
+}
+
+
+
+//*****************************************************************************
+//
+// Functions
+//
+//*****************************************************************************
+
+//=============================================================================
+float32 StrDistance (const CString & lhs, const CString & rhs)
+{
+    using namespace String;
+
+    // TODO: test strings are equal?
+
+    if (lhs.Count() == 0)
+        return 0;
+    if (rhs.Count() == 0)
+        return 0;
+
+    // Create distance data enough for a row of the matrix
+    const uint lhsLen = lhs.Length();
+    const uint rhsLen = rhs.Length();
+
+    // Create two rows of the matrix
+    TArray<uint> row0;
+    TArray<uint> row1;
+    row0.Resize(rhsLen + 1);
+    row1.Resize(rhsLen + 1);
+
+    // Initialize the previous row distance
+    for (uint i = 0; i < row0.Count(); ++i)
+        row0[i] = i;
+
+    // Keep track of current and previous with pointers so we can avoid copies 
+    TArray<uint> * prevPtr = &row0;
+    TArray<uint> * currPtr = &row1;
+
+    CodePoint lhsCurr;
+    CodePoint lhsLast = CodePoint::Invalid;
+    CString::Iterator lhsIt = lhs.begin();
+    for (uint i = 0; i < lhsLen; lhsLast = lhsCurr, ++i, ++lhsIt, std::swap(prevPtr, currPtr))
+    {
+        // Make the code more readable using references
+        TArray<uint> & prev = *prevPtr;
+        TArray<uint> & curr = *currPtr;
+
+        lhsCurr = *lhsIt;
+
+        // Fill the current row
+        curr[0] = i + 1;
+
+        CodePoint rhsCurr;
+        CodePoint rhsLast = CodePoint::Invalid;
+        CString::Iterator rhsIt = rhs.begin();
+        for (uint j = 0; j < rhsLen; rhsLast = rhsCurr, ++j, ++rhsIt)
+        {
+            rhsCurr = *rhsIt;
+
+            const uint cost = (lhsCurr == rhsCurr) ? 0 : 1;
+
+            // TODO: may want to take into account transpositions
+
+            curr[j + 1] = Min(
+                curr[j] + 1,        // deletion
+                prev[j + 1] + 1,    // insersion
+                prev[j] + cost      // substitution
+            );
+        }       
+    }
+
+    // Since we did one last swap before ending the loop, undo that here
+    currPtr = prevPtr;
+
+    const uint totalDist = (*currPtr)[rhsLen];
+    const uint compareLen = Max(lhsLen, rhsLen);
+    return totalDist / (float32)compareLen;
 }
