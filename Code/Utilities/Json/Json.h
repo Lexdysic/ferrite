@@ -101,20 +101,26 @@ public:
     friend bool operator== (const CValue & lhs, const CValue & rhs);
     friend bool operator!= (const CValue & lhs, const CValue & rhs);
 
-public:
+public: // Constants
 
     static const CValue Null;
 
-private:
+private: // Data
 
     static const uint DATA_BYTES = 24;
+
+private: // Helpers
 
     void Copy (const CValue & rhs);
     void Move (CValue && rhs);
     void Destroy ();
 
+private: // Data
+
     EType m_type;
     byte  m_data[DATA_BYTES];
+
+private: // Validation
 
     static_assert(DATA_BYTES >= sizeof(BoolType),   "Json::CValue::m_data is not big enough");
     static_assert(DATA_BYTES >= sizeof(NumberType), "Json::CValue::m_data is not big enough");
