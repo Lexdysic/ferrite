@@ -43,6 +43,13 @@ void MemCopy (T *& destination, const T *& source)
     MemCopy(destination, source, sizeof(T));
 }
 
+//=============================================================================
+template <typename T, uint N>
+inline void MemCopy (T (& destination)[N], const T (& source)[N])
+{
+    static_assert(std::is_pod<T>::value, "must be POD type");
+    MemCopy(&destination, &source, sizeof(T) * N);
+}
 
 
 //*****************************************************************************
