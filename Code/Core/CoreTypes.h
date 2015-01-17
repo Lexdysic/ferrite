@@ -201,10 +201,19 @@ struct Coord2Base {
 };
 
 template <typename T>
-inline bool operator== (const Coord2Base<T> & lhs, const Coord2Base<T> & rhs) {
+inline bool operator== (const Coord2Base<T> & lhs, const Coord2Base<T> & rhs)
+{
     return lhs.x == rhs.x && lhs.y == rhs.y;
 }
 
+template <typename T>
+inline Coord2Base<T> operator+ (const Coord2Base<T> & lhs, const Coord2Base<T> & rhs)
+{
+    return Coord2Base<T>(
+        lhs.x + rhs.x,
+        lhs.y + rhs.y
+    );
+}
 struct Vector2u :
     Coord2Base<uint>
 {
@@ -212,12 +221,13 @@ struct Vector2u :
     Vector2u (uint x, uint y) : Coord2Base<uint>(x, y) {}
 };
 
-struct Vector2s :
-    Coord2Base<sint>
-{
-    Vector2s () {}
-    Vector2s (sint x, sint y) : Coord2Base<sint>(x, y) {}
-};
+ typedef Coord2Base<sint> Vector2s;
+//struct Vector2s :
+//    Coord2Base<sint>
+//{
+//    Vector2s () {}
+//    Vector2s (sint x, sint y) : Coord2Base<sint>(x, y) {}
+//};
 
 struct Point2u :
     Coord2Base<uint>
@@ -232,3 +242,20 @@ struct Point2s :
     Point2s () {}
     Point2s (sint x, sint y) : Coord2Base<sint>(x, y) {}
 };
+
+
+
+//*****************************************************************************
+//
+// Coord3Base
+//
+//*****************************************************************************
+
+template <typename T>
+struct Coord3Base {
+    Coord3Base () : x(0), y(0), z(0) {}
+    Coord3Base (T x, T y, T z) : x(x), y(y) {}
+    T x, y, z;
+};
+
+ typedef Coord3Base<sint> Vector3s;
