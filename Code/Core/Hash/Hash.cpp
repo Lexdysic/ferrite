@@ -1,12 +1,3 @@
-//==================================================================================================
-//
-// File:    Hash.cpp
-// Author:  Jason Jackson
-// Date:    September 27, 2008
-//
-// Hashing functions that convert arrays of data into a single integer
-//==================================================================================================
-
 #include "EngineDeps.h"
 #include "Hash.h"
 
@@ -27,62 +18,76 @@
 //*****************************************************************************
 
 //=============================================================================
-#define mix(a, b, c)                \
-{                                   \
-    a -= b; a -= c; a ^= (c >> 13); \
-    b -= c; b -= a; b ^= (a <<  8); \
-    c -= a; c -= b; c ^= (b >> 13); \
-    a -= b; a -= c; a ^= (c >> 12); \
-    b -= c; b -= a; b ^= (a << 16); \
-    c -= a; c -= b; c ^= (b >>  5); \
-    a -= b; a -= c; a ^= (c >>  3); \
-    b -= c; b -= a; b ^= (a << 10); \
-    c -= a; c -= b; c ^= (b >> 15); \
+static inline void Mix (uint32 & a, uint32 & b, uint32 & c)
+{
+    a -= b; a -= c; a ^= (c >> 13);
+    b -= c; b -= a; b ^= (a <<  8);
+    c -= a; c -= b; c ^= (b >> 13);
+    a -= b; a -= c; a ^= (c >> 12);
+    b -= c; b -= a; b ^= (a << 16);
+    c -= a; c -= b; c ^= (b >>  5);
+    a -= b; a -= c; a ^= (c >>  3);
+    b -= c; b -= a; b ^= (a << 10);
+    c -= a; c -= b; c ^= (b >> 15);
 }
 
 //=============================================================================
 static uint32 Hash (const uint8 data[], uint length, uint32 previous)
 {
-    register uint32 len = length;
-    register uint32 a   = 0x9e3779b9;
-    register uint32 b   = 0x9e3779b9;   // the golden ratio; an arbitrary value
-    register uint32 c   = previous;
-
-    // Process the data 12 bytes at a time
-    while (len >= 12)
+    uint32 hash = previous;
+    const uint8 * ptr = data;
+    const uint8 * term = data + length;
+    for (; ptr < term; ++ptr)
     {
-        a += data[0] + ((uint32)data[1] << 8) + ((uint32)data[2]  << 16) + ((uint32)data[3]  << 24);
-        b += data[4] + ((uint32)data[5] << 8) + ((uint32)data[6]  << 16) + ((uint32)data[7]  << 24);
-        c += data[8] + ((uint32)data[9] << 8) + ((uint32)data[10] << 16) + ((uint32)data[11] << 24);
-
-        mix(a, b, c);
-
-        data += 12; 
-        len  -= 12;
+        hash += *ptr;
+        hash += (hash << 10);
+        hash ^= (hash >> 6);
     }
+    hash += (hash << 3);
+    hash ^= (hash >> 11);
+    hash += (hash << 15);
+    return hash;
 
-    c += length;
+    //register uint32 len = length;
+    //register uint32 a   = 0x9e3779b9;
+    //register uint32 b   = 0x9e3779b9;   // the golden ratio; an arbitrary value
+    //register uint32 c   = previous;
 
-    // Process the remaining data, each case falls through
-    switch(len)
-    {
-        case 11: c += (uint32)data[10] << 24;
-        case 10: c += (uint32)data[9]  << 16;
-        case 9 : c += (uint32)data[8]  << 8;
-          // the first byte of c is reserved for the length
-        case 8 : b += (uint32)data[7]  << 24;
-        case 7 : b += (uint32)data[6]  << 16;
-        case 6 : b += (uint32)data[5]  << 8;
-        case 5 : b += data[4];
-        case 4 : a += (uint32)data[3]  << 24;
-        case 3 : a += (uint32)data[2]  << 16;
-        case 2 : a += (uint32)data[1]  << 8;
-        case 1 : a += data[0];
-    }
+    //// Process the data 12 bytes at a time
+    //while (len >= 12)
+    //{
+    //    a += data[0] + ((uint32)data[1] << 8) + ((uint32)data[2]  << 16) + ((uint32)data[3]  << 24);
+    //    b += data[4] + ((uint32)data[5] << 8) + ((uint32)data[6]  << 16) + ((uint32)data[7]  << 24);
+    //    c += data[8] + ((uint32)data[9] << 8) + ((uint32)data[10] << 16) + ((uint32)data[11] << 24);
 
-    mix(a, b, c);
+    //    Mix(a, b, c);
 
-    return c;
+    //    data += 12; 
+    //    len  -= 12;
+    //}
+
+    //c += length;
+
+    //// Process the remaining data, each case falls through
+    //switch(len)
+    //{
+    //    case 11: c += (uint32)data[10] << 24;
+    //    case 10: c += (uint32)data[9]  << 16;
+    //    case 9 : c += (uint32)data[8]  << 8;
+    //      // the first byte of c is reserved for the length
+    //    case 8 : b += (uint32)data[7]  << 24;
+    //    case 7 : b += (uint32)data[6]  << 16;
+    //    case 6 : b += (uint32)data[5]  << 8;
+    //    case 5 : b += data[4];
+    //    case 4 : a += (uint32)data[3]  << 24;
+    //    case 3 : a += (uint32)data[2]  << 16;
+    //    case 2 : a += (uint32)data[1]  << 8;
+    //    case 1 : a += data[0];
+    //}
+
+    //Mix(a, b, c);
+
+    //return c;
 }
 
 //=============================================================================
@@ -100,7 +105,7 @@ static uint32 Hash (const uint16 data[], uint length, uint32 previous)
         b += data[2] + ((uint32)data[3] << 16);
         c += data[4] + ((uint32)data[5] << 16);
 
-        mix(a, b, c);
+        Mix(a, b, c);
 
         data += 6; 
         len  -= 6;
@@ -118,7 +123,7 @@ static uint32 Hash (const uint16 data[], uint length, uint32 previous)
         case 1: c += (uint32)data[0];
     }
 
-    mix(a, b, c);
+    Mix(a, b, c);
 
     return c;
 }
@@ -139,7 +144,7 @@ static uint32 Hash (const uint32 data[], uint length, uint32 previous)
         b += data[1];
         c += data[2];
 
-        mix(a, b, c);
+        Mix(a, b, c);
 
         data += 3; 
         len  -= 3;
@@ -154,7 +159,7 @@ static uint32 Hash (const uint32 data[], uint length, uint32 previous)
         case 1: c += (uint32)data[0];
     }
 
-    mix(a, b, c);
+    Mix(a, b, c);
 
     return c;
 }
