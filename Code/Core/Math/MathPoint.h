@@ -28,10 +28,15 @@ public:
 
 class Point3 : public Vector3
 {
-public:
+public: // Construction
+
     inline Point3();
     inline Point3( const Vector3 & v );
     inline Point3( float32 x, float32 y, float32 z );
+
+public: // Statics
+
+    static Point3 Zero;
 };
 
 

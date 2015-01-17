@@ -290,6 +290,14 @@ inline Vector2 Sign (const Vector2 & v);
 inline Vector3 Sign (const Vector3 & v);
 inline Vector4 Sign (const Vector4 & v);
 
+inline Vector2 Floor (const Vector2 & v);
+inline Vector3 Floor (const Vector3 & v);
+inline Vector4 Floor (const Vector4 & v);
+
+inline Vector2 Ceil (const Vector2 & v);
+inline Vector3 Ceil (const Vector3 & v);
+inline Vector4 Ceil (const Vector4 & v);
+
 inline bool Equal (const Vector2 & a, const Vector2 & b, sint32 maxUlps = Math::MaxUlps);
 inline bool Equal (const Vector3 & a, const Vector3 & b, sint32 maxUlps = Math::MaxUlps);
 inline bool Equal (const Vector4 & a, const Vector4 & b, sint32 maxUlps = Math::MaxUlps);

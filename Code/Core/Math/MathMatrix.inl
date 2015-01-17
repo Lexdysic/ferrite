@@ -1,29 +1,29 @@
 
 //=============================================================================
-const Vector2 & Matrix22::Row (uint32 r) const { ASSERT(r < 2); return mv[r]; }
-const Vector3 & Matrix23::Row (uint32 r) const { ASSERT(r < 2); return mv[r]; }
-const Vector3 & Matrix33::Row (uint32 r) const { ASSERT(r < 3); return mv[r]; }
-const Vector4 & Matrix34::Row (uint32 r) const { ASSERT(r < 3); return mv[r]; }
-const Vector4 & Matrix44::Row (uint32 r) const { ASSERT(r < 4); return mv[r]; }
+const Vector2 & Matrix22::Row (uint32 r) const { ASSERT(r < 2); return row[r]; }
+const Vector3 & Matrix23::Row (uint32 r) const { ASSERT(r < 2); return row[r]; }
+const Vector3 & Matrix33::Row (uint32 r) const { ASSERT(r < 3); return row[r]; }
+const Vector4 & Matrix34::Row (uint32 r) const { ASSERT(r < 3); return row[r]; }
+const Vector4 & Matrix44::Row (uint32 r) const { ASSERT(r < 4); return row[r]; }
 
 //=============================================================================
-Vector2 Matrix22::Column (uint32 c) const { ASSERT(c < 2); return Vector2(mv[0][c], mv[1][c]); }
-Vector2 Matrix23::Column (uint32 c) const { ASSERT(c < 3); return Vector2(mv[0][c], mv[1][c]); }
-Vector3 Matrix33::Column (uint32 c) const { ASSERT(c < 3); return Vector3(mv[0][c], mv[1][c], mv[2][c]); }
-Vector3 Matrix34::Column (uint32 c) const { ASSERT(c < 4); return Vector3(mv[0][c], mv[1][c], mv[2][c]); }
-Vector4 Matrix44::Column (uint32 c) const { ASSERT(c < 4); return Vector4(mv[0][c], mv[1][c], mv[2][c], mv[3][c]); }
+Vector2 Matrix22::Column (uint32 c) const { ASSERT(c < 2); return Vector2(row[0][c], row[1][c]); }
+Vector2 Matrix23::Column (uint32 c) const { ASSERT(c < 3); return Vector2(row[0][c], row[1][c]); }
+Vector3 Matrix33::Column (uint32 c) const { ASSERT(c < 3); return Vector3(row[0][c], row[1][c], row[2][c]); }
+Vector3 Matrix34::Column (uint32 c) const { ASSERT(c < 4); return Vector3(row[0][c], row[1][c], row[2][c]); }
+Vector4 Matrix44::Column (uint32 c) const { ASSERT(c < 4); return Vector4(row[0][c], row[1][c], row[2][c], row[3][c]); }
 
 //=============================================================================
-Matrix22 operator+ (const Matrix22 & lhs, const Matrix22 & rhs) { return Matrix22(lhs.mv[0] + rhs.mv[0], lhs.mv[1] + rhs.mv[1]); }
-Matrix33 operator+ (const Matrix33 & lhs, const Matrix33 & rhs) { return Matrix33(lhs.mv[0] + rhs.mv[0], lhs.mv[1] + rhs.mv[1], lhs.mv[2] + rhs.mv[2]); };
-Matrix34 operator+ (const Matrix34 & lhs, const Matrix34 & rhs) { return Matrix34(lhs.mv[0] + rhs.mv[0], lhs.mv[1] + rhs.mv[1], lhs.mv[2] + rhs.mv[2]); };
-Matrix44 operator+ (const Matrix44 & lhs, const Matrix44 & rhs) { return Matrix44(lhs.mv[0] + rhs.mv[0], lhs.mv[1] + rhs.mv[1], lhs.mv[2] + rhs.mv[2], lhs.mv[3] + rhs.mv[3]); };
+Matrix22 operator+ (const Matrix22 & lhs, const Matrix22 & rhs) { return Matrix22(lhs.row[0] + rhs.row[0], lhs.row[1] + rhs.row[1]); }
+Matrix33 operator+ (const Matrix33 & lhs, const Matrix33 & rhs) { return Matrix33(lhs.row[0] + rhs.row[0], lhs.row[1] + rhs.row[1], lhs.row[2] + rhs.row[2]); };
+Matrix34 operator+ (const Matrix34 & lhs, const Matrix34 & rhs) { return Matrix34(lhs.row[0] + rhs.row[0], lhs.row[1] + rhs.row[1], lhs.row[2] + rhs.row[2]); };
+Matrix44 operator+ (const Matrix44 & lhs, const Matrix44 & rhs) { return Matrix44(lhs.row[0] + rhs.row[0], lhs.row[1] + rhs.row[1], lhs.row[2] + rhs.row[2], lhs.row[3] + rhs.row[3]); };
 
 //=============================================================================
-Matrix22 operator- (const Matrix22 & lhs, const Matrix22 & rhs) { return Matrix22(lhs.mv[0] - rhs.mv[0], lhs.mv[1] - rhs.mv[1]); }
-Matrix33 operator- (const Matrix33 & lhs, const Matrix33 & rhs) { return Matrix33(lhs.mv[0] - rhs.mv[0], lhs.mv[1] - rhs.mv[1], lhs.mv[2] - rhs.mv[2]); };
-Matrix34 operator- (const Matrix34 & lhs, const Matrix34 & rhs) { return Matrix34(lhs.mv[0] - rhs.mv[0], lhs.mv[1] - rhs.mv[1], lhs.mv[2] - rhs.mv[2]); };
-Matrix44 operator- (const Matrix44 & lhs, const Matrix44 & rhs) { return Matrix44(lhs.mv[0] - rhs.mv[0], lhs.mv[1] - rhs.mv[1], lhs.mv[2] - rhs.mv[2], lhs.mv[3] - rhs.mv[3]); };
+Matrix22 operator- (const Matrix22 & lhs, const Matrix22 & rhs) { return Matrix22(lhs.row[0] - rhs.row[0], lhs.row[1] - rhs.row[1]); }
+Matrix33 operator- (const Matrix33 & lhs, const Matrix33 & rhs) { return Matrix33(lhs.row[0] - rhs.row[0], lhs.row[1] - rhs.row[1], lhs.row[2] - rhs.row[2]); };
+Matrix34 operator- (const Matrix34 & lhs, const Matrix34 & rhs) { return Matrix34(lhs.row[0] - rhs.row[0], lhs.row[1] - rhs.row[1], lhs.row[2] - rhs.row[2]); };
+Matrix44 operator- (const Matrix44 & lhs, const Matrix44 & rhs) { return Matrix44(lhs.row[0] - rhs.row[0], lhs.row[1] - rhs.row[1], lhs.row[2] - rhs.row[2], lhs.row[3] - rhs.row[3]); };
 
 //=============================================================================
 Vector2 operator* (const Matrix22 & lhs, const Vector2 & rhs) { return Vector2(Dot(lhs.Row(0), rhs), Dot(lhs.Row(1), rhs)); }
@@ -35,11 +35,11 @@ Vector3 operator* (const Matrix34 & lhs, const Vector4 & rhs) { return Vector3(D
 Vector4 operator* (const Matrix44 & lhs, const Vector4 & rhs) { return Vector4(Dot(lhs.Row(0), rhs), Dot(lhs.Row(1), rhs), Dot(lhs.Row(2), rhs), Dot(lhs.Row(3), rhs)); }
 
 //=============================================================================
-Matrix22 operator* (const Matrix22 & lhs, const float32 & rhs) { return Matrix22(lhs.mv[0]*rhs, lhs.mv[1]*rhs); }
-Matrix23 operator* (const Matrix23 & lhs, const float32 & rhs) { return Matrix23(lhs.mv[0]*rhs, lhs.mv[1]*rhs); }
-Matrix33 operator* (const Matrix33 & lhs, const float32 & rhs) { return Matrix33(lhs.mv[0]*rhs, lhs.mv[1]*rhs, lhs.mv[2]*rhs); } 
-Matrix34 operator* (const Matrix34 & lhs, const float32 & rhs) { return Matrix34(lhs.mv[0]*rhs, lhs.mv[1]*rhs, lhs.mv[2]*rhs); } 
-Matrix44 operator* (const Matrix44 & lhs, const float32 & rhs) { return Matrix44(lhs.mv[0]*rhs, lhs.mv[1]*rhs, lhs.mv[2]*rhs, lhs.mv[3]*rhs); } 
+Matrix22 operator* (const Matrix22 & lhs, const float32 & rhs) { return Matrix22(lhs.row[0]*rhs, lhs.row[1]*rhs); }
+Matrix23 operator* (const Matrix23 & lhs, const float32 & rhs) { return Matrix23(lhs.row[0]*rhs, lhs.row[1]*rhs); }
+Matrix33 operator* (const Matrix33 & lhs, const float32 & rhs) { return Matrix33(lhs.row[0]*rhs, lhs.row[1]*rhs, lhs.row[2]*rhs); } 
+Matrix34 operator* (const Matrix34 & lhs, const float32 & rhs) { return Matrix34(lhs.row[0]*rhs, lhs.row[1]*rhs, lhs.row[2]*rhs); } 
+Matrix44 operator* (const Matrix44 & lhs, const float32 & rhs) { return Matrix44(lhs.row[0]*rhs, lhs.row[1]*rhs, lhs.row[2]*rhs, lhs.row[3]*rhs); } 
 
 //=============================================================================
 Matrix22 operator* (const float32 & lhs, const Matrix22 & rhs) { return rhs * lhs; }
@@ -141,13 +141,13 @@ float32 Determinant (const Matrix22 & m)
 //=============================================================================
 float32 Determinant (const Matrix23 & m)
 {
-    return Dot(m.r0, Cross(m.r1, Vector3(0, 0, 1)));
+    return Dot(m.row0, Cross(m.row1, Vector3(0, 0, 1)));
 }
 
 //=============================================================================
 float32 Determinant (const Matrix33 & m)
 {
-    return Dot(m.r0, Cross(m.r1, m.r2));
+    return Dot(m.row0, Cross(m.row1, m.row2));
 }
 
 //=============================================================================

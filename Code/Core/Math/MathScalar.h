@@ -24,6 +24,9 @@ inline Radian  ArcTan (float32 x, float32 y);
 template <typename Float>
 inline Float Floor (Float x);
 
+template <typename To, typename From>
+inline To FloorCast (const From & x);
+
 template <typename Float>
 inline Float Ceil (Float x);
 

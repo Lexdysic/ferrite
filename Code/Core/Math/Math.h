@@ -18,6 +18,7 @@
 #include "MathMatrix.h"
 #include "MathQuaternion.h"
 #include "MathRandom.h"
+#include "MathNoise.h"
 
 // Inline implementations
 #include "MathSi.inl"

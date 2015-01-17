@@ -22,8 +22,8 @@ T Sq (const T & x)
 }
 
 //=============================================================================
-template <> inline float32 Sqrt<float32> (float32 x) { return ::sqrtf(x); }
-template <> inline float64 Sqrt<float64> (float64 x) { return ::sqrt(x); }
+template<> inline float32 Sqrt<float32> (float32 x) { return ::sqrtf(x); }
+template<> inline float64 Sqrt<float64> (float64 x) { return ::sqrt(x); }
 
 //=============================================================================
 float32 Cos (Radian x)                { return ::cosf(x); }
@@ -35,16 +35,21 @@ Radian  ArcTan (float32 a)            { return Radian(::atanf(a)); }
 Radian  ArcTan (float32 x, float32 y) { return Radian(::atan2f(y, x)); }
 
 //=============================================================================
-template <> inline float32 Floor<float32> (float32 x) { return ::floorf(x); }
-template <> inline float64 Floor<float64> (float64 x) { return ::floor(x); }
+template<> inline float32 Floor (float32 x) { return ::floorf(x); }
+template<> inline float64 Floor (float64 x) { return ::floor(x); }
 
 //=============================================================================
-template <> inline float32 Ceil<float32> (float32 x) { return ::ceilf(x); }
-template <> inline float64 Ceil<float64> (float64 x) { return ::ceil(x); }
+template<> inline sint    FloorCast (const float32 & x) { return (sint)::floorf(x); }
+template<> inline uint    FloorCast (const float32 & x) { return (uint)::floorf(x); }
+
 
 //=============================================================================
-template <> inline float32 Frac<float32> (float32 x) { return x - Floor(x); }
-template <> inline float64 Frac<float64> (float64 x) { return x - Floor(x); }
+template<> inline float32 Ceil<float32> (float32 x) { return ::ceilf(x); }
+template<> inline float64 Ceil<float64> (float64 x) { return ::ceil(x); }
+
+//=============================================================================
+template<> inline float32 Frac<float32> (float32 x) { return x - Floor(x); }
+template<> inline float64 Frac<float64> (float64 x) { return x - Floor(x); }
 
 //=============================================================================
 template <typename T>
@@ -80,13 +85,13 @@ float32 Difference (float32 a, float32 b, float32 modulo)
 //=============================================================================
 sint FloatToSint (float32 x)
 {
-    ASSERT(Abs(x) <= 0x003fffff); // only 22 bit values handled
+    const float32 y = x - 0.5f;
+    sint s;
 
-    float32sint32 fi;
-    fi.f = x;
-    fi.f += 3 << 22;
+    __asm fld y
+    __asm fistp s
 
-    return (fi.i & 0x007fffff) - 0x00400000;
+    return s;
 }
 
 //=============================================================================

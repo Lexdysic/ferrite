@@ -633,6 +633,66 @@ inline Vector4 Sign(const Vector4 & v)
 }
 
 //=============================================================================
+inline Vector2 Floor (const Vector2 & v)
+{
+    return Vector2(
+        Floor(v.x),
+        Floor(v.y)
+    );
+}
+
+//=============================================================================
+inline Vector3 Floor (const Vector3 & v)
+{
+    return Vector3(
+        Floor(v.x),
+        Floor(v.y),
+        Floor(v.z)
+    );
+}
+
+//=============================================================================
+inline Vector4 Floor (const Vector4 & v)
+{
+    return Vector4(
+        Floor(v.x),
+        Floor(v.y),
+        Floor(v.z),
+        Floor(v.w)
+    );
+}
+
+//=============================================================================
+inline Vector2 Ceil (const Vector2 & v)
+{
+    return Vector2(
+        Ceil(v.x),
+        Ceil(v.y)
+    );
+}
+
+//=============================================================================
+inline Vector3 Ceil (const Vector3 & v)
+{
+    return Vector3(
+        Ceil(v.x),
+        Ceil(v.y),
+        Ceil(v.z)
+    );
+}
+
+//=============================================================================
+inline Vector4 Ceil (const Vector4 & v)
+{
+    return Vector4(
+        Ceil(v.x),
+        Ceil(v.y),
+        Ceil(v.z),
+        Ceil(v.w)
+    );
+}
+
+//=============================================================================
 bool Equal (const Vector2 & a, const Vector2 & b, sint32 maxUlps) 
 { 
     return Equal(a.x, b.x, maxUlps ) && 
