@@ -25,7 +25,7 @@
 //=============================================================================
 
 
-// Systems
+// SYSTEMS
 
 #ifdef USES_ENGINE_USER_INTERFACE
 #   define USES_ENGINE_INPUT
@@ -72,28 +72,28 @@
 #endif
 
 
-// Services
+// SERVICES
 
 #ifdef USES_ENGINE_SERVICES_COMMAND_LINE
 #   define USES_ENGINE_UTILITY_JSON
 #endif
 
 
-// Utility
+// UTILITY
 
 #ifdef USES_ENGINE_UTILITY_JSON
 #   define USES_ENGINE_PATH
 #endif
 
 
-// Basic
+// BASIC
 
 #ifdef USES_ENGINE_FILE
 #   define USES_ENGINE_PATH
 #endif
 
 
-// Core
+// CORE
 
 #ifdef USES_ENGINE_MATH
 #   define USES_ENGINE_META
@@ -107,6 +107,15 @@
 // Include the headers
 //
 //=============================================================================
+
+// EXTERNAL
+
+#ifdef USES_EXTERNAL_WINDOWS
+#   include <Windows.h>
+#   include <windowsx.h>
+#endif
+
+
 
 // CORE
 
@@ -134,6 +143,10 @@
 
 #ifdef USES_ENGINE_TOKEN
 #   include "Core\Token\Token.h"
+#endif
+
+#ifdef USES_ENGINE_HASH
+#   include "Core\Hash\Hash.h"
 #endif
 
 

@@ -4,10 +4,7 @@
 #define SYSPCH_H
 
 
-#include <windows.h>
-#include <Windowsx.h>
-#include <GdiPlus.h>
-
+#define USES_EXTERNAL_WINDOWS
 #define USES_ENGINE_WINDOW
 
 #include "EngineDeps.h"

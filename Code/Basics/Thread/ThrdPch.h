@@ -3,9 +3,9 @@
 #endif
 #define THRDPCH_H
 
-#include <windows.h>
 #include <mutex>
 
+#define USES_EXTERNAL_WINDOWS
 #define USES_ENGINE_MATH
 #define USES_ENGINE_THREAD
 
