@@ -294,15 +294,41 @@ private:
 
 //*****************************************************************************
 //
-// Helpers
+// Ranges
+//
+//*****************************************************************************
+
+const String::CodePoint CODEPOINT_RANGE_PRIVATE_USE_MIN(0xE000);
+const String::CodePoint CODEPOINT_RANGE_PRIVATE_USE_MAX(0xF8FF);
+const String::CodePoint CODEPOINT_RANGE_PRIVATE_USE_A_MIN(0xF0000);
+const String::CodePoint CODEPOINT_RANGE_PRIVATE_USE_A_MAX(0xFFFFF);
+const String::CodePoint CODEPOINT_RANGE_PRIVATE_USE_B_MIN(0x100000);
+const String::CodePoint CODEPOINT_RANGE_PRIVATE_USE_B_MAX(0x10FFFD);
+
+bool CharIsPrivateUse (String::CodePoint code);
+bool CharIsPrivateUseA (String::CodePoint code);
+bool CharIsPrivateUseB (String::CodePoint code);
+
+
+const String::CodePoint CODEPOINT_RANGE_LOW_SURROGATE_MIN(0xDC00);
+const String::CodePoint CODEPOINT_RANGE_LOW_SURROGATE_MAX(0xDFFF);
+const String::CodePoint CODEPOINT_RANGE_HIGH_SURROGATE_MIN(0xD800);
+const String::CodePoint CODEPOINT_RANGE_HIGH_SURROGATE_MAX(0xDBFF);
+
+bool CharIsSurrogate(String::CodePoint code);
+bool CharIsLowSurrogate(String::CodePoint code);
+bool CharIsHighSurrogate(String::CodePoint code);
+
+
+
+//*****************************************************************************
+//
+// Classification
 //
 //*****************************************************************************
 
 inline bool CharIsUpper (String::CodePoint code);
 inline bool CharIsLower (String::CodePoint code);
-
-inline String::CodePoint CharToUpper (String::CodePoint code);
-inline String::CodePoint CharToLower (String::CodePoint code);
 
 inline bool CharIsAlpha (String::CodePoint ch);
 inline bool CharIsNumeric (String::CodePoint ch);
@@ -310,11 +336,32 @@ inline bool CharIsControl (String::CodePoint ch);
 
 inline bool CharIsWhitespace (String::CodePoint ch);
 
+
+
+//*****************************************************************************
+//
+// Queries
+//
+//*****************************************************************************
+
 inline uint StrLen (const wchar text[]);
 inline uint StrLen (const char text[]);
 
 inline const wchar * StrFind (const wchar text[], wchar ch);
 inline const char *  StrFind (const char text[], char ch);
+
+float32 StrDistance (const CString & lhs, const CString & rhs);
+
+
+
+//*****************************************************************************
+//
+// Transformations
+//
+//*****************************************************************************
+
+inline String::CodePoint CharToUpper (String::CodePoint code);
+inline String::CodePoint CharToLower (String::CodePoint code);
 
 template <typename C, uint N>
 inline int StrPrintf (C (& buffer)[N], const C format[], ...);
@@ -326,7 +373,6 @@ inline int StrPrintfV (C (& buffer)[N], const C format[], va_list args);
 inline int StrPrintfV (wchar buffer[], uint bufferCount, const wchar format[], va_list args);
 inline int StrPrintfV (char buffer[], uint bufferCount, const char format[], va_list args);
 
-float32 StrDistance (const CString & lhs, const CString & rhs);
 
 
 #include "String.inl"
