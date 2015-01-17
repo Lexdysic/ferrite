@@ -199,11 +199,6 @@ void CManager::SetMainWindow (CWindow * window)
 //
 //=============================================================================
 
-//=============================================================================
-ULONG_PTR CWindow::msGdiStartupToken = 0;
-ULONG_PTR CWindow::msGdiHookToken = 0;
-Gdiplus::NotificationUnhookProc CWindow::msGdiUnhookProc = null;
-
 
 //=============================================================================
 CWindow::CWindow (const CString & title, uint width, uint height) :
@@ -291,28 +286,13 @@ CWindow::~CWindow()
 //=============================================================================
 void CWindow::ClassInitialize()
 {
-    // GDI+
-    {
-        using namespace Gdiplus;
 
-        GdiplusStartupOutput gdiOutput;
-        GdiplusStartupInput  gdiInput;
-
-        gdiInput.SuppressBackgroundThread = true;
-
-        GdiplusStartup(&msGdiStartupToken, &gdiInput, &gdiOutput);
-
-        gdiOutput.NotificationHook(&msGdiHookToken);
-
-        msGdiUnhookProc = gdiOutput.NotificationUnhook;
-    }
 }
 
 //=============================================================================
 void CWindow::ClassUninitialize()
 {
-    msGdiUnhookProc(msGdiHookToken);
-    Gdiplus::GdiplusShutdown(msGdiStartupToken);
+
 }
 
 //=============================================================================

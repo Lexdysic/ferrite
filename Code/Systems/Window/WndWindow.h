@@ -75,21 +75,15 @@ private:
 
     // Data
     HWND            mWindowHandle;
-    Flags<uint32>      mFlags;
-    uint32             mWidth;
-    uint32             mHeight;
+    Flags<uint32>   mFlags;
+    uint32          mWidth;
+    uint32          mHeight;
     HCURSOR         mCursorNormal;
     HCURSOR         mCursorNull;
     NotifyList      m_notify;
     Flags<uint>     m_mouseDown;
 
-    LRESULT OnMessage(UINT message, WPARAM wParam, LPARAM lParam);
-
-private:
-
-    static ULONG_PTR              msGdiStartupToken;
-    static ULONG_PTR              msGdiHookToken;
-    static Gdiplus::NotificationUnhookProc msGdiUnhookProc;
+    LRESULT OnMessage (UINT message, WPARAM wParam, LPARAM lParam);
 
 public:
     static void ClassInitialize();
