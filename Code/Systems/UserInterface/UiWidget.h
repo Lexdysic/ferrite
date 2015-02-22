@@ -2,9 +2,9 @@
 namespace UserInterface
 {
 
-class CProxy :
-    public TRefCounted<CProxy>
+class CProxy : IRefCounted<CProxy>
 {
+    REFCOUNTED_ADAPTER(CProxy)
     friend class CContext;
     friend class CWidget;
 

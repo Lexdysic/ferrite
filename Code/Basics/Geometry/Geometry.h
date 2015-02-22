@@ -1,7 +1,5 @@
-#ifdef GEOM_H
-# error "Cannot include header more than once"
-#endif
-#define GEOM_H
+#ifndef BASICS_GEOMETRY_H
+#define BASICS_GEOMETRY_H
 
 #include "GeomTypes.h"
 #include "GeomTest.h"
@@ -34,3 +32,5 @@
 #include "GeomAabb.inl"
 #include "GeomObb.inl"
 #include "GeomCurve.inl"
+
+#endif // BASICS_GEOMETRY_H

@@ -1,7 +1,8 @@
-#ifdef USER_INTERFACE_H
-#  error "Cannot include header more than once."
-#endif
-#define USER_INTERFACE_H
+#ifndef SYSTEMS_USERINTERFACE_H
+#define SYSTEMS_USERINTERFACE_H
+
+#include "Systems\Input\Input.h"
+#include "Basics\Time\Time.h"
 
 namespace System
 {
@@ -88,3 +89,5 @@ public:
 };
 
 } // namespace UserInterface
+
+#endif // SYSTEMS_USERINTERFACE_H

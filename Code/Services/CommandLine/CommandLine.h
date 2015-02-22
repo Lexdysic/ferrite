@@ -1,3 +1,7 @@
+#ifndef SERVICES_COMMANDLINE_H
+#define SERVICES_COMMANDLINE_H
+
+#include "Utilities\Json\Json.h"
 
 namespace CommandLine
 {
@@ -25,3 +29,5 @@ interface IManager
 };
 
 } // namespace CommandLine
+
+#endif // SERVICES_COMMANDLINE_H

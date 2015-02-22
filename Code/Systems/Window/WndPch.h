@@ -3,10 +3,10 @@
 #endif
 #define SYSPCH_H
 
+#include <Windows.h>
+#include <windowsx.h>
 
-#define USES_EXTERNAL_WINDOWS
-#define USES_ENGINE_WINDOW
-
-#include "EngineDeps.h"
+#include "Ferrite.h"
+#include "Systems/Window/Window.h"
 
 #include "WndWindow.h"

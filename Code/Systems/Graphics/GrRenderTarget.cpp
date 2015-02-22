@@ -249,20 +249,23 @@ void CRenderTarget::Draw (IImage * i, IImage * m, const Point2 & pos, float32 op
         D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR
     );
 
+    HRESULT hr;
     ID2D1BitmapBrush * imageBrush = null;
-    m_renderTarget->CreateBitmapBrush(
+    hr = m_renderTarget->CreateBitmapBrush(
         image->GetBitmap(),
         propertiesXClampYClamp,
         &imageBrush
     );
+    ASSERT(SUCCEEDED(hr));
     ASSERT(imageBrush);
 
     ID2D1BitmapBrush * maskBrush = null;
-    m_renderTarget->CreateBitmapBrush(
+    hr = m_renderTarget->CreateBitmapBrush(
         mask->GetBitmap(),
         propertiesXClampYClamp,
         &maskBrush
     );
+    ASSERT(SUCCEEDED(hr));
     ASSERT(maskBrush);
 
     D2D1_ANTIALIAS_MODE aaModePrev = m_renderTarget->GetAntialiasMode();
@@ -376,8 +379,10 @@ Vector2 CRenderTarget::Measure(const CString & text, Token style, const Vector2 
         &textLayout
     );
 
+    
     DWRITE_TEXT_METRICS metrics;
-    textLayout->GetMetrics(&metrics);
+    HRESULT hr = textLayout->GetMetrics(&metrics);
+    ASSERT(SUCCEEDED(hr));
 
     SafeRelease(textLayout);
 

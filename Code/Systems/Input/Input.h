@@ -1,8 +1,10 @@
 
-#ifdef INCLUDE_INPUT
-#   error Cannot include header once
-#endif
-#define INCLUDE_INPUT
+#ifndef SYSTEMS_INPUT_H
+#define SYSTEMS_INPUT_H
+
+#include "Utilities\Notifier\Notifier.h"
+#include "Systems\Entity\Entity.h"
+
 
 //=============================================================================
 //
@@ -245,3 +247,5 @@ interface IInputComponent : IComponent
 
     // TODO: Controller data
 };
+
+#endif // SYSTEMS_INPUT_H

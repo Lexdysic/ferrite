@@ -13,12 +13,10 @@
 #endif
 #define PHYSPCH_H
 
-#define USES_ENGINE_MATH
-#define USES_ENGINE_GEOMETRY
-#define USES_ENGINE_PHYSICS
-#define USES_ENGINE_GRAPHICS // for debug render
-
-#include "EngineDeps.h"
+#include "Ferrite.h"
+#include "Basics/Geometry/Geometry.h"
+#include "Systems/Physics/Physics.h"
+#include "Systems/Graphics/Graphics.h"
 
 #include "PhysComponent.h"
 #include "PhysBroadphase.h"

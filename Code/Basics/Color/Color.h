@@ -1,7 +1,5 @@
-#ifdef COLOR_H
-#  error "Cannot include header more than once."
-#endif
-#define COLOR_H
+#ifndef BASICS_COLOR_H
+#define BASICS_COLOR_H
 
 //*****************************************************************************
 //
@@ -113,3 +111,5 @@ float32 ColorGetLuminance (const Color & color);
 
 
 #include "Color.inl"
+
+#endif // BASICS_COLOR_H

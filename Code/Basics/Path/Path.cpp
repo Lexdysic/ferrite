@@ -1,9 +1,9 @@
 
 #include <Windows.h>
 
-#define USES_ENGINE_PATH
+#include "Ferrite.h"
+#include "Basics/Path/Path.h"
 
-#include "EngineDeps.h"
 
 //*****************************************************************************
 //

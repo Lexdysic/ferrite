@@ -1,3 +1,8 @@
+#ifndef UTILITIES_JSON_H
+#define UTILITIES_JSON_H
+
+#include "Basics\Path\Path.h"
+
 namespace Json
 {
 
@@ -90,6 +95,8 @@ public:
     // Indexing
     CValue & operator[] (const CString & name);
     const CValue & operator[] (const CString & name) const;
+    //CValue & operator[] (const char * const name);
+    //const CValue & operator[] (const char * const name) const;
 
     CValue & operator[] (uint index);
     const CValue & operator[] (uint index) const;
@@ -201,3 +208,5 @@ private:
 } // namespace Json
 
 #include "Json.inl"
+
+#endif // UTILITIES_JSON_H

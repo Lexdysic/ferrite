@@ -1,16 +1,24 @@
-project "Engine"
+project "Ferrite"
     kind "StaticLib"
     location "./Build/Projects/"
     targetdir "./Bin/"
     files {
-        "../Engine/Code/**.h",
-        "../Engine/Code/**.cpp",
-        "../Engine/Code/**.inl",
+        "./Code/**.h",
+        "./Code/**.cpp",
+        "./Code/**.inl",
     }
     excludes {
-        "../Engine/Code/Object/**",
-        "../Engine/Code/External/**",
-        "../Engine/Code/Hash/**",
+        "./Code/External/**",
+        "./Code/External/bx/tools/**",
+        "./Code/External/bx/3rdparty/**",
+        --"./Code/External/bgfx/examples/**",
+        --"./Code/External/bgfx/tools/**",
+        --"./Code/External/bgfx/3rdparty/**",
     }
-        
- 
+    --includedirs {
+    --    "./Code/External/bx/**",
+    --    "./Code/External/bgfx/**",
+    --}
+    vpaths {
+        ["*"] = { "./Code/**" },
+    }

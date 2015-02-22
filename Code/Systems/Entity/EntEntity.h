@@ -6,9 +6,9 @@
 //=============================================================================
 
 class CEntity :
-    public TRefCounted<IEntity>,
     public IEntity
 {
+	REFCOUNTED_ADAPTER(IEntity)
 public: // Internal------------------------------------------------------------
 
     CEntity (EntityId id);
@@ -29,11 +29,6 @@ public: // IEntity-------------------------------------------------------------
     CComponent * Get (const ComponentType & type) override;
     uint         GetComponentCount () const override;
     CComponent * EnumComponent (uint i) override;
-
-public: // IRefCounted --------------------------------------------------------
-
-    TSmartPtrData<IEntity> * _SmartPtrGetData () override { return TRefCounted::_SmartPtrGetData(); }
-    void _SmartPtrDestroy () override { delete this; }
 
 public: // Links --------------------------------------------------------------
 

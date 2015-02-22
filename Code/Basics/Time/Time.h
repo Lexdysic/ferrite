@@ -1,3 +1,6 @@
+#ifndef BASICS_TIME_H
+#define BASICS_TIME_H
+
 namespace Time
 {
 
@@ -63,6 +66,7 @@ public: // Conversion
 
 	explicit operator float32 () const { return float32(m_duration); }
     explicit operator float64 () const { return m_duration; }
+    explicit operator uint () const { return FloatToUint(m_duration); }
     float64 GetRaw () const { return m_duration; }
     float32 GetSeconds () const { return (float32)m_duration; }
 
@@ -73,7 +77,7 @@ public: // Operations
     Delta & operator*= (const Delta & rhs);
     Delta & operator/= (const Delta & rhs);
 
-private: // Data
+protected: // Data
 
     float64 m_duration;
 };
@@ -90,6 +94,7 @@ class Seconds :
     public Delta
 {
 public:
+    using Delta::Delta;
     Seconds (float64 seconds);
     Seconds (uint seconds);
     Seconds (sint seconds);
@@ -107,9 +112,17 @@ class Ms :
     public Delta
 {
 public:
+    using Delta::Delta;
+    Ms (const Delta & delta) : Delta(delta) {} // This is temporary until Inheriting Constructors works properly
     Ms (float64 ms);
     Ms (uint ms);
     Ms (sint ms);
+
+    static const uint MS_PER_SECOND = 1000;
+
+	explicit operator float32 () const { return float32(m_duration * MS_PER_SECOND); }
+    explicit operator float64 () const { return m_duration * MS_PER_SECOND; }
+    explicit operator uint () const { return FloatToUint(m_duration * MS_PER_SECOND); }
 };
 
 
@@ -222,3 +235,5 @@ public:
 private:
     Time::Point m_lastTime;
 };
+
+#endif // BASICS_TIME_H

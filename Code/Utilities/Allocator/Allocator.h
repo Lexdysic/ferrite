@@ -1,3 +1,6 @@
+#ifndef UTILITIES_ALLOCATOR_H
+#define UTILITIES_ALLOCATOR_H
+
 #ifdef BUILD_DEBUG
 #   define BLOCK_ALLOCATOR_VALIDATE
 #endif
@@ -49,3 +52,5 @@ private:
 };
 
 #include "Allocator.inl"
+
+#endif // UTILITIES_ALLOCATOR_H

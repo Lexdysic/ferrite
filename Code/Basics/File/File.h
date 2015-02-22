@@ -1,4 +1,9 @@
- namespace File
+#ifndef BASICS_FILES_H
+#define BASICS_FILES_H
+
+#include "Basics\Path\Path.h"
+
+namespace File
 {
 
 namespace Internal
@@ -153,3 +158,5 @@ public:
 } // namespace File
 
 #include "File.inl"
+
+#endif // BASICS_FILES_H

@@ -202,11 +202,11 @@ void CManager::SetMainWindow (CWindow * window)
 
 //=============================================================================
 CWindow::CWindow (const CString & title, uint width, uint height) :
-    mWidth(width),
-    mHeight(height),
-    mWindowHandle(null),
-    mCursorNormal(null),
-    mCursorNull(null)
+    m_width(width),
+    m_height(height),
+    m_windowHandle(null),
+    m_cursorNormal(null),
+    m_cursorNull(null)
 {
     HINSTANCE instance = GetModuleHandle(0);
 
@@ -217,8 +217,8 @@ CWindow::CWindow (const CString & title, uint width, uint height) :
     {
         uint32 cursorAnd = 0xFFFFFFFF;
         uint32 cursorXor = 0x00000000;
-        mCursorNull   = CreateCursor(null, 0, 0, 1, 1, &cursorAnd, &cursorXor);
-        mCursorNormal = LoadCursor(null, IDC_ARROW);
+        m_cursorNull   = CreateCursor(null, 0, 0, 1, 1, &cursorAnd, &cursorXor);
+        m_cursorNormal = LoadCursor(null, IDC_ARROW);
     }
 
     // Window Class
@@ -239,7 +239,7 @@ CWindow::CWindow (const CString & title, uint width, uint height) :
         windowClass.hIconSm       = null;
         windowClass.lpszClassName = className;
 
-        const ATOM ret = RegisterClassExW(&windowClass);
+        const ATOM ret = RegisterClassEx(&windowClass);
         ASSERT(ret);
     }
 
@@ -247,13 +247,13 @@ CWindow::CWindow (const CString & title, uint width, uint height) :
     {
         const uint32 style = WS_OVERLAPPEDWINDOW | WS_VISIBLE;
 
-        RECT adjustedRect = {0, 0, mWidth, mHeight};
+        RECT adjustedRect = {0, 0, m_width, m_height};
         AdjustWindowRect(&adjustedRect, style, false);
 
         const uint32 adjustedWidth  = adjustedRect.right  - adjustedRect.left;
         const uint32 adjustedHeight = adjustedRect.bottom - adjustedRect.top;
 
-        mWindowHandle = CreateWindowW(
+        m_windowHandle = CreateWindowW(
             className,
             utf16.Ptr(), 
             style, 
@@ -267,39 +267,27 @@ CWindow::CWindow (const CString & title, uint width, uint height) :
             null
         );
 
-        ASSERT(mWindowHandle);
+        ASSERT(m_windowHandle);
     }
 
-    SetWindowLongPtrW(mWindowHandle, GWLP_USERDATA, (LONG_PTR)this);
-    SetWindowTextW(mWindowHandle, utf16.Ptr());
+    SetWindowLongPtrW(m_windowHandle, GWLP_USERDATA, (LONG_PTR)this);
+    SetWindowTextW(m_windowHandle, utf16.Ptr());
 }
 
 //=============================================================================
 CWindow::~CWindow() 
 {
-    DestroyCursor(mCursorNull);
+    DestroyCursor(m_cursorNull);
 
-    DestroyWindow(mWindowHandle);
-    mWindowHandle = 0;
-}
-
-//=============================================================================
-void CWindow::ClassInitialize()
-{
-
-}
-
-//=============================================================================
-void CWindow::ClassUninitialize()
-{
-
+    DestroyWindow(m_windowHandle);
+    m_windowHandle = 0;
 }
 
 //=============================================================================
 Vector2u CWindow::GetClientSize () const
 {
     RECT rect;
-    ::GetClientRect(mWindowHandle, &rect);
+    ::GetClientRect(m_windowHandle, &rect);
 
     return Vector2u(rect.right - rect.left, rect.bottom - rect.top);
 }
@@ -307,14 +295,14 @@ Vector2u CWindow::GetClientSize () const
 //=============================================================================
 void CWindow::Invalidate() const
 {
-    InvalidateRect(mWindowHandle, null, false);
+    InvalidateRect(m_windowHandle, null, false);
 }
 
 //=============================================================================
 void CWindow::SetTitle (const CString & title)
 {
     CStringUtf16 utf16 = title;
-    SetWindowTextW(mWindowHandle, utf16.Ptr());
+    SetWindowTextW(m_windowHandle, utf16.Ptr());
 }
 
 //=============================================================================
@@ -381,8 +369,8 @@ LRESULT CWindow::OnMessage (UINT uMsg, WPARAM wParam, LPARAM lParam)
             OnMouseDown(VK_RBUTTON, Point2s(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)));
         break;
 
-            //if( !mFlags.Test(FLAG_MOUSE_LEFT | FLAG_MOUSE_MIDDLE | FLAG_MOUSE_RIGHT) )
-            //    SetCapture(mWindowHandle);
+            //if( !m_flags.Test(FLAG_MOUSE_LEFT | FLAG_MOUSE_MIDDLE | FLAG_MOUSE_RIGHT) )
+            //    SetCapture(m_windowHandle);
 
         case WM_LBUTTONUP:
             OnMouseUp(VK_LBUTTON, Point2s(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)));
@@ -396,7 +384,7 @@ LRESULT CWindow::OnMessage (UINT uMsg, WPARAM wParam, LPARAM lParam)
             OnMouseUp(VK_RBUTTON, Point2s(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam)));
         break;
 
-            //if( !mFlags.Test(FLAG_MOUSE_LEFT | FLAG_MOUSE_MIDDLE | FLAG_MOUSE_RIGHT) )
+            //if( !m_flags.Test(FLAG_MOUSE_LEFT | FLAG_MOUSE_MIDDLE | FLAG_MOUSE_RIGHT) )
             //    ReleaseCapture();
 
         case WM_MOUSEMOVE:
@@ -409,7 +397,7 @@ LRESULT CWindow::OnMessage (UINT uMsg, WPARAM wParam, LPARAM lParam)
             const sint32 ticks = wheelDelta / WHEEL_DELTA;
 
             POINT pos = { GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
-            ScreenToClient(mWindowHandle, &pos);
+            ScreenToClient(m_windowHandle, &pos);
 
             OnMouseWheel(ticks, Point2s(pos.x, pos.y));
         }
@@ -422,17 +410,17 @@ LRESULT CWindow::OnMessage (UINT uMsg, WPARAM wParam, LPARAM lParam)
         case WM_PAINT: 
         {
             PAINTSTRUCT ps;
-            HDC hDc = BeginPaint(mWindowHandle, &ps);
+            HDC hDc = BeginPaint(m_windowHandle, &ps);
             OnPaint(hDc);
-            EndPaint(mWindowHandle, &ps);
+            EndPaint(m_windowHandle, &ps);
         }
         break;
 
         case WM_SETCURSOR:
             if (LOWORD(lParam) == HTCLIENT)
-                SetCursor(mCursorNormal);
+                SetCursor(m_cursorNormal);
             else
-                return DefWindowProc(mWindowHandle, uMsg, wParam, lParam);
+                return DefWindowProc(m_windowHandle, uMsg, wParam, lParam);
         break;
 
         case WM_SIZE:
@@ -444,7 +432,7 @@ LRESULT CWindow::OnMessage (UINT uMsg, WPARAM wParam, LPARAM lParam)
         break;
 
         default:
-            return DefWindowProc(mWindowHandle, uMsg, wParam, lParam);
+            return DefWindowProc(m_windowHandle, uMsg, wParam, lParam);
     }
 
     return 0;
@@ -463,36 +451,36 @@ LRESULT CALLBACK CWindow::StaticProc (HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
 //=============================================================================
 bool CWindow::Update ()
 {
-    if( !mWindowHandle )
+    if( !m_windowHandle )
         return false;
 
     for( ;; )
     {
         MSG uMsg;
-        if( !PeekMessage(&uMsg, mWindowHandle, 0, 0, PM_REMOVE) )
+        if( !PeekMessage(&uMsg, m_windowHandle, 0, 0, PM_REMOVE) )
             break;
 
         TranslateMessage(&uMsg);
         DispatchMessage(&uMsg);
     }
 
-    return !mFlags.Test(FLAG_CLOSE);
+    return !m_flags.Test(FLAG_CLOSE);
 }
 
 //=============================================================================
 bool CWindow::UpdateBlocking () 
 {
-    if( !mWindowHandle )
+    if( !m_windowHandle )
         return false;
 
     MSG uMsg;
-    if( GetMessage(&uMsg, mWindowHandle, 0, 0) == 0 )
+    if( GetMessage(&uMsg, m_windowHandle, 0, 0) == 0 )
         return false;
 
     TranslateMessage(&uMsg);
     DispatchMessage(&uMsg);
 
-    return !mFlags.Test(FLAG_CLOSE);
+    return !m_flags.Test(FLAG_CLOSE);
 }
 
 //=============================================================================
@@ -503,7 +491,7 @@ void CWindow::OnActivate (bool)
 //=============================================================================
 void CWindow::OnClose () 
 { 
-    mFlags.Set(FLAG_CLOSE); 
+    m_flags.Set(FLAG_CLOSE); 
 }
 
 //=============================================================================
@@ -531,7 +519,7 @@ void CWindow::OnKeyUp (uint8 vk)
 void CWindow::OnMouseDown (uint8 button, const Point2s & pos)
 {
     if (m_mouseDown.NoneSet())
-        SetCapture(mWindowHandle);
+        SetCapture(m_windowHandle);
 
     m_mouseDown.SetBit(button);
 

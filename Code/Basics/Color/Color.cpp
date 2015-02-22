@@ -1,6 +1,7 @@
 
-#define USES_ENGINE_COLOR
-#include "EngineDeps.h"
+#include "Ferrite.h"
+#include "Basics/Color/Color.h"
+
 
 //*****************************************************************************
 //

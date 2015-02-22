@@ -1,7 +1,7 @@
 
-#define USES_ENGINE_PATHING
-#define USES_ENGINE_TIME
-#define USES_ENGINE_UTILITY_ALLOCATOR
+#include "Ferrite.h"
+#include "Basics/Time/Time.h"
+#include "Utilities/Allocator/Allocator.h"
+#include "Systems/Pathing/Pathing.h"
 
-#include "EngineDeps.h"
 #include "PathInt.h"

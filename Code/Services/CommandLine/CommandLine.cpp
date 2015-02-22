@@ -1,10 +1,8 @@
 
 #include <Windows.h>
 
-#define USES_ENGINE_UTILITY_JSON
-#define USES_ENGINE_SERVICES_COMMAND_LINE
-
-#include "EngineDeps.h"
+#include "Ferrite.h"
+#include "Services\CommandLine\CommandLine.h"
 
 
 using namespace Json;

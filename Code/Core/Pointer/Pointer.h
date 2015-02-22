@@ -8,11 +8,11 @@
 template <typename T> class     TWeakPtr;
 template <typename T> class     TStrongPtr;
 template <typename T> interface IRefCounted;
-template <typename T> class     TRefCounted;
 
 namespace Pointer {
 namespace Private {
     template <typename T> class TSmartPtrBase;
+	template <typename T> class TSmartPtrData;
 }} // namespace Pointer::Private
 
 
@@ -93,7 +93,7 @@ class TWeakPtr :
     public Pointer::Private::TSmartPtrBase<T>
 {
     template <typename T>
-    friend class TSmartPtrData;
+    friend class Pointer::Private::TSmartPtrData;
 public:
 
     TWeakPtr ();
@@ -114,15 +114,30 @@ private:
 
 //*****************************************************************************
 //
-// TSmartPtrData
+// IRefCounted
 //
 //*****************************************************************************
 
 template <typename T>
+interface IRefCounted
+{
+	virtual void IncRef () pure;
+	virtual unsigned DecRef () pure;
+	virtual void AddWeakRef (TWeakPtr<T> * weak) pure;
+};
+
+
+
+//*****************************************************************************
+//
+// TSmartPtrData
+//
+//*****************************************************************************
+namespace Pointer { namespace Private {
+
+template <typename T>
 class TSmartPtrData
 {
-    template <typename T>
-    friend class TRefCounted;
 public:
 
     TSmartPtrData ();
@@ -130,7 +145,7 @@ public:
 
     void IncRef ();
     uint DecRef ();
-    void AddWeak (TWeakPtr<T> * weak);
+    void AddWeakRef (TWeakPtr<T> * weak);
 
 private:
     // Types
@@ -141,48 +156,7 @@ private:
     uint     m_refCount;
 };
 
-
-
-//*****************************************************************************
-//
-// IRefCounted
-//
-//*****************************************************************************
-
-template <typename T>
-interface IRefCounted
-{
-    virtual TSmartPtrData<T> * _SmartPtrGetData () pure;
-    virtual void _SmartPtrDestroy () pure;
-};
-
-
-
-//*****************************************************************************
-//
-// TRefCounted
-//
-//*****************************************************************************
-
-template <typename T>
-class TRefCounted
-{
-    template <typename T> friend class TWeakPtr;
-    template <typename T> friend class StrongPtr;
-
-public:
-    TRefCounted ();
-    ~TRefCounted ();
-
-protected: // IRefCounted<T>
-
-    TSmartPtrData<T> * _SmartPtrGetData ();
-    void _SmartPtrDestroy ();
-
-private:
-    TSmartPtrData<T> m_data;
-};
-
+}} // namespace Pointer::Private
 
 
 //*****************************************************************************
@@ -192,14 +166,24 @@ private:
 //*****************************************************************************
 
 #define REFCOUNTED_ADAPTER(interface)                           \
-    TSmartPtrData<interface> * _SmartPtrGetData () override     \
-    {                                                           \
-        return TRefCounted<interface>::_SmartPtrGetData();      \
-    }                                                           \
-                                                                \
-    void _SmartPtrDestroy () override                           \
-    {                                                           \
-        TRefCounted<interface>::_SmartPtrDestroy();             \
-    }
+	private:													\
+    friend class TWeakPtr<interface>;                           \
+    friend class TStrongPtr<interface>;                         \
+	Pointer::Private::TSmartPtrData<interface> m_smartPtrData;	\
+																\
+	void IncRef () override {									\
+		m_smartPtrData.IncRef();								\
+	}															\
+																\
+	uint DecRef () override {									\
+		const uint count = m_smartPtrData.DecRef();				\
+		if (count == 0)											\
+			delete this;										\
+		return count;											\
+	}															\
+																\
+	void AddWeakRef (TWeakPtr<interface> * weak) override {		\
+		m_smartPtrData.AddWeakRef(weak);						\
+	}															
 
 #include "Pointer.inl"

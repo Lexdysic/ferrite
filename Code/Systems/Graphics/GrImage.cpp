@@ -12,13 +12,14 @@ CImage * CImage::Create (const CPath & filename)
 
     // Decoder
     IWICBitmapDecoder *pDecoder = null;
-    pWicFactory->CreateDecoderFromFilename(
+    HRESULT hr = pWicFactory->CreateDecoderFromFilename(
         filenameUtf16.Ptr(),
         null,
         GENERIC_READ,
         WICDecodeMetadataCacheOnLoad,
         &pDecoder
     );
+    ASSERT(SUCCEEDED(hr));
     // NOTE: if no decoder is created, it is likely because of a bad filename
     if (!pDecoder)
         return null; 
@@ -48,9 +49,12 @@ CImage::CImage () :
 CImage::CImage (const CPath & filename, IWICBitmapDecoder *pDecoder) :
     m_filename(filename)
 {
+    HRESULT hr;
+
     // Frame
     IWICBitmapFrameDecode * pFrame = null;
-    pDecoder->GetFrame(0, &pFrame);
+    hr = pDecoder->GetFrame(0, &pFrame);
+    ASSERT(SUCCEEDED(hr));
     ASSERT(pFrame);
 
     // Converter
@@ -59,7 +63,7 @@ CImage::CImage (const CPath & filename, IWICBitmapDecoder *pDecoder) :
     pWicFactory->CreateFormatConverter(&pConverter);
     ASSERT(pConverter);
 
-    pConverter->Initialize(
+    hr = pConverter->Initialize(
         pFrame,
         GUID_WICPixelFormat32bppPBGRA,
         WICBitmapDitherTypeNone,
@@ -67,6 +71,7 @@ CImage::CImage (const CPath & filename, IWICBitmapDecoder *pDecoder) :
         0.0f,
         WICBitmapPaletteTypeMedianCut
     );
+    ASSERT(SUCCEEDED(hr));
 
     // Create
     ID2D1RenderTarget * pRenderTarget = CContext::Get()->GetRenderTarget();

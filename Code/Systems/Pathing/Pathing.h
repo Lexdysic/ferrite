@@ -1,7 +1,7 @@
-#ifdef PATHING_H
-#   error "Cannot include header more than once"
-#endif
-#define PATHING_H
+#ifndef SYSTEMS_PATHING_H
+#define SYSTEMS_PATHING_H
+
+#include "Utilities\Notifier\Notifier.h"
 
 namespace Pathing
 {
@@ -136,8 +136,6 @@ interface IData
     // Intentionally blank
 };
 
-
-
-
-
 } // namespace Pathing
+
+#endif // SYSTEMS_PATHING_H

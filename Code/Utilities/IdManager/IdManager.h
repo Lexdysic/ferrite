@@ -1,4 +1,5 @@
-
+#ifndef UTILTIES_IDMANAGER_H
+#define UTILTIES_IDMANAGER_H
 
 //*****************************************************************************
 //
@@ -116,3 +117,5 @@ private:
 //using TIdManagerPacked<T> = TIdManager<TIdDataPacked<T>>;
 
 #include "IdManager.inl"
+
+#endif // UTILTIES_IDMANAGER_H

@@ -1,9 +1,7 @@
 #include <winsock2.h>
 #include <ws2tcpip.h>
 
-#define USES_ENGINE_NET
-
-#include "EngineDeps.h"
+#include "NetPch.h"
 
 #pragma comment(lib, "ws2_32.lib")
 
@@ -12,6 +10,7 @@ void NetInitialize ()
 {
 	WSADATA wsaData;
 	const int ret = WSAStartup(MAKEWORD(2, 2), &wsaData);
+    ASSERT(!ret);
 }
 
 //=============================================================================

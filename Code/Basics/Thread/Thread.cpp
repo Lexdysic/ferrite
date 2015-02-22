@@ -44,6 +44,13 @@ static DWORD WINAPI ThreadEntryPoint (LPVOID param)
 //*****************************************************************************
 
 //=============================================================================
+CThread::CThread () :
+    m_id(0),
+    m_handle(NULL)
+{
+}
+
+//=============================================================================
 CThread::~CThread ()
 {
     CloseHandle(m_handle);
@@ -77,7 +84,8 @@ void CThread::Resume()
 bool CThread::IsRunning() const
 {
     DWORD exitCode = 0;
-    ::GetExitCodeThread(m_handle, &exitCode);
+    const BOOL success = ::GetExitCodeThread(m_handle, &exitCode);
+    ASSERT(success);
     return exitCode == STILL_ACTIVE;
 }
 
@@ -180,7 +188,8 @@ uint ThreadLogicalProcessorCount ()
 }
 
 //=============================================================================
-void ThreadSleep (uint ms)
+void ThreadSleep (Time::Delta duration)
 {
-    ::Sleep(ms);
+    Time::Ms ms = duration;
+    ::Sleep(uint(ms));
 }

@@ -237,6 +237,16 @@ const CValue & CValue::operator[] (const CString & name) const
 
     return *value;
 }
+//
+////=============================================================================
+//CValue & CValue::operator[] (const char * const name) {
+//    return (*this)[CString(name)];
+//}
+//
+////=============================================================================
+//const CValue & CValue::operator[] (const char * const name) const {
+//    return (*this)[CString(name)];
+//}
 
 //=============================================================================
 CValue & CValue::operator[] (uint index)

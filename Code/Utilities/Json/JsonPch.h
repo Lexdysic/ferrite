@@ -1,10 +1,9 @@
-#define USES_ENGINE_UTILITY_JSON
-#define USES_ENGINE_MEMORY
-#define USES_ENGINE_FILE
 
-#define _CRT_SECURE_NO_WARNINGS
+#include "Ferrite.h"
 
-#include "EngineDeps.h"
+#include "Basics/File/File.h"
+#include "Utilities/Json/Json.h"
+
 
 #include "JsonParse.h"
 #include "JsonDocument.h"

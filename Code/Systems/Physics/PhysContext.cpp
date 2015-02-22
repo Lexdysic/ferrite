@@ -246,7 +246,7 @@ void CContext::Response (
     auto * rigidBodyB = entityB->Get<IRigidBodyComponent>();
 
     ASSERT(rigidBodyA || rigidBodyB);
-        return; // TODO: this is not a valid thing to do
+    return; // TODO: this is not a valid thing to do
 
     if (rigidBodyA && rigidBodyB)
     {

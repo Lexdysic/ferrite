@@ -1,17 +1,10 @@
-//=================================================================================================
-//
-// File:    Phys.h
-// Author:  Jason Jackson
-// Date:    June 27, 2009
-//
-// Exported interface of the physics library
-//
-//=================================================================================================
+#ifndef SYSTEMS_PHYSICS_H
+#define SYSTEMS_PHYSICS_H
 
-#ifdef PHYS_H
-#  error "Cannot include header more than once"
-#endif
-#define PHYS_H
+#include "Systems\Entity\Entity.h"
+#include "Basics\Geometry\Geometry.h"
+#include "Basics\Time\Time.h"
+#include "Utilities\Notifier\Notifier.h"
 
 namespace Physics
 {
@@ -130,3 +123,5 @@ interface IColliderComponent : IComponent
 };
 
 } // namespace Physics
+
+#endif // SYSTEMS_PHYSICS_H

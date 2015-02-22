@@ -4,9 +4,7 @@
 #define THRDPCH_H
 
 #include <mutex>
+#include <Windows.h>
 
-#define USES_EXTERNAL_WINDOWS
-#define USES_ENGINE_MATH
-#define USES_ENGINE_THREAD
-
-#include "EngineDeps.h"
+#include "Ferrite.h"
+#include "Basics/Thread/Thread.h"

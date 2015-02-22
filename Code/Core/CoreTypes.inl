@@ -35,14 +35,14 @@ template <typename T> const Flags<T> Flags<T>::None(0);
 //=============================================================================
 template <typename T>
 Flags<T>::Flags() :
-    mFlags((T)0)
+    m_flags((T)0)
 {
 }
 
 //=============================================================================
 template <typename T>
 Flags<T>::Flags(T f) :
-    mFlags(f)
+    m_flags(f)
 {
 }
 
@@ -50,7 +50,7 @@ Flags<T>::Flags(T f) :
 template <typename T>
 void Flags<T>::Set(T flags)
 {
-    mFlags |= flags;
+    m_flags |= flags;
 }
 
 //=============================================================================
@@ -74,16 +74,16 @@ template <typename T>
 void Flags<T>::SetTo (T flags, bool value)
 {
     if (value)
-        mFlags |= flags;
+        m_flags |= flags;
     else
-        mFlags &= ~flags;
+        m_flags &= ~flags;
 }
 
 //=============================================================================
 template <typename T>
 void Flags<T>::Clear(T flags)
 {
-    mFlags &= ~flags;
+    m_flags &= ~flags;
 }
 
 //=============================================================================
@@ -99,14 +99,14 @@ void Flags<T>::ClearBit(uint bit)
 template <typename T>
 void Flags<T>::ClearAll()
 {
-    mFlags = (T)0;
+    m_flags = (T)0;
 }
 
 //=============================================================================
 template <typename T>
 bool Flags<T>::Test(T flags) const
 {
-    return (mFlags & flags) > (T)0;
+    return (m_flags & flags) > (T)0;
 }
 
 //=============================================================================
@@ -122,19 +122,19 @@ bool Flags<T>::TestBit(uint bit) const
 template <typename T>
 bool Flags<T>::AnySet() const
 {
-    return mFlags > (T)0;
+    return m_flags > (T)0;
 }
 
 //=============================================================================
 template <typename T>
 bool Flags<T>::NoneSet() const
 {
-    return mFlags == (T)0;
+    return m_flags == (T)0;
 }
 
 //=============================================================================
 template <typename T>
 Flags<T>::operator T () const
 {
-    return mFlags;
+    return m_flags;
 }

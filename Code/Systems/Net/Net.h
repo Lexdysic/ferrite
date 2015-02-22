@@ -1,4 +1,8 @@
+#ifndef SYSTEMS_NET_H
+#define SYSTEMS_NET_H
 
+#include "Utilities\Notifier\Notifier.h"
+#include "Basics\Time\Time.h"
 
 //=============================================================================
 //
@@ -124,6 +128,6 @@ interface IConnection
     virtual unsigned BytesAvailable () const pure;
 };
 
-
-
 } // namespace Network
+
+#endif // SYSTEMS_NET_H

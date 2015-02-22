@@ -1,9 +1,9 @@
 
 //=============================================================================
 template <typename T>
-T Sign(const T & x)
+T Sign (const T & x)
 {
-    static_assert(Meta::IsSigned<T>::value, "Cannot get the sign of an unsigned type");
+    //static_assert(Meta::IsSigned<T>::value, "Cannot get the sign of an unsigned type");
 
     if (x < T(0))
         return T(-1);
@@ -17,7 +17,7 @@ T Sign(const T & x)
 template <typename T>
 T Sq (const T & x)
 {
-    static_assert(Meta::IsNumeric<T>::value, "Cannot square a non-numeric type.");
+    //static_assert(Meta::IsNumeric<T>::value, "Cannot square a non-numeric type.");
     return x * x;
 }
 
@@ -55,7 +55,7 @@ template<> inline float64 Frac<float64> (float64 x) { return x - Floor(x); }
 template <typename T>
 T Abs (T x)
 {
-    static_assert(Meta::IsSigned<T>::value, "Must used signed type");
+    //static_assert(Meta::IsSigned<T>::value, "Must used signed type");
     return (x < T(0)) ? -x : x;
 }
 

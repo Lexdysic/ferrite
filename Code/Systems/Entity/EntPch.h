@@ -1,9 +1,7 @@
 
-#define USES_ENGINE_ENTITY
-#define USES_ENGINE_UTILITY_IDMANAGER
-#define USES_ENGINE_GRAPHICS
-
-#include "EngineDeps.h"
+#include "Ferrite.h"
+#include "Utilities\IdManager\IdManager.h"
+#include "Systems\Graphics\Graphics.h"
 
 #include "EntEntity.h"
 #include "EntComponent.h"

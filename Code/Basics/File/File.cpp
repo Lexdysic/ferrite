@@ -1,5 +1,3 @@
-#define USES_ENGINE_FILE
-
 
 #define _CRT_SECURE_NO_WARNINGS
 #include <fstream>
@@ -8,7 +6,8 @@
 #include <cstdio>
 #include <Windows.h>
 
-#include "EngineDeps.h"
+#include "Ferrite.h"
+#include "Basics/File/File.h"
 
 namespace File
 {
@@ -34,6 +33,7 @@ Internal::CFile::CFile (const CPath & filepath, EType type, EMode mode) :
         case INDEX(EType::Binary, EMode::Write):    options = "wb"; break;
         case INDEX(EType::Text, EMode::Read):       options = "r"; break;
         case INDEX(EType::Text, EMode::Write):      options = "w"; break;
+        DEFAULT_FATAL("Unable to choose file options");
     }
 #undef INDEX
 
@@ -93,9 +93,10 @@ void Internal::CFile::Seek (EPosition position, sint offset)
     int origin;
     switch (position)
     {
-        case EPosition::Begin: origin = SEEK_SET; break;
+        case EPosition::Begin:   origin = SEEK_SET; break;
         case EPosition::Current: origin = SEEK_SET; break;
-        case EPosition::End: origin = SEEK_END; break;
+        case EPosition::End:     origin = SEEK_END; break;
+        DEFAULT_FATAL("Unknown position specifier");
     }
 
     fseek((FILE *)m_file, offset, origin);

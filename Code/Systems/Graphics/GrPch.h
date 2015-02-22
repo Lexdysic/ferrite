@@ -3,11 +3,10 @@
 #include <wincodec.h>
 #include <dwrite.h>
 
-#define USES_ENGINE_WINDOW
-#define USES_ENGINE_GRAPHICS
-#define USES_ENGINE_PHYSICS
-
-#include "EngineDeps.h"
+#include "Ferrite.h"
+#include "Systems\Window\Window.h"
+#include "Systems\Graphics\Graphics.h"
+//#include "Systems\"
 
 #include "GrInt.h"
 #include "GrImage.h"

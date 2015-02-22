@@ -1,3 +1,15 @@
+#ifndef SYSTEMS_ENTITY_H
+#define SYSTEMS_ENTITY_H
+
+#include "Utilities\Notifier\Notifier.h"
+#include "Utilities\IdManager\IdManager.h"
+
+
+//=============================================================================
+//
+// Forward Declars
+//
+//=============================================================================
 
 interface IContext;
 interface IEntity;
@@ -30,7 +42,7 @@ interface IEntityContext
     virtual void NotifyRegister (CEntityNotify * target) pure;
     virtual void NotifyUnregister (CEntityNotify * target) pure;
 
-    virtual void DebugToggleDraw() pure;
+    virtual void DebugToggleDraw () pure;
 };
 
 IEntityContext * EntityGetContext ();
@@ -204,3 +216,5 @@ T * EnsureComponent (IEntity * entity, const Ts &... Vs)
 
     return T::Attach(entity, Vs...);
 }
+
+#endif // SYSTEMS_ENTITY_H

@@ -1,4 +1,5 @@
-
+#ifndef BASICS_PATH_H
+#define BASICS_PATH_H
 
 //*****************************************************************************
 //
@@ -115,3 +116,6 @@ private:
 };
 
 } // namespace Path
+
+
+#endif // BASICS_PATH_H

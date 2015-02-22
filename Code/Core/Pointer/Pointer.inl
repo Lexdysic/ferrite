@@ -141,7 +141,7 @@ template <typename T>
 void TStrongPtr<T>::IncRef ()
 {
     if (m_ptr)
-        m_ptr->_SmartPtrGetData()->IncRef();
+        m_ptr->IncRef();
 }
 
 //=============================================================================
@@ -151,10 +151,9 @@ void TStrongPtr<T>::DecRef ()
     if (!m_ptr)
         return;
 
-    const uint refCount = m_ptr->_SmartPtrGetData()->DecRef();
+    const uint refCount = m_ptr->DecRef();
     if (!refCount)
     {
-        m_ptr->_SmartPtrDestroy();
         m_ptr = null;
     }
 }
@@ -179,7 +178,7 @@ TWeakPtr<T>::TWeakPtr (const TWeakPtr<T> & rhs) :
     Pointer::Private::TSmartPtrBase<T>(rhs.m_ptr)
 {
     if (m_ptr)
-        m_ptr->_SmartPtrGetData()->AddWeak(this);
+        m_ptr->AddWeakRef(this);
 }
 
 //=============================================================================
@@ -188,7 +187,7 @@ TWeakPtr<T>::TWeakPtr (const TStrongPtr<T> & rhs) :
     Pointer::Private::TSmartPtrBase<T>(rhs.m_ptr)
 {
     if (m_ptr)
-        m_ptr->_SmartPtrGetData()->AddWeak(this);
+        m_ptr->AddWeakRef(this);
 }
 
 //=============================================================================
@@ -197,7 +196,7 @@ TWeakPtr<T>::TWeakPtr (T * data) :
     Pointer::Private::TSmartPtrBase<T>(data)
 {
     if (m_ptr)
-        m_ptr->_SmartPtrGetData()->AddWeak(this);
+        m_ptr->AddWeakRef(this);
 }
 
 //=============================================================================
@@ -216,7 +215,7 @@ TWeakPtr<T> & TWeakPtr<T>::operator= (const TWeakPtr<T> & rhs)
     m_ptr = rhs.m_ptr;
 
     if (m_ptr)
-        m_ptr->_SmartPtrGetData()->AddWeak(this);
+        m_ptr->AddWeakRef(this);
 
     return *this;
 }
@@ -236,6 +235,8 @@ void TWeakPtr<T>::OnObjectDestroyed ()
 //
 //*****************************************************************************
 
+namespace Pointer { namespace Private {
+
 //=============================================================================
 template <typename T>
 TSmartPtrData<T>::TSmartPtrData () :
@@ -248,9 +249,7 @@ template <typename T>
 TSmartPtrData<T>::~TSmartPtrData ()
 {
     for (auto weak : m_weaklist)
-    {
         weak->OnObjectDestroyed();
-    }
 
     ASSERT(m_refCount == 0);
 }
@@ -272,42 +271,9 @@ uint TSmartPtrData<T>::DecRef ()
 
 //=============================================================================
 template <typename T>
-void TSmartPtrData<T>::AddWeak (TWeakPtr<T> * weak)
+void TSmartPtrData<T>::AddWeakRef (TWeakPtr<T> * weak)
 {
     m_weaklist.InsertTail(weak);
 }
 
-
-
-//*****************************************************************************
-//
-// TRefCounted
-//
-//*****************************************************************************
-
-//=============================================================================
-template <typename T>
-TRefCounted<T>::TRefCounted ()
-{
-}
-
-//=============================================================================
-template <typename T>
-TRefCounted<T>::~TRefCounted ()
-{
-
-}
-
-//=============================================================================
-template <typename T>
-TSmartPtrData<T> * TRefCounted<T>::_SmartPtrGetData ()
-{
-    return &m_data;
-}
-
-//=============================================================================
-template <typename T>
-void TRefCounted<T>::_SmartPtrDestroy ()
-{
-    delete this;
-}
+}} // namespace Pointer::Private

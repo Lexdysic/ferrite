@@ -35,7 +35,7 @@ public: // IWindow
 
     // Query
     Vector2u GetClientSize () const override;
-    void *   GetHwnd () const override { return (void *)mWindowHandle; }
+    void *   GetHwnd () const override { return (void *)m_windowHandle; }
 
     // Notify
     void NotifyRegister (CWindowNotify * notify) override;
@@ -74,20 +74,18 @@ private:
     typedef TNotifier<CWindowNotify> NotifyList;
 
     // Data
-    HWND            mWindowHandle;
-    Flags<uint32>   mFlags;
-    uint32          mWidth;
-    uint32          mHeight;
-    HCURSOR         mCursorNormal;
-    HCURSOR         mCursorNull;
+    HWND            m_windowHandle;
+    Flags<uint32>   m_flags;
+    uint32          m_width;
+    uint32          m_height;
+    HCURSOR         m_cursorNormal;
+    HCURSOR         m_cursorNull;
     NotifyList      m_notify;
     Flags<uint>     m_mouseDown;
 
     LRESULT OnMessage (UINT message, WPARAM wParam, LPARAM lParam);
 
 public:
-    static void ClassInitialize();
-    static void ClassUninitialize();
     static LRESULT CALLBACK StaticProc (HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 };

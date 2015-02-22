@@ -1,3 +1,8 @@
+#ifndef BASICS_THREAD_H
+#define BASICS_THREAD_H
+
+#include "Basics\Time\Time.h"
+
 
 //*****************************************************************************
 //
@@ -29,6 +34,7 @@ class CriticalSection;
 class CThread
 {
 public:
+    CThread ();
     virtual ~CThread ();
     
     void Start ();
@@ -95,4 +101,6 @@ public:
 //*****************************************************************************
 
 uint ThreadLogicalProcessorCount ();
-void ThreadSleep (uint ms);
+void ThreadSleep (Time::Delta duration);
+
+#endif // BASICS_THREAD_H

@@ -29,10 +29,7 @@ public:
     );
     template <uint N>
     inline explicit Token (const char (& str)[N], uint index = 0);
-    
-
-
-
+   
     inline bool IsNull () const;
 
 public:

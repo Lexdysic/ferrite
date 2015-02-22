@@ -1,4 +1,5 @@
-
+#ifndef UTILITIES_NOTIFIER_H
+#define UTILITIES_NOTIFIER_H
 
 //*****************************************************************************
 //
@@ -74,3 +75,5 @@ private:
 };
 
 #include "Notifier.inl"
+
+#endif // UTILITIES_NOTIFIER_H

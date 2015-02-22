@@ -165,7 +165,7 @@ public:
     static const Flags<T> None;
 
 private:
-    T mFlags;
+    T m_flags;
 
     static const uint NUM_BITS = std::numeric_limits<uint8>::digits * sizeof(T);
 };

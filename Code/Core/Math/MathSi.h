@@ -14,7 +14,7 @@ template <
     sint I = 0, // ampere
     sint K = 0, // kelvin
     sint N = 0, // mole
-    sint J = 0  // candela
+    sint J = 0 // candela
 >
 struct TSi
 {

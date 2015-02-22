@@ -30,6 +30,8 @@ public:
     void Set (K && key, V && value);
     void Delete (const K & key);
 
+    friend bool operator== (const TDictionaryBase<K, V> & lhs, const TDictionaryBase<K, V> & rhs) { return lhs.m_map == rhs.m_map; }
+
 public:
 
     typedef typename std::map<K, V>::iterator iterator;
@@ -41,10 +43,12 @@ public:
     const_iterator end () const;
 
 protected:
+
     std::map<K, V> m_map;
 };
 
 }} // namespace Containers::Internal
+
 
 
 

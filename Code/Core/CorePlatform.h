@@ -21,7 +21,7 @@
 //#if defined(_CONSOLE)
 //#   define CONFIG_CONSOLE
 //#else
-//#   define CONFIG_WINDOWED
+#   define CONFIG_WINDOWED
 //#endif
 
 
@@ -72,11 +72,11 @@
 //
 //*****************************************************************************
 
-#if defined(_DEBUG)
-#   define BUILD_DEBUG
-#else
-#   define BUILD_RELEASE
-#endif
+//#if defined(_DEBUG)
+//#   define BUILD_DEBUG
+//#else
+//#   define BUILD_RELEASE
+//#endif
 
 
 
@@ -86,7 +86,7 @@
 //
 //*****************************************************************************
 
-#ifdef PLATFORM_WINDOWS
+#if defined(PLATFORM_WINDOWS) && defined(CONFIG_WINDOWED)
 #   define PLATFORM_MAIN()   CALLBACK WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #else
 #   define PLATFORM_MAIN()   main ()

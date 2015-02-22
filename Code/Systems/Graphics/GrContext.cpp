@@ -35,7 +35,9 @@ void CContext::Initialize (System::IWindow * window)
 {
     ASSERT(window);
 
-    CoInitialize(null);
+    HRESULT hr;
+    hr = CoInitialize(null);
+    ASSERT(SUCCEEDED(hr));
 
     m_pWindow = window;
 
@@ -55,12 +57,13 @@ void CContext::Initialize (System::IWindow * window)
     ASSERT(m_pDWriteFactory);
 
     // WIC Factory
-    CoCreateInstance(
+    hr = CoCreateInstance(
         CLSID_WICImagingFactory1,
         null,
         CLSCTX_INPROC_SERVER,
         IID_PPV_ARGS(&m_pWicFactory)
     );
+    ASSERT(SUCCEEDED(hr));
     ASSERT(m_pWicFactory);
 
     // Debug Font
@@ -179,7 +182,8 @@ Vector2 CContext::DebugTextMeasure (const CString & text, const Vector2 & size)
     );
 
     DWRITE_TEXT_METRICS metrics;
-    textLayout->GetMetrics(&metrics);
+    HRESULT hr = textLayout->GetMetrics(&metrics);
+    ASSERT(SUCCEEDED(hr));
 
     SafeRelease(textLayout);
 
@@ -269,10 +273,11 @@ void CContext::TextRegisterStyle(Token name, const CString & font, float32 size)
 IRenderTarget * CContext::RenderTargetCreate (const Vector2u & size)
 {
     ID2D1BitmapRenderTarget * d2dRenderTarget;
-    m_pRenderTarget->CreateCompatibleRenderTarget(
+    HRESULT hr = m_pRenderTarget->CreateCompatibleRenderTarget(
         ToSizeF(size),
         &d2dRenderTarget
     );
+    ASSERT(SUCCEEDED(hr));
     CRenderTarget * renderTarget = new CRenderTarget(d2dRenderTarget);
 
     return renderTarget;

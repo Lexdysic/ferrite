@@ -1,11 +1,10 @@
 
-#define USES_ENGINE_WINDOW
-#define USES_ENGINE_INPUT
-
 #include <Windows.h>
 #include <Xinput.h>
 
-#include "EngineDeps.h"
+#include "Ferrite.h"
+#include "Systems/Window/Window.h"
+#include "Systems/Input/Input.h"
 
 #include "InManager.h"
 #include "InComponent.h"

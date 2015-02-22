@@ -1,8 +1,3 @@
-#ifdef GEOMTEST_H
-#  error "Cannot include header more than once."
-#endif
-#define GEOMTEST_H
-
 namespace Geometry
 {
 

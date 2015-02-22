@@ -415,10 +415,17 @@ bool Intersect (IntersectInfo3 & out, const Ray3 & r, const Aabb3 & b)
 
     Vector3 nmin(1e-10f, 1e-11f, 1e-12f);
 
+    static const Vector3 s_normals[] = {
+        Vector3(1.0f, 0.0f, 0.0f),
+        Vector3(0.0f, 1.0f, 0.0f),
+        Vector3(0.0f, 0.0f, 1.0f)
+    };
+
     for (uint i = 0; i < 3; ++i)
     {
         // ray is parallel to slab?
-        if (Equal(r.direction[i], 0.0f))
+        //if (Equal(r.direction[i], 0.0f))
+        if (Abs(r.direction[i]) < 0.0001f)
         {
             if (r.origin[i] < b.min[i] || r.origin[i] > b.max[i])
                 return false;
@@ -428,20 +435,22 @@ bool Intersect (IntersectInfo3 & out, const Ray3 & r, const Aabb3 & b)
             const float32 ood = 1.0f / r.direction[i];
             float32 t1 = (b.min[i] - r.origin[i]) * ood;
             float32 t2 = (b.max[i] - r.origin[i]) * ood;
-            Vector3  n1 = Vector3::Zero; n1[i] = -1.0f;
-            Vector3  n2 = Vector3::Zero; n2[i] = +1.0f;
+            const Vector3 & n1 = s_normals[i];
+            //Vector3  n2 = Vector3::Zero; n2[i] = +1.0f;
 
+            float32 nSign = 1.0f;
             // make sure that t1 is always less than or equal to t2
             if (t1 > t2)
             {
                 std::swap(t1, t2);
-                std::swap(n1, n2);
+                nSign = -1.0f;
+                //std::swap(n1, n2);
             }
 
             if (t1 > tmin)
             {
                 tmin = t1;
-                nmin = n1;
+                nmin = n1 * nSign;
             }
 
             //tmin = Max(tmin, t1);

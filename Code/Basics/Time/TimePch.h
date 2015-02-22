@@ -7,6 +7,6 @@
 #include "Windows.h"
 #include "mmsystem.h"
 
-#define USES_ENGINE_TIME
+#include "Ferrite.h"
+#include "Basics/Time/Time.h"
 
-#include "EngineDeps.h"
