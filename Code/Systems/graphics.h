@@ -1,10 +1,10 @@
 #ifndef SYSTEMS_GRAPHICS_H
 #define SYSTEMS_GRAPHICS_H
 
-#include "Systems\Entity\Entity.h"
-#include "Basics\Color\Color.h"
-#include "Basics\Geometry\Geometry.h"
-#include "Basics\Path\Path.h"
+#include "Basics\Color.h"
+#include "Basics\Geometry.h"
+#include "Basics\Path.h"
+#include "Systems\Entity.h"
 
 
 // Forward Declare

@@ -1,8 +1,8 @@
 #ifndef SYSTEMS_WINDOW_H
 #define SYSTEMS_WINDOW_H
 
-#include "Utilities\Notifier\Notifier.h"
-#include "Systems\Input\Input.h"
+#include "Utilities/Notifier.h"
+#include "Systems/Input.h"
 
 
 enum class EKey;

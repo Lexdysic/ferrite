@@ -1,10 +1,10 @@
 #ifndef SYSTEMS_PHYSICS_H
 #define SYSTEMS_PHYSICS_H
 
-#include "Systems\Entity\Entity.h"
-#include "Basics\Geometry\Geometry.h"
-#include "Basics\Time\Time.h"
-#include "Utilities\Notifier\Notifier.h"
+#include "Basics/Geometry.h"
+#include "Basics/Time.h"
+#include "Utilities/Notifier.h"
+#include "Systems/Entity.h"
 
 namespace Physics
 {

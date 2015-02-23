@@ -7,6 +7,6 @@
 #include <windowsx.h>
 
 #include "Ferrite.h"
-#include "Systems/Window/Window.h"
+#include "Systems/Window.h"
 
 #include "WndWindow.h"

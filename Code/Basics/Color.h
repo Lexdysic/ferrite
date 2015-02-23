@@ -110,6 +110,6 @@ struct Hsl
 float32 ColorGetLuminance (const Color & color);
 
 
-#include "Color.inl"
+#include "Color/Color.inl"
 
 #endif // BASICS_COLOR_H

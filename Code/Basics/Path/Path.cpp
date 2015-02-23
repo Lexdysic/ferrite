@@ -2,7 +2,7 @@
 #include <Windows.h>
 
 #include "Ferrite.h"
-#include "Basics/Path/Path.h"
+#include "Basics/Path.h"
 
 
 //*****************************************************************************

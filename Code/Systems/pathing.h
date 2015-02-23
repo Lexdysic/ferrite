@@ -1,7 +1,7 @@
 #ifndef SYSTEMS_PATHING_H
 #define SYSTEMS_PATHING_H
 
-#include "Utilities\Notifier\Notifier.h"
+#include "Utilities/Notifier.h"
 
 namespace Pathing
 {

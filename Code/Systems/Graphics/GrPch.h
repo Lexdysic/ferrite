@@ -4,9 +4,8 @@
 #include <dwrite.h>
 
 #include "Ferrite.h"
-#include "Systems\Window\Window.h"
-#include "Systems\Graphics\Graphics.h"
-//#include "Systems\"
+#include "Systems\Window.h"
+#include "Systems\Graphics.h"
 
 #include "GrInt.h"
 #include "GrImage.h"

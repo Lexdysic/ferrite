@@ -2,8 +2,8 @@
 #ifndef SYSTEMS_INPUT_H
 #define SYSTEMS_INPUT_H
 
-#include "Utilities\Notifier\Notifier.h"
-#include "Systems\Entity\Entity.h"
+#include "Utilities/Notifier.h"
+#include "Systems/Entity.h"
 
 
 //=============================================================================

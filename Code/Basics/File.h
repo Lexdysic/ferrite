@@ -1,7 +1,7 @@
 #ifndef BASICS_FILES_H
 #define BASICS_FILES_H
 
-#include "Basics\Path\Path.h"
+#include "Basics/Path.h"
 
 namespace File
 {
@@ -157,6 +157,6 @@ public:
 
 } // namespace File
 
-#include "File.inl"
+#include "File/File.inl"
 
 #endif // BASICS_FILES_H

@@ -1,8 +1,8 @@
 #ifndef SYSTEMS_USERINTERFACE_H
 #define SYSTEMS_USERINTERFACE_H
 
-#include "Systems\Input\Input.h"
-#include "Basics\Time\Time.h"
+#include "Basics/Time.h"
+#include "Systems/Input.h"
 
 namespace System
 {

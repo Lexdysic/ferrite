@@ -1,5 +1,6 @@
 
 #include "JsonPch.h"
+#include <cstdio>
 
 using String::CodePoint;
 

@@ -116,6 +116,6 @@ private:
 //template <typename T>
 //using TIdManagerPacked<T> = TIdManager<TIdDataPacked<T>>;
 
-#include "IdManager.inl"
+#include "IdManager/IdManager.inl"
 
 #endif // UTILTIES_IDMANAGER_H

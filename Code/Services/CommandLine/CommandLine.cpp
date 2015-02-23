@@ -2,7 +2,7 @@
 #include <Windows.h>
 
 #include "Ferrite.h"
-#include "Services\CommandLine\CommandLine.h"
+#include "Services/CommandLine.h"
 
 
 using namespace Json;

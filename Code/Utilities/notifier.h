@@ -74,6 +74,6 @@ private:
     Private::TNotifyLink<T> m_link;
 };
 
-#include "Notifier.inl"
+#include "Notifier/Notifier.inl"
 
 #endif // UTILITIES_NOTIFIER_H

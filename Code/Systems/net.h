@@ -1,8 +1,8 @@
 #ifndef SYSTEMS_NET_H
 #define SYSTEMS_NET_H
 
-#include "Utilities\Notifier\Notifier.h"
-#include "Basics\Time\Time.h"
+#include "Utilities/Notifier.h"
+#include "Basics/Time.h"
 
 //=============================================================================
 //

@@ -1,8 +1,8 @@
 
 #include "Ferrite.h"
 
-#include "Basics/File/File.h"
-#include "Utilities/Json/Json.h"
+#include "Basics/File.h"
+#include "Utilities/Json.h"
 
 
 #include "JsonParse.h"

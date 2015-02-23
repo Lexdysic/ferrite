@@ -1,9 +1,9 @@
 
 #include "Ferrite.h"
-#include "Basics\Geometry\Geometry.h"
-#include "Systems\UserInterface\UserInterface.h"
-#include "Systems\Graphics\Graphics.h"
-#include "Systems\Window\Window.h"
+#include "Basics/Geometry.h"
+#include "Systems/UserInterface.h"
+#include "Systems/Graphics.h"
+#include "Systems/Window.h"
 
 #include "UiWidget.h"
 #include "UiContext.h"

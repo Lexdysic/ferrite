@@ -1,8 +1,8 @@
 #ifndef SYSTEMS_ENTITY_H
 #define SYSTEMS_ENTITY_H
 
-#include "Utilities\Notifier\Notifier.h"
-#include "Utilities\IdManager\IdManager.h"
+#include "Utilities/Notifier.h"
+#include "Utilities/IdManager.h"
 
 
 //=============================================================================

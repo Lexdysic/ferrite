@@ -51,6 +51,6 @@ private:
     static_assert(sizeof(T) >= sizeof(FreeObj), "Cannot use block allocators on small types");
 };
 
-#include "Allocator.inl"
+#include "Allocator/Allocator.inl"
 
 #endif // UTILITIES_ALLOCATOR_H

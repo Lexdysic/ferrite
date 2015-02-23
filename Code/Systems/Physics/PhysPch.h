@@ -14,9 +14,9 @@
 #define PHYSPCH_H
 
 #include "Ferrite.h"
-#include "Basics/Geometry/Geometry.h"
-#include "Systems/Physics/Physics.h"
-#include "Systems/Graphics/Graphics.h"
+#include "Basics/Geometry.h"
+#include "Systems/Physics.h"
+#include "Systems/Graphics.h"
 
 #include "PhysComponent.h"
 #include "PhysBroadphase.h"

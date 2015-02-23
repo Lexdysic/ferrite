@@ -1,7 +1,7 @@
 #ifndef BASICS_THREAD_H
 #define BASICS_THREAD_H
 
-#include "Basics\Time\Time.h"
+#include "Basics/Time.h"
 
 
 //*****************************************************************************

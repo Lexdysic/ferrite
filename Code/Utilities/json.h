@@ -1,7 +1,7 @@
 #ifndef UTILITIES_JSON_H
 #define UTILITIES_JSON_H
 
-#include "Basics\Path\Path.h"
+#include "Basics/Path.h"
 
 namespace Json
 {
@@ -207,6 +207,6 @@ private:
 
 } // namespace Json
 
-#include "Json.inl"
+#include "Json/Json.inl"
 
 #endif // UTILITIES_JSON_H
