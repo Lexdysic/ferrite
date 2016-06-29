@@ -26,8 +26,11 @@ class Sphere2
 {
 public: // Construction
 
-    Sphere2 ();
+	Sphere2 ();
+	Sphere2 (const Sphere2 & rhs);
     Sphere2 (const Point2 & c, float32 r);
+
+	Sphere2 & operator= (const Sphere2 & rhs) = default;
 
 public: // Constants
 
@@ -55,6 +58,7 @@ class Sphere3
 public: // Construction
 
     Sphere3 ();
+	Sphere3 (const Sphere3 & rhs);
     Sphere3 (const Point3 & c, float32 r);
 
 public: // Constants

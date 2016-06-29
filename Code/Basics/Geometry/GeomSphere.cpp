@@ -10,7 +10,14 @@
 const Sphere2 Sphere2::Unit(Point2::Zero, 1.0f);
 
 //=============================================================================
-Sphere2::Sphere2()
+Sphere2::Sphere2 ()
+{
+}
+
+//=============================================================================
+Sphere2::Sphere2 (const Sphere2 & rhs) :
+	center(rhs.center),
+	radius(rhs.radius)
 {
 }
 
@@ -34,6 +41,13 @@ const Sphere3 Sphere3::Unit(Point3::Zero, 1.0f);
 
 //=============================================================================
 Sphere3::Sphere3()
+{
+}
+
+//=============================================================================
+Sphere3::Sphere3 (const Sphere3 & rhs) :
+	center(rhs.center),
+	radius(rhs.radius)
 {
 }
 
