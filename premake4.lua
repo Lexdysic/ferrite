@@ -20,5 +20,5 @@ project "Ferrite"
     --    "./Code/External/bgfx/**",
     --}
     vpaths {
-        ["*"] = { "./Code/**" },
+        ["*"] = { "../Ferrite/Code/**" },
     }
