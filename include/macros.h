@@ -3,17 +3,7 @@ namespace fe {
 
 //*****************************************************************************
 //
-// null
-//
-//*****************************************************************************
-
-#define null nullptr
-
-
-
-//*****************************************************************************
-//
-// CONCAT
+// FE_CONCAT
 //
 //*****************************************************************************
 
@@ -63,21 +53,21 @@ namespace fe {
 //
 //*****************************************************************************
 
-namespace core
+namespace core::detail
 {
     template <typename T, size_t N>
     char (&ArraySizeHelper (T (&arr)[N]))[N];
 }
-#define FE_ARRAY_SIZE(arr) (sizeof(core::ArraySizeHelper(arr)))
+#define FE_ARRAY_SIZE(arr) (sizeof(core::detail::ArraySizeHelper(arr)))
 
 
 //*****************************************************************************
 //
-// ref - used to surpress unrefereced formal parameter
+// FE_REF - used to surpress unrefereced formal parameter
 //
 //*****************************************************************************
 
-namespace core
+namespace core::detail
 {
     template <typename... T>
     inline void Ref(const T &... ) {}
