@@ -1,3 +1,4 @@
+#pragma once
 
 //*****************************************************************************
 //
@@ -39,8 +40,8 @@ template <typename T>
 inline void MemCopy (T *& destination, const T *& source);
 
 
-template <typename T, uint N>
-inline void MemCopy (T (& destination)[N], const T (& source)[N]);
+//template <typename T, uint N>
+//inline void MemCopy (T (& destination)[N], const T (& source)[N]);
 
 //*****************************************************************************
 //

@@ -40,7 +40,7 @@ TDictionaryBase<K, V>::~TDictionaryBase ()
 template <typename K, typename V>
 uint TDictionaryBase<K, V>::Count () const
 {
-    return m_map.size();
+    return uint(m_map.size());
 }
 
 //=============================================================================

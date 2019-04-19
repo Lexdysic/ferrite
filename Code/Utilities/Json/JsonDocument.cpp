@@ -224,7 +224,7 @@ bool CDocument::ParseNumber (NumberType * out)
         return PostError(ECode::Syntax, "could not read number");
 
     // Note: it is safe to assume the utf8 we just scanned is ascii
-    const int ret = sscanf((const char *)readStart.Ptr(), "%lf", out);
+    const int ret = sscanf_s((const char *)readStart.Ptr(), "%lf", out);
     if (ret != 1)
         return PostError(ECode::Syntax, "could not read number");
 
@@ -295,7 +295,7 @@ bool CDocument::ParseString (StringType * out)
         }
     }
 
-    str.Add(CodePoint::Null);
+    str.Add(String::CODEPOINT_NULL);
     *out = CString::FromData(str);
 
     return true;
@@ -466,7 +466,7 @@ bool CDocument::PostError (ECode code, const char message[], ...)
 //=============================================================================
 bool CDocument::Backtrace (const CString::Iterator readStart)
 {
-    const uint dist = std::distance(readStart, m_read)-1;
+    const uint dist = uint(std::distance(readStart, m_read) - 1);
     ASSERT(m_column - dist > 0);
 
     m_column -= dist;

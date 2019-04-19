@@ -76,7 +76,7 @@ public: // Construction
     Matrix23 (
         float32 _00, float32 _01, float32 _02, 
         float32 _10, float32 _11, float32 _12
-   );
+    );
 
     static Matrix23 CreateRotation (Radian angle);
     static Matrix23 CreateScale (float32 scale);
@@ -84,6 +84,8 @@ public: // Construction
     static Matrix23 CreateTranslation (const Vector2 & v);
     static Matrix23 CreateTranslation (const Point2 & position);
     static Matrix23 CreateTransform (const Point2 & position, Radian rotation);
+
+	Matrix23 & operator= (const Matrix23 &);
 
 public: // Accessors
 
@@ -97,7 +99,6 @@ public: // Constants
 
     static const Matrix23 Identity;
     static const Matrix23 Zero;
-
 
 public: // Data
 
@@ -138,6 +139,8 @@ public: // Construction
         float32 e20, float32 e21, float32 e22
     );
     Matrix33 (const Quaternion & q);
+
+    Matrix33 & operator= (const Matrix33 &);
 
 public: // Accessors
 
@@ -195,6 +198,8 @@ public: // Construction
     Matrix34 (const Matrix33 & m, const Vector3 & t);
     Matrix34 (const Quaternion & q);
     Matrix34 (const Quaternion & q, const Vector3 & t);
+    
+    Matrix34 & operator= (const Matrix34 &);
 
 public: // Accessorys
 
@@ -252,6 +257,8 @@ public: // Construction
     );
     Matrix44 (const Quaternion & q);
     Matrix44 (const Quaternion & q, const Vector3 & t);
+
+    Matrix44 & operator= (const Matrix44 &);
 
     static Matrix44 CreateProjection (float32 left, float32 right, float32 top, float32 bottom, float32 near, float32 far);
     static Matrix44 CreateProjection (float32 width, float32 height, float32 near, float32 far);

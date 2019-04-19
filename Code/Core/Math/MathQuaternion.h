@@ -24,7 +24,8 @@
 class Quaternion
 {
 public: // Construction
-    inline Quaternion ();
+	inline Quaternion ();
+	inline Quaternion (const Quaternion & rhs);
     inline Quaternion (float32 a, float32 b, float32 c, float32 d);
     inline Quaternion (const Vector4 & v);
     inline Quaternion (float32 a, const Vector3 & bcd);

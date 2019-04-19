@@ -64,7 +64,7 @@ Socket::Socket (Socket && socket) :
 }
 
 //=============================================================================
-Socket::Socket (unsigned int socket) :
+Socket::Socket (intptr_t socket) :
     m_socket(socket)
 {
 
@@ -143,7 +143,7 @@ Socket Socket::Accept ()
 {
     ASSERT(IsValid());
 
-    const unsigned int socket = ::accept(m_socket, null, null);
+    const intptr_t socket = ::accept(m_socket, null, null);
     return Socket(socket);
 }
 

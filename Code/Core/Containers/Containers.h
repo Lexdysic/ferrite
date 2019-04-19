@@ -1,3 +1,5 @@
+#pragma once
+
 #include "CntArray.h"
 #include "CntList.h"
 #include "CntDictionary.h"

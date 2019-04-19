@@ -1,3 +1,7 @@
+#pragma once
+
+#include "Core/Memory/Memory.h"
+#include "Core/Containers/Containers.h"
 
 //*****************************************************************************
 //
@@ -62,31 +66,36 @@ Encoding GetEncoding (const byte data[]);
 namespace String
 {
 
-struct CodePoint
-{
-public: // Construction
+using CodePoint = char32_t;
 
-    inline CodePoint ();
-    inline CodePoint (const CodePoint & rhs) = default;
-    inline explicit CodePoint (uint32 code);
-
-    inline explicit operator uint32 () const;
-
-public: // Statics
-
-    static const CodePoint Invalid;
-    static const CodePoint Null;
-    static const CodePoint Max;
-
-private:
-
-    SIMPLE_TYPE_DATA(uint32, m_code);
-    SIMPLE_TYPE_EQUATABLE(CodePoint);
-    SIMPLE_TYPE_EQUATABLE_TO(CodePoint, char);
-    SIMPLE_TYPE_COMPARABLE(CodePoint);
-    SIMPLE_TYPE_COMPARABLE_TO(CodePoint, char);
-
-};
+const CodePoint CODEPOINT_INVALID = 0xffffffff;
+const CodePoint CODEPOINT_NULL = 0x0;
+const CodePoint CODEPOINT_MAX = 0x10ffff;
+//struct CodePoint
+//{
+//public: // Construction
+//
+//    inline CodePoint ();
+//    inline CodePoint (const CodePoint & rhs) = default;
+//    inline explicit CodePoint (uint32 code);
+//
+//    inline explicit operator uint32 () const;
+//
+//public: // Statics
+//
+//    static const CodePoint Invalid;
+//    static const CodePoint Null;
+//    static const CodePoint Max;
+//
+//private:
+//
+//    SIMPLE_TYPE_DATA(uint32, m_code);
+//    SIMPLE_TYPE_EQUATABLE(CodePoint);
+//    SIMPLE_TYPE_EQUATABLE_TO(CodePoint, char);
+//    SIMPLE_TYPE_COMPARABLE(CodePoint);
+//    SIMPLE_TYPE_COMPARABLE_TO(CodePoint, char);
+//
+//};
 
 template <EEncoding E>
 CodePoint Decode (const typename CodeUnit<E>::Type * data[]);

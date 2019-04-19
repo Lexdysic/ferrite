@@ -64,12 +64,12 @@ public:
     void SetDelayed (bool value);
 
 private:
-    explicit Socket (unsigned int socket);
+    explicit Socket (intptr_t socket);
 
     void Init ();
     void HandleErrors ();
 
-    unsigned int m_socket;
+    intptr_t m_socket;
 };
 
 

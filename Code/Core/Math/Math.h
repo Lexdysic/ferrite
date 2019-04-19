@@ -1,7 +1,4 @@
-#ifdef MATH_H
-#  error "Cannot include header more than once."
-#endif
-#define MATH_H
+#pragma once
 
 #include <cmath>
 

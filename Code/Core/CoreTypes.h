@@ -8,11 +8,10 @@
 //
 //==================================================================================================
 
-#ifdef CORETYPE_H
-#  error "Cannot include header more than once."
-#endif
-#define CORETYPES_H
+#pragma once
 
+#include <cstdint>
+#include <limits>
 
 
 //*****************************************************************************

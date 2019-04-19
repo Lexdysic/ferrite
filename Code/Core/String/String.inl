@@ -68,13 +68,13 @@ bool CharIsWhitespace (String::CodePoint ch)
 //=============================================================================
 uint StrLen (const wchar text[])
 {
-    return wcslen(text);
+    return uint(wcslen(text));
 }
 
 //=============================================================================
 uint StrLen (const char text[])
 {
-    return strlen(text);
+    return uint(strlen(text));
 }
 
 //=============================================================================
@@ -166,23 +166,23 @@ int StrPrintfV (char buffer[], uint bufferCount, const char format[], va_list ar
 
 namespace String
 {
-//=============================================================================
-CodePoint::CodePoint () :
-    m_code(Invalid)
-{
-}
-
-//=============================================================================
-CodePoint::CodePoint (uint32 code) :
-    m_code(code)
-{
-}
-
-//=============================================================================
-CodePoint::operator uint32 () const
-{
-    return m_code;
-}
+////=============================================================================
+//CodePoint::CodePoint () :
+//    m_code(Invalid)
+//{
+//}
+//
+////=============================================================================
+//CodePoint::CodePoint (uint32 code) :
+//    m_code(code)
+//{
+//}
+//
+////=============================================================================
+//CodePoint::operator uint32 () const
+//{
+//    return m_code;
+//}
 
 } // namespace String
 
@@ -462,7 +462,7 @@ TString<E> TString<E>::FromData(const CodeUnit data[])
     const CodeUnit * dataEnd = data;
     while (*dataEnd++ != 0);
     
-    const uint len = dataEnd - data;
+    const uint len = uint(dataEnd - data);
 
     TString<E> out;
     out.m_data.Add(data, len);

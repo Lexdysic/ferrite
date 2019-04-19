@@ -112,10 +112,10 @@ Encoding GetEncoding (const byte data[])
 namespace String
 {
 
-//=============================================================================
-const CodePoint CodePoint::Invalid(0xffffffff);
-const CodePoint CodePoint::Null(0x0);
-const CodePoint CodePoint::Max(0x10ffff);
+////=============================================================================
+//const CodePoint CodePoint::Invalid(0xffffffff);
+//const CodePoint CodePoint::Null(0x0);
+//const CodePoint CodePoint::Max(0x10ffff);
 
 //=============================================================================
 template <>
@@ -165,14 +165,14 @@ CodePoint Decode<String::EEncoding::Utf8> (const byte * data[])
     }
     else
     {
-        return CodePoint::Invalid;
+        return CODEPOINT_INVALID;
     }
 
     for (uint i = 1; i < len; ++i)
     {
         const byte value = *(*data)++;
         if ((value & B11000000) != B10000000)
-            return CodePoint::Invalid;
+            return CODEPOINT_INVALID;
         code = (code << 6) | (value & ~B11000000);
     }
 
@@ -191,7 +191,7 @@ CodePoint Decode<String::EEncoding::Utf16> (const wchar * data[])
     const uint16 tail = *(*data)++;
 
     if (!IsUtf16TailSurrogate(tail))
-        return CodePoint::Invalid;
+        return CODEPOINT_INVALID;
 
     const uint32 x = (lead & ((1 << 6) - 1)) << 10 | tail & ((1 << 10) - 1);
     const uint32 w = ((tail >> 6) & ((1 << 5) - 1)) + 1;
@@ -346,7 +346,7 @@ float32 StrDistance (const CString & lhs, const CString & rhs)
     TArray<uint> * currPtr = &row1;
 
     CodePoint lhsCurr;
-    CodePoint lhsLast = CodePoint::Invalid;
+    CodePoint lhsLast = CODEPOINT_INVALID;
     CString::Iterator lhsIt = lhs.begin();
     for (uint i = 0; i < lhsLen; lhsLast = lhsCurr, ++i, ++lhsIt, std::swap(prevPtr, currPtr))
     {
@@ -360,7 +360,7 @@ float32 StrDistance (const CString & lhs, const CString & rhs)
         curr[0] = i + 1;
 
         CodePoint rhsCurr;
-        CodePoint rhsLast = CodePoint::Invalid;
+        CodePoint rhsLast = CODEPOINT_INVALID;
         CString::Iterator rhsIt = rhs.begin();
         for (uint j = 0; j < rhsLen; rhsLast = rhsCurr, ++j, ++rhsIt)
         {

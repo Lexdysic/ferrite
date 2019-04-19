@@ -3,6 +3,8 @@
 #endif
 #define GEOMAABB_H
 
+#include "Core/Containers/CntArray.h"
+
 //*****************************************************************************
 //
 // Aabb2

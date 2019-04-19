@@ -148,7 +148,7 @@ template <typename U>
 uint TArray<T>::Find (const U & value) const
 {
     auto it = std::find(m_array.begin(), m_array.end(), value);
-    return it - m_array.begin();
+    return uint(it - m_array.begin());
 }
 
 //=============================================================================
@@ -216,7 +216,7 @@ const T * TArray<T>::Top () const
 template <typename T>
 uint TArray<T>::Count () const
 {
-    return m_array.size();
+    return uint(m_array.size());
 }
 
 //=============================================================================

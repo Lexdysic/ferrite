@@ -3,6 +3,8 @@
 
 #include "Utilities/Notifier.h"
 #include "Utilities/IdManager.h"
+#include "Core/Token/Token.h"
+#include "Core/Pointer/Pointer.h"
 
 
 //=============================================================================

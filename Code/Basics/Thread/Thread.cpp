@@ -8,7 +8,7 @@
 //*****************************************************************************
 
 //=============================================================================
-static_assert(CriticalSection::DATA_SIZE >= sizeof(CRITICAL_SECTION), "Not enough space to old critical section data");
+static_assert(CriticalSection::DATA_SIZE >= uint(sizeof(CRITICAL_SECTION)), "Not enough space to old critical section data");
 
 
 
@@ -179,7 +179,7 @@ uint ThreadLogicalProcessorCount ()
         if ( ptr->Relationship != RelationProcessorCore)
             continue;
 
-        numLogicProcs += Math::BitCount(ptr->ProcessorMask);
+        numLogicProcs += Math::BitCount(uint64_t(ptr->ProcessorMask));
     }
 
     delete[] infos;

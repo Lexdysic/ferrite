@@ -1,9 +1,4 @@
-
-#ifdef COREMACRO_H
-#  error "Cannot include header more than once"
-#endif
-#define COREMACRO_H
-
+#pragma once
 
 
 //*****************************************************************************
@@ -117,11 +112,12 @@ namespace Core
 
 //*****************************************************************************
 //
-// ref
+// ref - used to surpress unrefereced formal parameter
 //
 //*****************************************************************************
 
-#define ref(x) (void)x
+template <typename... T>
+inline void ref(const T &... ) {}
 
 
 

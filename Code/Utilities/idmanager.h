@@ -109,12 +109,18 @@ private:
 };
 
 
-// C++11 helper definitions
-//template <typename T>
-//using TIdManagerSerial<T> = TIdManager<TIdDataSerial<T>>;
+
+//*****************************************************************************
 //
-//template <typename T>
-//using TIdManagerPacked<T> = TIdManager<TIdDataPacked<T>>;
+// Common Managers
+//
+//*****************************************************************************
+
+template <typename T>
+using TIdManagerSerial = TIdManager<TIdDataSerial<T>>;
+
+template <typename T>
+using TIdManagerPacked = TIdManager<TIdDataPacked<T>>;
 
 #include "IdManager/IdManager.inl"
 

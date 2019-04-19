@@ -1,3 +1,5 @@
+#include "Basics/Meta.h"
+#include "Core/Debug/Debug.h"
 
 //=============================================================================
 template <typename T>
@@ -85,13 +87,15 @@ float32 Difference (float32 a, float32 b, float32 modulo)
 //=============================================================================
 sint FloatToSint (float32 x)
 {
-    const float32 y = x - 0.5f;
-    sint s;
+    //const float32 y = x - 0.5f;
+    //sint s;
 
-    __asm fld y
-    __asm fistp s
+    //__asm fld y
+    //__asm fistp s
 
-    return s;
+    //return s;
+
+    return sint(x);
 }
 
 //=============================================================================
@@ -103,45 +107,53 @@ sint FloatToSint (float64 x)
 //=============================================================================
 uint FloatToUint (float32 x)
 {
-    uint u;
+    //uint u;
 
-    __asm fld x
-    __asm fistp u
+    //__asm fld x
+    //__asm fistp u
 
-    return u;
+    //return u;
+
+    return uint(x);
 }
 
 //=============================================================================
 uint FloatToUint (float64 x)
 {
-    uint u;
+    //uint u;
 
-    __asm fld x
-    __asm fistp u
+    //__asm fld x
+    //__asm fistp u
 
-    return u;
+    //return u;
+
+    return uint(x);
 }
 
 //=============================================================================
 sint64 FloatToSint64 (float32 x)
 {
-    sint64 i;
+    //sint64 i;
 
-    __asm fld     x
-    __asm fistp   i
+    //__asm fld     x
+    //__asm fistp   i
 
-    return i;
+    //return i;
+
+    return sint64(x);
 }
 
 //=============================================================================
 sint64 FloatToSint64 (float64 x)
 {
-    sint64 i;
+    //sint64 i;
 
-    __asm fld     x
-    __asm fistp   i
+    //__asm fld     x
+    //__asm fistp   i
 
-    return i;
+    //return i;
+
+    return sint64(x);
 }
 
 //=============================================================================
@@ -212,18 +224,39 @@ float64 Inverse (float64 x)
 namespace Math
 {
 
+// https://en.wikipedia.org/wiki/Hamming_weight#Efficient_implementation
 //=============================================================================
-uint BitCount (uint32 n)
+uint BitCount (uint32_t n)
 {
-	const uint32 MASK_01010101 = 0x55555555; // ((uint32)(-1)) / 3;
-	const uint32 MASK_00110011 = 0x33333333; // ((uint32)(-1)) / 5;
-	const uint32 MASK_00001111 = 0x0f0f0f0f; // ((uint32)(-1)) / 17;
+    const uint32 MASK_01010101 = 0x55555555; // ((uint32)(-1)) / 3;
+    const uint32 MASK_00110011 = 0x33333333; // ((uint32)(-1)) / 5;
+    const uint32 MASK_00001111 = 0x0f0f0f0f; // ((uint32)(-1)) / 17;
 
     n = (n & MASK_01010101) + ((n >> 1) & MASK_01010101);
     n = (n & MASK_00110011) + ((n >> 2) & MASK_00110011);
     n = (n & MASK_00001111) + ((n >> 4) & MASK_00001111);
 
     return n % 255;
+}
+
+//=============================================================================
+uint BitCount (uint64_t n)
+{
+    const uint64 MASK_01 = uint64(0x5555555555555555);
+    const uint64 MASK_02 = uint64(0x3333333333333333);
+    const uint64 MASK_04 = uint64(0x0f0f0f0f0f0f0f0f);
+    const uint64 MASK_08 = uint64(0x00ff00ff00ff00ff);
+    const uint64 MASK_16 = uint64(0x0000ffff0000ffff);
+    const uint64 MASK_32 = uint64(0x00000000ffffffff);
+
+    n = (n & MASK_01) + ((n >>  1) & MASK_01);
+    n = (n & MASK_02) + ((n >>  2) & MASK_02);
+    n = (n & MASK_04) + ((n >>  4) & MASK_04);
+    n = (n & MASK_08) + ((n >>  8) & MASK_08);
+    n = (n & MASK_16) + ((n >> 16) & MASK_16);
+    n = (n & MASK_32) + ((n >> 32) & MASK_32);
+
+    return uint(n);
 }
 
 //=============================================================================

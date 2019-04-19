@@ -1,3 +1,5 @@
+#include "Core/CoreTypes.h"
+
 namespace SI
 {
 

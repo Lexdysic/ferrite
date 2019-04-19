@@ -177,7 +177,7 @@ bool TQueue<T>::Contains (const T & value) const
 template <typename T>
 uint TQueue<T>::Count () const
 {
-    return m_data.size();
+    return uint(m_data.size());
 }
 
 //=============================================================================

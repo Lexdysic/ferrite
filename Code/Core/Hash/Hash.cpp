@@ -269,7 +269,7 @@ void Hash32::Add (const uint32 data[], uint size)
 //=============================================================================
 void Hash32::Add (const uint8 * start, const uint8 * end)
 {
-    m_value = Hash(start, end - start - 1, m_value);
+    m_value = Hash(start, uint(end - start - 1), m_value);
 }
 
 

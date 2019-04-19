@@ -69,7 +69,7 @@ public:
     void Enter ();
     void Leave ();
     
-    static const uint DATA_SIZE = 32;
+    static const uint DATA_SIZE = 48;
 
 private:
 

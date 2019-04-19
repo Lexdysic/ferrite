@@ -182,6 +182,12 @@ Matrix23 Matrix23::CreateTransform (const Point2 & position, Radian rotation)
     );
 }
 
+//=============================================================================
+Matrix23 & Matrix23::operator= (const Matrix23 & rhs) {
+	MemCopy(this->ma, rhs.ma);
+	return *this;
+}
+
 
 
 //*****************************************************************************
@@ -258,6 +264,12 @@ Matrix33::Matrix33 (const Quaternion & q)
     row[0] = Vector3(1.0f - yy - zz,        xy - zw,        xz + yw);
     row[1] = Vector3(       xy + zw, 1.0f - xx - zz,        yz - xw);
     row[2] = Vector3(       xz - yw,        yz + xw, 1.0f - xx - yy);
+}
+
+//=============================================================================
+Matrix33 & Matrix33::operator= (const Matrix33 & rhs) {
+    MemCopy(this->ma, rhs.ma);
+    return *this;
 }
 
 
@@ -365,6 +377,11 @@ Matrix34::Matrix34 (const Quaternion & q, const Vector3 & t)
     row[2] = Vector4(       xz - yw,           yz + xw,     1.0f - xx - yy,     t.z);  
 }
 
+//=============================================================================
+Matrix34 & Matrix34::operator= (const Matrix34 & rhs) {
+    MemCopy(this->ma, rhs.ma);
+    return *this;
+}
 
 
 //*****************************************************************************
@@ -397,7 +414,7 @@ Matrix44::Matrix44 ()
 //=============================================================================
 Matrix44::Matrix44 (const Matrix44 & m)
 {
-    MemCopy(ma, m.ma);
+    MemCopy(this->ma, m.ma);
 }
 
 //=============================================================================
@@ -466,6 +483,12 @@ Matrix44::Matrix44 (const Quaternion & q, const Vector3 & t)
     row[1] = Vector4(       xy + zw, 1.0f - xx - zz,        yz - xw, t.y);
     row[2] = Vector4(       xz - yw,        yz + xw, 1.0f - xx - yy, t.z);  
     row[3] = Vector4(          0.0f,           0.0f,           0.0f, 1.0f);
+}
+
+//=============================================================================
+Matrix44 & Matrix44::operator= (const Matrix44 & rhs) {
+    MemCopy(this->ma, rhs.ma);
+    return *this;
 }
 
 //=============================================================================

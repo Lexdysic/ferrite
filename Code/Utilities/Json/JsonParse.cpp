@@ -194,7 +194,7 @@ bool ParseNumber (const CString::Iterator * read, NumberType * out)
         return Error(read, readStart);
 
     // Note: it is safe to assume the utf8 we just scanned is ascii
-    const int ret = sscanf((const char *)readStart.Ptr(), "%lf", out);
+    const int ret = sscanf_s((const char *)readStart.Ptr(), "%lf", out);
     if (ret != 1)
         return Error(read, readStart);
 
@@ -289,7 +289,7 @@ bool ParseString (const CString::Iterator * read, StringType * out)
         }
     }
 
-    str.Add(CodePoint::Null);
+    str.Add(String::CODEPOINT_NULL);
     *out = CString::FromData(str);
 
     return true;

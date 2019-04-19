@@ -114,7 +114,7 @@ public: // Constants
 
 private: // Data
 
-    static const uint DATA_BYTES = 24;
+    static const uint DATA_BYTES = 32;
 
 private: // Helpers
 

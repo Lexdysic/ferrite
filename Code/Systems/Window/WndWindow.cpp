@@ -239,7 +239,7 @@ CWindow::CWindow (const CString & title, uint width, uint height) :
         windowClass.hIconSm       = null;
         windowClass.lpszClassName = className;
 
-        const ATOM ret = RegisterClassEx(&windowClass);
+        const ATOM ret = RegisterClassExW(&windowClass);
         ASSERT(ret);
     }
 
@@ -247,7 +247,7 @@ CWindow::CWindow (const CString & title, uint width, uint height) :
     {
         const uint32 style = WS_OVERLAPPEDWINDOW | WS_VISIBLE;
 
-        RECT adjustedRect = {0, 0, m_width, m_height};
+        RECT adjustedRect = {0, 0, LONG(m_width), LONG(m_height)};
         AdjustWindowRect(&adjustedRect, style, false);
 
         const uint32 adjustedWidth  = adjustedRect.right  - adjustedRect.left;

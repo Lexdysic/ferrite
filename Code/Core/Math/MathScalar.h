@@ -85,6 +85,8 @@ namespace Math
 {
 
 inline uint BitCount (uint32 n);
+inline uint BitCount (uint64 n);
+inline uint BitCount (uintptr_t n);
 
 template <typename T>
 inline bool IsInRange (const T & x, const T & a, const T & b);
