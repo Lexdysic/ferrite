@@ -25,12 +25,6 @@ inline CRITICAL_SECTION * ConvertCritSec (uint8 * data)
 }
 
 //=============================================================================
-inline HANDLE ConvertSem (void * handle)
-{
-    return (HANDLE)handle;
-}
-
-//=============================================================================
 static DWORD WINAPI ThreadEntryPoint (LPVOID param)
 {
     CThread * thread = (CThread *)param;
@@ -142,19 +136,54 @@ void CriticalSection::Leave ()
 
 Semaphore::Semaphore (uint32_t initialValue)
 {
-    m_handle = ::CreateSemaphoreW(nullptr, initialValue, 0xffffffff, nullptr);
+    m_handle = ::CreateSemaphoreW(
+        nullptr,
+        initialValue,
+        std::numeric_limits<LONG>::max(),
+        nullptr
+    );
 }
 
-Semaphore::~Semaphore () {
-    ::CloseHandle(ConvertSem(m_handle));
+Semaphore::~Semaphore ()
+{
+    ::CloseHandle(m_handle);
 }
 
-void Semaphore::Wait () {
-    ::WaitForSingleObject(ConvertSem(m_handle), INFINITE);
+bool Semaphore::Wait ()
+{
+    return ::WaitForSingleObject(m_handle, INFINITE) == WAIT_OBJECT_0;
 }
 
-void Semaphore::Post () {
-    ::ReleaseSemaphore(ConvertSem(m_handle), LONG(1), nullptr);
+void Semaphore::Post ()
+{
+    ::ReleaseSemaphore(m_handle, LONG(1), nullptr);
+}
+
+
+//*****************************************************************************
+//
+// Event
+//
+//*****************************************************************************
+
+Event::Event (bool initialState)
+{
+    m_handle = ::CreateEventW(nullptr, false, initialState, nullptr);
+}
+
+Event::~Event ()
+{
+    ::CloseHandle(m_handle);
+}
+
+void Event::Wait ()
+{
+    ::WaitForSingleObject(m_handle, INFINITE);
+}
+
+void Event::Post ()
+{
+    SetEvent(m_handle);
 }
 
 

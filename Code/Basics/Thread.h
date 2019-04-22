@@ -86,16 +86,32 @@ class Semaphore {
 public:
     Semaphore (uint32_t initialValue = 0);
     ~Semaphore ();
-
-    //Semaphore (const Semaphore &) = default;
-
-    void Wait ();
+    
+    bool Wait ();
     void Post ();
     
 private:
     void * m_handle;
 };
 
+
+//*****************************************************************************
+//
+// Event
+//
+//*****************************************************************************
+
+class Event {
+public:
+    Event (bool initialState = false);
+    ~Event ();
+    
+    void Wait ();
+    void Post ();
+    
+private:
+    void * m_handle;
+};
 
 //*****************************************************************************
 //
