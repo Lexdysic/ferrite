@@ -19,9 +19,15 @@ static_assert(CriticalSection::DATA_SIZE >= uint(sizeof(CRITICAL_SECTION)), "Not
 //*****************************************************************************
 
 //=============================================================================
-inline CRITICAL_SECTION * Convert (uint8 * data)
+inline CRITICAL_SECTION * ConvertCritSec (uint8 * data)
 {
     return (CRITICAL_SECTION *)data;
+}
+
+//=============================================================================
+inline HANDLE ConvertSem (void * handle)
+{
+    return (HANDLE)handle;
 }
 
 //=============================================================================
@@ -100,34 +106,56 @@ bool CThread::IsRunning() const
 //=============================================================================
 CriticalSection::CriticalSection ()
 {
-    ::InitializeCriticalSection(Convert(m_data));
+    ::InitializeCriticalSection(ConvertCritSec(m_data));
 }
 
 //=============================================================================
 CriticalSection::~CriticalSection ()
 {
-    ::DeleteCriticalSection(Convert(m_data));
+    ::DeleteCriticalSection(ConvertCritSec(m_data));
 }
 
 //=============================================================================
 bool CriticalSection::TryEnter () 
 {
-    return ::TryEnterCriticalSection(Convert(m_data)) != 0;
+    return ::TryEnterCriticalSection(ConvertCritSec(m_data)) != 0;
 }
 
 //=============================================================================
 void CriticalSection::Enter ()
 {
-    ::EnterCriticalSection(Convert(m_data));
+    ::EnterCriticalSection(ConvertCritSec(m_data));
 }
 
 //=============================================================================
 void CriticalSection::Leave ()
 {
-    ::LeaveCriticalSection(Convert(m_data));
+    ::LeaveCriticalSection(ConvertCritSec(m_data));
 }
 
 
+//*****************************************************************************
+//
+// Semaphore
+//
+//*****************************************************************************
+
+Semaphore::Semaphore (uint32_t initialValue)
+{
+    m_handle = ::CreateSemaphoreW(nullptr, initialValue, 0xffffffff, nullptr);
+}
+
+Semaphore::~Semaphore () {
+    ::CloseHandle(ConvertSem(m_handle));
+}
+
+void Semaphore::Wait () {
+    ::WaitForSingleObject(ConvertSem(m_handle), INFINITE);
+}
+
+void Semaphore::Post () {
+    ::ReleaseSemaphore(ConvertSem(m_handle), LONG(1), nullptr);
+}
 
 
 //*****************************************************************************

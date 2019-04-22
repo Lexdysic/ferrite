@@ -72,10 +72,29 @@ public:
     static const uint DATA_SIZE = 48;
 
 private:
-
     uint8 m_data[DATA_SIZE];
 };
 
+
+//*****************************************************************************
+//
+// Semaphore
+//
+//*****************************************************************************
+
+class Semaphore {
+public:
+    Semaphore (uint32_t initialValue = 0);
+    ~Semaphore ();
+
+    //Semaphore (const Semaphore &) = default;
+
+    void Wait ();
+    void Post ();
+    
+private:
+    void * m_handle;
+};
 
 
 //*****************************************************************************
